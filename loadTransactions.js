@@ -2,6 +2,7 @@ import { parse } from 'csv-parse/sync';
 import * as fs from 'fs';
 import translateDegiro from './translations.js'
 import moment from 'moment';
+import { calculateFIFOCapitalGains } from 'fifo-capital-gains-js'
 
 const input = fs.readFileSync('./transactions.csv', 'utf8').trim()
 let prevField = ""
@@ -30,4 +31,17 @@ const records = tmp.map(transaction => {
     return transaction
 })
 
-console.log(records)
+
+const operationHistory = records.map(x => {
+       return {
+        "amount" : Math.abs(x.quantity),
+        "date" : x.datetime,
+        "price" : Math.abs(x.value),
+        "symbol" : x.security.toUpperCase(),
+        "type" : x.quantity > 0 ? "BUY" : "SELL"
+       } 
+})
+
+const capitalGains = calculateFIFOCapitalGains(operationHistory)
+
+console.log(capitalGains)
