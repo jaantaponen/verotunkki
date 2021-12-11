@@ -2,7 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es2019",
     "lib": [
       "dom",
