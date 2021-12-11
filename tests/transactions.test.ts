@@ -2,48 +2,6 @@ import { Operation } from '../src/fifo';
 import { calculateFIFOTransactions, calculateFIFOCapitalGains } from '../src/fifo';
 
 describe('calculateFIFO', () => {
-
-  // it('calculates FIFO capital gains with one symbol', () => {
-  //   const operationHistory: Operation[] = [
-  //     {
-  //       amount: 10,
-  //       date: new Date('2020-01-01'),
-  //       price: 100,
-  //       symbol: 'STK1',
-  //       type: 'BUY',
-  //     },
-  //     {
-  //       amount: 10,
-  //       date: new Date('2020-02-01'),
-  //       price: 150,
-  //       symbol: 'STK1',
-  //       type: 'BUY',
-  //     },
-  //     {
-  //       amount: 15,
-  //       date: new Date('2020-03-01'),
-  //       price: 200,
-  //       symbol: 'STK1',
-  //       type: 'SELL',
-  //     },
-  //   ]
-
-  //   const capitalGains = calculateFIFOCapitalGains(operationHistory)
-
-  //   expect(capitalGains).toEqual([
-  //     {
-  //       sale: {
-  //         amount: 15,
-  //         date: new Date('2020-03-01'),
-  //         price: 200,
-  //         symbol: 'STK1',
-  //         type: 'SELL',
-  //       },
-  //       capitalGains: 1250,
-  //     },
-  //   ])
-  // })
-
   it('calculates FIFO transactions details with multiple tickers', () => {
     const operationHistory: Operation[] = [
       {
@@ -95,14 +53,7 @@ describe('calculateFIFO', () => {
         transactionFee: 2.1,
       },
     ];
-
-    // const capitalGains = calculateFIFOCapitalGains(operationHistory)
-
-    //console.log(calculateFIFOTransactions(operationHistory))
     const transactions = calculateFIFOTransactions(operationHistory);
-    //console.log(JSON.stringify(calculateFIFOCapitalGains(operationHistory)))
-    //console.log(transactions)
-
     expect(transactions).toEqual([
       {
         ticker: 'GME',
@@ -213,108 +164,143 @@ describe('calculateFIFO', () => {
   });
 
 
-  // it('calculates FIFO capital gains with intercalated buys and sales', () => {
-  //   const operationHistory: Operation[] = [
-  //     {
-  //       amount: 10,
-  //       date: new Date('2020-01-01'),
-  //       price: 100,
-  //       symbol: 'STK1',
-  //       type: 'BUY',
-  //     },
-  //     {
-  //       amount: 10,
-  //       date: new Date('2020-02-01'),
-  //       price: 150,
-  //       symbol: 'STK2',
-  //       type: 'BUY',
-  //     },
-  //     {
-  //       amount: 5,
-  //       date: new Date('2020-03-01'),
-  //       price: 200,
-  //       symbol: 'STK1',
-  //       type: 'SELL',
-  //     },
-  //     {
-  //       amount: 10,
-  //       date: new Date('2020-04-01'),
-  //       price: 250,
-  //       symbol: 'STK1',
-  //       type: 'BUY',
-  //     },
-  //     {
-  //       amount: 10,
-  //       date: new Date('2021-01-01'),
-  //       price: 200,
-  //       symbol: 'STK2',
-  //       type: 'SELL',
-  //     },
-  //     {
-  //       amount: 15,
-  //       date: new Date('2022-01-01'),
-  //       price: 300,
-  //       symbol: 'STK1',
-  //       type: 'SELL',
-  //     },
-  //   ]
+  it('calculates FIFO capital gains with intercalated buys and sales', () => {
+    const operationHistory: Operation[] = [
+      {
+        amount: 10,
+        date: new Date('2020-01-01'),
+        price: 100,
+        symbol: 'STK1',
+        type: 'BUY',
+        transactionFee: 0,
+      },
+      {
+        amount: 10,
+        date: new Date('2020-02-01'),
+        price: 150,
+        symbol: 'STK2',
+        type: 'BUY',
+        transactionFee: 0,
+      },
+      {
+        amount: 5,
+        date: new Date('2020-03-01'),
+        price: 200,
+        symbol: 'STK1',
+        type: 'SELL',
+        transactionFee: 0,
+      },
+      {
+        amount: 10,
+        date: new Date('2020-04-01'),
+        price: 250,
+        symbol: 'STK1',
+        type: 'BUY',
+        transactionFee: 0,
+      },
+      {
+        amount: 10,
+        date: new Date('2021-01-01'),
+        price: 200,
+        symbol: 'STK2',
+        type: 'SELL',
+        transactionFee: 0,
+      },
+      {
+        amount: 15,
+        date: new Date('2022-01-01'),
+        price: 300,
+        symbol: 'STK1',
+        type: 'SELL',
+        transactionFee: 0,
+      },
+    ]
+    const capitalGains = calculateFIFOCapitalGains(operationHistory)
+    expect(capitalGains).toEqual([
+      {
+        "capitalGainPerSellDate": 500,
+        "transactions": [
+          {
+            "ticker": "STK1",
+            "buydate": new Date("2020-01-01"),
+            "selldate": new Date("2020-03-01"),
+            "amountsold": 5,
+            "transferPrice": 200,
+            "profitOrLoss": 500,
+            "acquisitionPrice": 100,
+            "acquisitionFee": 0,
+            "transferFee": 0
+          }
+        ]
+      },
+      {
+        "capitalGainPerSellDate": 500,
+        "transactions": [
+          {
+            "ticker": "STK2",
+            "buydate": new Date("2020-02-01"),
+            "selldate": new Date("2021-01-01"),
+            "amountsold": 10,
+            "transferPrice": 200,
+            "profitOrLoss": 500,
+            "acquisitionPrice": 150,
+            "acquisitionFee": 0,
+            "transferFee": 0
+          }
+        ]
+      },
+      {
+        "capitalGainPerSellDate": 1500,
+        "transactions": [
+          {
+            "ticker": "STK1",
+            "buydate": new Date("2020-01-01"),
+            "selldate": new Date("2022-01-01"),
+            "amountsold": 5,
+            "transferPrice": 300,
+            "profitOrLoss": 1000,
+            "acquisitionPrice": 100,
+            "acquisitionFee": 0,
+            "transferFee": 0
+          },
+          {
+            "ticker": "STK1",
+            "buydate": new Date("2020-04-01"),
+            "selldate": new Date("2022-01-01"),
+            "amountsold": 10,
+            "transferPrice": 300,
+            "profitOrLoss": 500,
+            "acquisitionPrice": 250,
+            "acquisitionFee": 0,
+            "transferFee": 0
+          }
+        ]
+      }
+    ])
+  })
 
-  //   const capitalGains = calculateFIFOCapitalGains(operationHistory)
+  it("throws when a symbol's sales have a bigger amount than its buys", () => {
+    const operationHistory: Operation[] = [
+      {
+        amount: 10,
+        date: new Date('2020-01-01'),
+        price: 100,
+        symbol: 'STK1',
+        type: 'BUY',
+        transactionFee: 0,
+      },
+      {
+        amount: 15,
+        date: new Date('2020-03-01'),
+        price: 200,
+        symbol: 'STK1',
+        type: 'SELL',
+        transactionFee: 0,
+      },
+    ]
 
-  //   expect(capitalGains).toEqual([
-  //     {
-  //       sale: {
-  //         amount: 5,
-  //         date: new Date('2020-03-01'),
-  //         price: 200,
-  //         symbol: 'STK1',
-  //         type: 'SELL',
-  //       },
-  //       capitalGains: 500,
-  //     },
-  //     {
-  //       sale: {
-  //         amount: 10,
-  //         date: new Date('2021-01-01'),
-  //         price: 200,
-  //         symbol: 'STK2',
-  //         type: 'SELL',
-  //       },
-  //       capitalGains: 500,
-  //     },
-  //     {
-  //       sale: {
-  //         amount: 15,
-  //         date: new Date('2022-01-01'),
-  //         price: 300,
-  //         symbol: 'STK1',
-  //         type: 'SELL',
-  //       },
-  //       capitalGains: 1500,
-  //     },
-  //   ])
-  // })
-
-  // it("throws when a symbol's sales have a bigger amount than its buys", () => {
-  //   const operationHistory: Operation[] = [
-  //     {
-  //       amount: 10,
-  //       date: new Date('2020-01-01'),
-  //       price: 100,
-  //       symbol: 'STK1',
-  //       type: 'BUY',
-  //     },
-  //     {
-  //       amount: 15,
-  //       date: new Date('2020-03-01'),
-  //       price: 200,
-  //       symbol: 'STK1',
-  //       type: 'SELL',
-  //     },
-  //   ]
-
-  //   expect(() => calculateFIFOCapitalGains(operationHistory)).toThrow()
-  // })
+    expect(() => calculateFIFOCapitalGains(operationHistory)).toThrow()
+  })
 
   it('throws when there are sales, but no buys', () => {
     const operationHistory: Operation[] = [
