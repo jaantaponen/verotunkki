@@ -1,29 +1,40 @@
 {
-    "compilerOptions": {
-      "moduleResolution": "node",
-      "module": "esnext",
-      "target": "es2019",
-      "lib": ["dom", "es2019"],
-      "strict": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "jsx": "react",
-      "sourceMap": true,
-      "stripInternal": true,
-      "declaration": true,
-      "declarationMap": true,
-      "declarationDir": "dist/types",
-      "outDir": "dist/esm5",
-      "resolveJsonModule": true,
-      "importHelpers": true,
-      "plugins": [
-        {
-          "name": "typescript-tslint-plugin",
-          "alwaysShowRuleFailuresAsWarnings": false
-        }
-      ]
-    },
-    "include": ["./src", "./tests"],
-    "compileOnSave": false
-  }
-  
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es2019",
+    "lib": [
+      "dom",
+      "es2019"
+    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "stripInternal": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "dist/types",
+    "outDir": "dist/esm5",
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "alwaysShowRuleFailuresAsWarnings": false
+      }
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": [
+    "./src",
+    "./tests"
+  ],
+  "compileOnSave": false
+}
