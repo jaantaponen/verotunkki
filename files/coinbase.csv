@@ -1,0 +1,24 @@
+"You can use this transaction report to inform your likely tax obligations. For US customers, Sells, Converts, and Rewards Income, and Coinbase Earn transactions are taxable events. For final tax obligations, please consult your tax advisor."
+
+
+
+Transactions
+User,jaan.taponen@aalto.fi,609675207a30aa213cb8250e
+
+Timestamp,Transaction Type,Asset,Quantity Transacted,Spot Price Currency,Spot Price at Transaction,Subtotal,Total (inclusive of fees),Fees,Notes
+2021-05-10T08:14:59Z,Buy,ETH,0.0008909,EUR,3378.61,3.01,4.00,0.990000,Bought 0.0008909 ETH for €4.00 EUR
+2021-05-22T15:13:53Z,Receive,ETH,0.05598209,EUR,1893.94,"","","",Received 0.05598209 ETH from an external account
+2021-05-28T09:36:17Z,Receive,ETH,0.14882114,EUR,2023.95,"","","",Received 0.14882114 ETH from an external account
+2021-06-10T08:35:45Z,Receive,ETH,0.10075589,EUR,2083.46,"","","",Received 0.10075589 ETH from an external account
+2021-07-01T08:55:08Z,Receive,ETH,0.10072289,EUR,1780.64,"","","",Received 0.10072289 ETH from an external account
+2021-07-20T08:28:04Z,Receive,ETH,0.1000584,EUR,1493.82,"","","",Received 0.1000584 ETH from an external account
+2021-08-09T13:16:27Z,Receive,ETH,0.10044249,EUR,2653.03,"","","",Received 0.10044249 ETH from an external account
+2021-08-21T14:15:48Z,Sell,ETH,0.60767383,EUR,2784.01,1691.77,1666.56,25.21,"Sold 0.60767383 ETH for €1,666.56 EUR"
+2021-09-01T09:35:58Z,Receive,ETH,0.10137603,EUR,3001.61,"","","",Received 0.10137603 ETH from an external account
+2021-09-27T10:43:37Z,Receive,ETH,0.10004932,EUR,2657.01,"","","",Received 0.10004932 ETH from an external account
+2021-10-10T08:58:30Z,Receive,ETH,0.05364942,EUR,3101.93,"","","",Received 0.05364942 ETH from an external account
+2021-10-17T08:24:49Z,Receive,ETH,0.02744776,EUR,3353.68,"","","",Received 0.02744776 ETH from an external account
+2021-10-24T10:44:43Z,Receive,ETH,0.03158681,EUR,3514.95,"","","",Received 0.03158681 ETH from an external account
+2021-11-07T07:25:33Z,Receive,ETH,0.07334196,EUR,3937.93,"","","",Received 0.07334196 ETH from an external account
+2021-11-18T12:47:30Z,Receive,ETH,0.04986964,EUR,3701.27,"","","",Received 0.04986964 ETH from an external account
+2021-12-02T22:05:22Z,Receive,ETH,0.06034699,EUR,4012.75,"","","",Received 0.06034699 ETH from an external account

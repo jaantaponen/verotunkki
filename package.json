@@ -2,11 +2,13 @@
   "name": "verohommeli",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "private": "true",
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "loadTransactions": "node --experimental-modules ./src/parsers/loadTransactions.js",
     "test": "jest --verbose --runInBand",
     "test:watch": "npm t -- --watch --runInBand",
     "lint": "eslint --ext .ts . --fix"
@@ -55,8 +57,8 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
-    "react": "^17.0.2",
     "lodash": "4.17.21",
+    "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^2.1.2"

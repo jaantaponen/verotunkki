@@ -6,6 +6,6 @@ import {
 import { Operation } from './types';
 
 export {
-  calculateFIFOCapitalGains, calculateFIFOTransactions
+  calculateFIFOCapitalGains, calculateFIFOTransactions, 
 };  export type { CapitalResults, Operation };
 
