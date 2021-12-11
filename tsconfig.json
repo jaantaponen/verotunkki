@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "module": "esnext",
     "target": "es2019",
     "lib": [
@@ -8,7 +9,6 @@
       "es2019"
     ],
     "strict": true,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "sourceMap": true,
