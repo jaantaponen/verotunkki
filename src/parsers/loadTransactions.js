@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import translateDegiro from './translations.js'
 import moment from 'moment';
 
-const input = fs.readFileSync('./transactions.csv', 'utf8').trim()
+const input = fs.readFileSync('../files/transactions.csv', 'utf8').trim()
 let prevField = ""
 const tmp = parse(input, {
     cast: (value, context) => {
