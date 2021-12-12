@@ -107,11 +107,11 @@ const FrontPageContent = () => {
                     width={"sm"}
                     sx={{ pt: 42 }}
                 >
-                    <Typography alignSelf="center" align="center" component="p" sx={{ pt: 8 }}>
-                        Tämän sivuston tekijät eivät tiedä mitään veroista.
+                    <Typography alignSelf="center" align="center" component="p" sx={{ pt: 4 }}>
+                        Tarkista tiedot aina itse virheiden varalta.
                     </Typography>
                     <Typography alignSelf="center" align="center" component="p" sx={{ pt: 0 }}>
-                        Tarkista tiedot aina itse virheiden varalta.
+                        Oleta, että tämän sivuston tekijät eivät tiedä mitään veroista.
                     </Typography>
                     <Typography alignSelf="center" align="center" component="p" sx={{ pt: 0 }}>
                         Sivustolle lähettämiäsi tiedostoja käsitellään vain paikallisesti selaimessasi.

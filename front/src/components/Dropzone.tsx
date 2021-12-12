@@ -32,12 +32,12 @@ const Dropzone = ({ zoneHeight, handleFiles }: Props) => {
             },
         }}>
             <DropzoneAreaBase
-                acceptedFiles={['image/*']}
+                acceptedFiles={['.csv', 'image/*','application/vnd.ms-excel']}
                 onAdd={handleFiles}
                 onDelete={(fileObj) => console.log('Removed File:', fileObj)}
                 onAlert={(message, variant) => console.log(`${variant}: ${message}`)}
                 Icon={UploadFileIcon as any}
-                dropzoneText={"Pudota CSV-tiedostoja tähän"}
+                dropzoneText={zoneHeight > 200 ? "Pudota CSV-tiedostoja tähän" : "Pudota lisää CSV-tiedostoja tähän"}
                 fileObjects={[]}
 
             />
