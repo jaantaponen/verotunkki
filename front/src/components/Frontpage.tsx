@@ -12,7 +12,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, createTheme, Paper, Stack, styled, ThemeProvider } from '@mui/material';
 
-const Copyright = (props: any) => {
+export const Copyright = (props: any) => {
     return (
         <Typography variant="body2" sx={{ pt: 2 }} color="text.secondary" align="center" {...props}>
             {'Copyright © '}
