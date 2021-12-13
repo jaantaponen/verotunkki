@@ -14,6 +14,34 @@ export interface ColumnCrypto {
     format?: (value: number) => string;
 }
 
+export interface ColumnTransaction {
+    id: 'ticker' | 'buydate' | 'selldate' | 'amountsold' | 'transferPrice' | 'acquisitionPrice' | 'acquisitionFee' | 'transferFee' | 'profitOrLoss';
+    label: string;
+    minWidth?: number;
+    align?: 'right';
+    format?: (value: number) => string;
+}
+
+
+const columnsTransaction: readonly ColumnTransaction[] = [
+    { id: 'ticker', label: 'Tuote', minWidth: 120 },
+    { id: 'buydate', label: 'Hankintapäivä', minWidth: 150 },
+    { id: 'selldate', label: 'Luovutuspäivä', minWidth: 150 },
+    {
+        id: 'amountsold', label: 'Myyty kpl', minWidth: 100,
+        format: (value: number) => value.toFixed(8)
+    },
+    { id: 'transferPrice', label: 'Luovutushinta', minWidth: 120 },
+    { id: 'acquisitionPrice', label: 'Hankintahinta', minWidth: 100 },
+    { id: 'acquisitionFee', label: 'Luovutuskulut', minWidth: 100 },
+    { id: 'transferFee', label: 'Kulut', minWidth: 80 },
+    {
+        id: 'profitOrLoss', label: 'Voitto/Tappio', minWidth: 170,
+        format: (value: number) => value.toFixed(3)
+    },
+];
+
+
 const columnsSecurity: readonly ColumnSecurity[] = [
     { id: 'paivays', label: 'Paivays', minWidth: 150 },
     { id: 'tuote', label: 'Tuote', minWidth: 200 },
@@ -41,6 +69,7 @@ const columnsCrypto: readonly ColumnCrypto[] = [
     { id: 'kokonaissumma', label: 'Kokonaissumma', minWidth: 170 },
 ];
 
+
 export interface ColumnDataSecurity {
     paivays: string;
     tuote: string;
@@ -63,4 +92,19 @@ export interface ColumnDataCrypto {
     kokonaissumma: string;
 }
 
-export { columnsSecurity, columnsCrypto }
+
+export interface ColumnDataTransaction {
+    ticker: string
+    buydate: string
+    selldate: string
+    amountsold: number
+    transferPrice: number
+    acquisitionPrice: number
+    acquisitionFee: number
+    transferFee: number
+    profitOrLoss: string
+}
+
+
+
+export { columnsSecurity, columnsCrypto, columnsTransaction }

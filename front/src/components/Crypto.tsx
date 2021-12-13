@@ -1,17 +1,21 @@
 import { ChangeEvent, Fragment, useEffect, useState } from 'react'
-
+import _ from 'lodash';
 import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
+import { Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
 import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseCSV, parseNordNetCSV, getCoinbaseAsColumns } from '../utils/parsers/loadTransactions'
 import { CoinbaseHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
-import { ColumnDataCrypto, columnsCrypto } from './tableSettings';
+import { ColumnDataCrypto, ColumnDataTransaction, columnsCrypto } from './tableSettings';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
+import { calculateFIFOTransactions } from '../utils/fifo'
+import { Operation, Transaction } from '../utils/fifo/types'
 
 const parsers = [parseDegiroCSV, parseCoinbaseCSV, parseNordNetCSV]
 /**
@@ -46,6 +50,10 @@ const Crypto = () => {
     const [files, setFiles] = useState<FileObject[]>([]);
     const [showTable, setShowTable] = useState(false)
     const [rows, setRows] = useState<ColumnDataCrypto[]>([]);
+    const [rawData, setRawData] = useState<CoinbaseHeaders[]>([]);
+    const [results, setResults] = useState<ColumnDataTransaction[]>([]);
+
+    const [tmpResult, setTmpResult] = useState(0);
 
     const fileCallback = (file: FileObject[]) => setFiles(file)
     const theme = createTheme({
@@ -53,6 +61,29 @@ const Crypto = () => {
             fontSize: 14,
         },
     });
+
+    const calculateFIFO = () => {
+
+
+        const dataFifo: Operation[] = rawData.map(record => ({
+            symbol: record.Asset,
+            date: record.Timestamp,
+            price: record.SpotPriceatTransaction,
+            amount: record.QuantityTransacted,
+            type: ((record.TransactionType === "RECEIVE" || record.TransactionType === "BUY") ? "BUY" : "SELL"),
+            transactionFee: record.Fees,
+        }))
+        const a = calculateFIFOTransactions(dataFifo)
+        console.log("maol", a)
+        setResults(a.map(x => ({
+            ...x,
+            buydate: x.buydate.toDateString(),
+            selldate: x.selldate.toDateString(),
+            profitOrLoss: `${x.profitOrLoss.toFixed(2)} EUR`
+        })))
+
+        setTmpResult(_.sumBy(a, (o) => o.profitOrLoss))
+    }
 
     useEffect(() => {
         if (files.length > 0) {
@@ -62,6 +93,7 @@ const Crypto = () => {
             const dataSource = data[0]?.Source
             if (dataSource === 'Coinbase') {
                 const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
+                setRawData(data as CoinbaseHeaders[])
                 setRows(coinBaseColumns)
                 console.log("hyvä elama", coinBaseColumns)
             }
@@ -103,7 +135,20 @@ const Crypto = () => {
                     <Typography alignSelf="flex-start" sx={{ pl: 4 }} component="p">
                         Tuetut lähteet: Coinbase, Coinbase Pro
                     </Typography>
-                    {showTable && <ResultTable mode="Crypto" rows={rows} />}
+                    {showTable && <Stack direction="row" spacing={2}>
+                        <Button variant="outlined" startIcon={<DeleteIcon />}>
+                            Poistha
+                        </Button>
+                        <Button disabled={results.length > 0} onClick={calculateFIFO} variant="contained" endIcon={<SendIcon />}>
+                            Laske
+                        </Button>
+                    </Stack>}
+                    {(showTable && results.length === 0) && <ResultTable mode="Crypto" rows={rows} />}
+                    {results.length > 0 &&
+                        <div>
+                            <ResultTable mode="Result" rows={results} />
+                            <p>Total naurut: {tmpResult.toFixed(2)} EUR</p>
+                        </div>}
                 </Stack>
                 <Copyright />
             </Container>

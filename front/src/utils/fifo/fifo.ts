@@ -187,10 +187,10 @@ const calculateCapitalGainsForSale = (
       capitalGainPerSellDate += totalPrice;
     }
   );
-
-  if (sale.amount > 0) {
+  // TODO: removee nii perkeleesti ja implementoi uudestaan paremmin
+  if (Math.round(sale.amount) > 0) {
     throw Error(
-      `Amount of sales for symbol ${sale.symbol} exceeds the amount of buys.`
+      `Amount of sales for symbol ${sale.symbol} exceeds the amount of buys by ${sale.amount}.`
     );
   }
 
