@@ -1,27 +1,28 @@
-export type DegiroHeaders = {
-    time: string,
-    security: string,
-    ISIN: string,
-    reference: string,
-    venue: string,
-    quantity: number,
-    rate: number,
-    rateCurrency: string,
-    marketValue: number,
-    marketValueCurrency: string,
-    value: number,
-    valueCurrency: string,
-    exchangeRate: number,
-    transactionCosts: number,
-    transactionCostsCurrency: string,
-    totalAmount: number,
-    totalAmountCurrency: string,
-    orderId: string,
-    datetime: Date,
+export interface DegiroHeaders {
+    time: string;
+    security: string;
+    ISIN: string;
+    reference: string;
+    venue: string;
+    quantity: number;
+    rate: number;
+    rateCurrency: string;
+    marketValue: number;
+    marketValueCurrency: string;
+    value: number;
+    valueCurrency: string;
+    exchangeRate: number;
+    transactionCosts: number;
+    transactionCostsCurrency: string;
+    totalAmount: number;
+    totalAmountCurrency: string;
+    orderId: string;
+    datetime: Date;
+    Source: "Degiro";
 }
 
 export interface CoinbaseHeaders {
-    Timestamp: string;
+    Timestamp: Date;
     TransactionType: string;
     Asset: string;
     QuantityTransacted: number;
@@ -31,6 +32,7 @@ export interface CoinbaseHeaders {
     Total: number;
     Fees: number;
     Notes: string;
+    Source: "Coinbase";
   }
 
   export interface NordnetHeaders {
@@ -61,5 +63,6 @@ export interface CoinbaseHeaders {
     Vahvistusnumero: string;
     Valityspalkkio: number;
     ValityspalkkioValuutta: string;
+    Source: "Nordnet";
   }
   

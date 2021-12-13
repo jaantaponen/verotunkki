@@ -9,22 +9,9 @@ import { useNavigate } from "react-router-dom";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import { Copyright } from './Copyright'
 import Typography from '@mui/material/Typography';
 import { CardActionArea, createTheme, Paper, Stack, styled, ThemeProvider } from '@mui/material';
-
-export const Copyright = (props: any) => {
-    return (
-        <Typography variant="body2" sx={{ pt: 2 }} color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://verotunkki.fi/">
-                Verotunkki
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
 
 const FrontPageContent = () => {
     let navigate = useNavigate();
@@ -97,27 +84,8 @@ const FrontPageContent = () => {
                             </CardContent>
                         </CardActionArea>
                     </Card>
-
                 </Stack>
-                <Stack
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={1}
-                    width={"sm"}
-                    sx={{ pt: 42 }}
-                >
-                    <Typography alignSelf="center" align="center" component="p" sx={{ pt: 4 }}>
-                        Tarkista tiedot aina itse virheiden varalta.
-                    </Typography>
-                    <Typography alignSelf="center" align="center" component="p" sx={{ pt: 0 }}>
-                        Oleta, että tämän sivuston tekijät eivät tiedä mitään veroista.
-                    </Typography>
-                    <Typography alignSelf="center" align="center" component="p" sx={{ pt: 0 }}>
-                        Sivustolle lähettämiäsi tiedostoja käsitellään vain paikallisesti selaimessasi.
-                    </Typography>
-                    <Copyright />
-                </Stack>
+                <Copyright />
             </Container>
         </ThemeProvider>
     );
