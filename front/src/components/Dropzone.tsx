@@ -5,7 +5,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { createTheme, ThemeProvider } from '@mui/material';
 
 
-export interface Props {
+interface Props {
     zoneHeight: number, 
     handleFiles: (arg0: FileObject[]) => void;
 }
