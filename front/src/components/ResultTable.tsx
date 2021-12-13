@@ -1,21 +1,20 @@
 import { ChangeEvent, useState } from 'react'
 
 import { Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-import { ColumnDataSecurity, columnsSecurity } from './tableSettings'
+import { ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, columnsSecurity } from './tableSettings'
 
 interface Props {
-    rows: ColumnDataSecurity[],
+    rows: ColumnDataSecurity[] | ColumnDataCrypto[],
     mode: "Crypto" | "Security",
 }
 
 
 const ResultTable = ({ rows, mode }: Props) => {
     // Table specific states
-    const [showTable, setShowTable] = useState(false)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const columns = mode === "Security" ? columnsSecurity : []
-    
+    const columns = mode === "Crypto" ? columnsCrypto : []
+
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -44,9 +43,9 @@ const ResultTable = ({ rows, mode }: Props) => {
                 <TableBody>
                     {rows
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row) => {
+                        .map((row, index) => {
                             return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.isin}>
+                                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                                     {columns.map((column) => {
                                         const value = row[column.id];
                                         return (

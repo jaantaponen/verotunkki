@@ -9,9 +9,9 @@ import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
 import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseCSV, parseNordNetCSV, getCoinbaseAsColumns } from '../utils/parsers/loadTransactions'
-import { DegiroHeaders, NordnetHeaders, CoinbaseHeaders } from '../utils/parsers/types';
+import { CoinbaseHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
-import { ColumnDataSecurity, columnsSecurity } from './tableSettings';
+import { ColumnDataCrypto, columnsCrypto } from './tableSettings';
 
 const parsers = [parseDegiroCSV, parseCoinbaseCSV, parseNordNetCSV]
 /**
@@ -41,11 +41,11 @@ const parseCSV = (filesCopy: FileObject[]) => {
     return []
 }
 
-const Securities = () => {
+const Crypto = () => {
     const [zoneHeight, setZoneHeight] = useState(400);
     const [files, setFiles] = useState<FileObject[]>([]);
     const [showTable, setShowTable] = useState(false)
-    const [rows, setRows] = useState<ColumnDataSecurity[]>([]);
+    const [rows, setRows] = useState<ColumnDataCrypto[]>([]);
 
     const fileCallback = (file: FileObject[]) => setFiles(file)
     const theme = createTheme({
@@ -60,19 +60,13 @@ const Securities = () => {
             setShowTable(true)
             const data = parseCSV(files)
             const dataSource = data[0]?.Source
-            if (dataSource === 'Degiro') {
-                const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
-                setRows(degiroColumns)
-                console.log("hyvä elama", degiroColumns)
-            } else if (dataSource === 'Coinbase') {
-                //const degiroColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
-                //setRows(degiroColumns)
-                //console.log("hyvä elama", degiroColumns)
-            } else if (dataSource === 'Nordnet') {
-
-            } else {
-                console.log("Nyt on oikeat hädät")
+            if (dataSource === 'Coinbase') {
+                const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
+                setRows(coinBaseColumns)
+                console.log("hyvä elama", coinBaseColumns)
             }
+
+
         }
         console.log('Files changed: ', files)
 
@@ -103,13 +97,13 @@ const Securities = () => {
                         VEROTUNKKI
                     </Typography>
                     <Typography alignSelf="center" align="center" variant="h6" sx={{ pt: 0 }} component="p">
-                        Arvopaperit
+                        Virtuaalivaluutat
                     </Typography>
                     <Dropzone zoneHeight={zoneHeight} handleFiles={fileCallback} />
                     <Typography alignSelf="flex-start" sx={{ pl: 4 }} component="p">
-                        Tuetut lähteet: Nordnet, Degiro
+                        Tuetut lähteet: Coinbase, Coinbase Pro
                     </Typography>
-                    {showTable && <ResultTable mode="Security" rows={rows} />}
+                    {showTable && <ResultTable mode="Crypto" rows={rows} />}
                 </Stack>
                 <Copyright />
             </Container>
@@ -117,4 +111,4 @@ const Securities = () => {
     );
 }
 
-export { Securities }
+export { Crypto }

@@ -1,7 +1,7 @@
 import React from 'react';
 import FrontPage from './components/Frontpage'
 
-function App() {
+const App = () => {
   return (
     <>
     <FrontPage />

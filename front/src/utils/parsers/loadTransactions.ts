@@ -3,7 +3,7 @@ import translateDegiro from './translations.js'
 import moment from 'moment';
 import { Operation } from '../fifo/types'
 import { DegiroHeaders, CoinbaseHeaders, NordnetHeaders } from './types'
-import { ColumnDataSecurity } from '../../components/tableSettings'
+import { ColumnDataCrypto, ColumnDataSecurity } from '../../components/tableSettings'
 
 //const input = fs.readFileSync('./files/transactions.csv', 'utf8').trim()
 const parseDegiroCSV = (input: string): DegiroHeaders[] => {
@@ -111,18 +111,17 @@ const parseCoinbaseCSV = (input: string): CoinbaseHeaders[] => {
 }
 
 
-const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataSecurity[] => {
+const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] => {
     const ret = records.map(record => {
         return {
             paivays: record.Timestamp.toUTCString(),
             tuote: record.Asset,
-            isin: record.Asset,
             arvo: `${record.Subtotal} ${record.SpotPriceCurrency}`,
             maara: record.QuantityTransacted,
-            kulut: record.Fees,
+            kulut: `${record.Fees} ${record.SpotPriceCurrency}`,
             kurssi: `${record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
             kokonaissumma: `${record.Total} ${record.SpotPriceCurrency}`,
-        } as ColumnDataSecurity
+        } as ColumnDataCrypto
     })
     return ret
 }
