@@ -99,6 +99,7 @@ const parseCoinbaseCSV = (input: string): CoinbaseHeaders[] => {
                 return value.replace(/\s/g, '')
             }
             if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm").toDate()
+            if (context.column === 'TransactionType') return value.toUpperCase()
             return String(value)
         },
         columns: true,
@@ -116,9 +117,9 @@ const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] =>
         return {
             paivays: record.Timestamp.toUTCString(),
             tuote: record.Asset,
-            arvo: `${record.Subtotal} ${record.SpotPriceCurrency}`,
+            arvo: `${record.Subtotal ? record.Subtotal : record.QuantityTransacted * record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
             maara: record.QuantityTransacted,
-            kulut: `${record.Fees} ${record.SpotPriceCurrency}`,
+            kulut: `${record.Fees ? record.Fees : 0} ${record.SpotPriceCurrency}`,
             kurssi: `${record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
             kokonaissumma: `${record.Total} ${record.SpotPriceCurrency}`,
         } as ColumnDataCrypto

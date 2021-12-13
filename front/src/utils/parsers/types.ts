@@ -23,7 +23,7 @@ export interface DegiroHeaders {
 
 export interface CoinbaseHeaders {
     Timestamp: Date;
-    TransactionType: string;
+    TransactionType: "BUY" | "SELL" | "RECEIVE";
     Asset: string;
     QuantityTransacted: number;
     SpotPriceCurrency: string;

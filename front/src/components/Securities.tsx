@@ -4,14 +4,16 @@ import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
+import { Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
 import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseCSV, parseNordNetCSV, getCoinbaseAsColumns } from '../utils/parsers/loadTransactions'
 import { DegiroHeaders, NordnetHeaders, CoinbaseHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
-import { ColumnDataSecurity, columnsSecurity } from './tableSettings';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
+import { ColumnDataSecurity } from './tableSettings';
 
 const parsers = [parseDegiroCSV, parseCoinbaseCSV, parseNordNetCSV]
 /**
@@ -60,6 +62,7 @@ const Securities = () => {
             setShowTable(true)
             const data = parseCSV(files)
             const dataSource = data[0]?.Source
+            console.log("hyvä elämä2222", dataSource)
             if (dataSource === 'Degiro') {
                 const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
                 setRows(degiroColumns)
@@ -109,6 +112,14 @@ const Securities = () => {
                     <Typography alignSelf="flex-start" sx={{ pl: 4 }} component="p">
                         Tuetut lähteet: Nordnet, Degiro
                     </Typography>
+                    {showTable && <Stack direction="row" spacing={2}>
+                        <Button variant="outlined" startIcon={<DeleteIcon />}>
+                            Delete
+                        </Button>
+                        <Button variant="contained" endIcon={<SendIcon />}>
+                            Send
+                        </Button>
+                    </Stack>}
                     {showTable && <ResultTable mode="Security" rows={rows} />}
                 </Stack>
                 <Copyright />

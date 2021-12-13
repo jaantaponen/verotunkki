@@ -1,11 +1,10 @@
 import { ChangeEvent, useState } from 'react'
 
 import { Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-import { ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, columnsSecurity } from './tableSettings'
-
+import { ColumnCrypto, ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, ColumnSecurity, columnsSecurity, columnsTransaction, ColumnTransaction, ColumnDataTransaction } from './tableSettings'
 interface Props {
-    rows: ColumnDataSecurity[] | ColumnDataCrypto[],
-    mode: "Crypto" | "Security",
+    rows: ColumnDataSecurity[] | ColumnDataCrypto[] | ColumnDataTransaction[],
+    mode: "Crypto" | "Security" | 'Result',
 }
 
 
@@ -13,7 +12,19 @@ const ResultTable = ({ rows, mode }: Props) => {
     // Table specific states
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const columns = mode === "Crypto" ? columnsCrypto : []
+
+    let columns: readonly ColumnSecurity[] | readonly ColumnCrypto[] | readonly ColumnTransaction[] = []
+    if (mode === "Security") {
+        columns = columnsSecurity
+    } else if (mode === "Crypto") {
+        columns = columnsCrypto
+    } else if (mode === "Result") {
+        columns = columnsTransaction
+    }
+
+    // TODO: need to wrap in a state since this will only then update once in a render
+   /*  const columns: readonly ColumnSecurity[] | readonly ColumnCrypto[] = mode === "Security" ? columnsSecurity : columnsCrypto */
+
 
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -41,13 +52,13 @@ const ResultTable = ({ rows, mode }: Props) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows
+                    {(rows)
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, index) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                                     {columns.map((column) => {
-                                        const value = row[column.id];
+                                        const value = (row as any)[column.id]
                                         return (
                                             <TableCell key={column.id} align={column.align}>
                                                 {column.format && typeof value === 'number'
