@@ -1,4 +1,4 @@
-interface ColumnSecurity {
+export interface ColumnSecurity {
     id: 'paivays' | 'tuote' | 'isin' | 'maara' | 'arvo' | 'kulut' | 'kokonaissumma' | 'kurssi';
     label: string;
     minWidth?: number;
