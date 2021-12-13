@@ -3,10 +3,10 @@ import translateDegiro from './translations.js'
 import moment from 'moment';
 import { Operation } from '../fifo/types'
 import { DegiroHeaders, CoinbaseHeaders, NordnetHeaders } from './types'
-import { ColumnData } from '../../components/Securities'
+import { ColumnDataSecurity } from '../../components/tableSettings'
 
 //const input = fs.readFileSync('./files/transactions.csv', 'utf8').trim()
-const parseDegiroCSV = (input: string) => {
+const parseDegiroCSV = (input: string): DegiroHeaders[] => {
     let prevField = ""
     const tmp = parse(input, {
         cast: (value, context) => {
@@ -36,10 +36,14 @@ const parseDegiroCSV = (input: string) => {
                 transactionFee: Math.abs(record.transactionCosts)
             }
         }) */
-    return records
+
+    return records.map(x => ({
+        ...x, "Source": "Degiro"
+    }))
+
 }
 
-const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnData[] => {
+const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
     const ret = records.map(record => {
         return {
             paivays: record.datetime.toUTCString(),
@@ -50,13 +54,13 @@ const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnData[] => {
             kulut: record.transactionCosts,
             kurssi: `${record.rate} ${record.rateCurrency}`,
             kokonaissumma: `${record.totalAmount} ${record.totalAmountCurrency}`,
-        } as ColumnData
+        } as ColumnDataSecurity
     })
     return ret
 }
 
 //const inputNordNet = fs.readFileSync('./files/transactions-and-notes-export2.csv', 'utf16le')
-const parseNordNetCSV = (input: string) => {
+const parseNordNetCSV = (input: string): NordnetHeaders[] => {
     const tmp = parse(input, {
         delimiter: ["\t"],
         columns: true,
@@ -81,11 +85,13 @@ const parseNordNetCSV = (input: string) => {
                 column === 'Maksupaiva') return moment(value, "YYYY-MM-DD").toDate()
             return String(value)
         },
-    });
-    return tmp as NordnetHeaders[]
+    }) as NordnetHeaders[];
+    return tmp.map(x => ({
+        ...x, "Source": "Nordnet"
+    }))
 }
 //const inputCoinbase = fs.readFileSync('./files/coinbase.csv', 'utf-8')
-const parseCoinbaseCSV = (input: string) => {
+const parseCoinbaseCSV = (input: string): CoinbaseHeaders[] => {
     const tmp = parse(input, {
         cast: (value, context) => {
             if (context.header) {
@@ -99,10 +105,29 @@ const parseCoinbaseCSV = (input: string) => {
         from_line: 8,
         trim: true,
     }) as CoinbaseHeaders[];
-    return tmp
+    return tmp.map(x => ({
+        ...x, "Source": "Coinbase"
+    }))
 }
 
-export { parseCoinbaseCSV, parseDegiroCSV, parseNordNetCSV, getDegiroAsColumns }
+
+const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataSecurity[] => {
+    const ret = records.map(record => {
+        return {
+            paivays: record.Timestamp.toUTCString(),
+            tuote: record.Asset,
+            isin: record.Asset,
+            arvo: `${record.Subtotal} ${record.SpotPriceCurrency}`,
+            maara: record.QuantityTransacted,
+            kulut: record.Fees,
+            kurssi: `${record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
+            kokonaissumma: `${record.Total} ${record.SpotPriceCurrency}`,
+        } as ColumnDataSecurity
+    })
+    return ret
+}
+
+export { parseCoinbaseCSV, parseDegiroCSV, parseNordNetCSV, getDegiroAsColumns, getCoinbaseAsColumns }
 //parseCoinbaseCSV(inputCoinbase)
 //parseDegiroCSV(input)
 //parseNordNetCSV(inputNordNet)
