@@ -167,13 +167,13 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
 const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] => {
     const ret = records.map(record => {
         return {
-            paivays: record.Timestamp.toUTCString(),
+            paivays: record.Timestamp.toLocaleString('fi-FI', { timeZone: 'UTC' }),
             tuote: record.Asset,
             arvo: `${record.Subtotal ? record.Subtotal : record.QuantityTransacted * record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
             maara: record.QuantityTransacted,
-            kulut: `${record.Fees ? record.Fees : 0} ${record.SpotPriceCurrency}`,
+            kulut: `${record.Fees ? Number(record.Fees).toFixed(2) : 0} ${record.SpotPriceCurrency}`,
             kurssi: `${record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
-            kokonaissumma: `${record.Total} ${record.SpotPriceCurrency}`,
+            kokonaissumma: `${Number(record.Total ? record.Total : 0).toFixed(2)} ${record.SpotPriceCurrency}`,
             operaatio: record.TransactionType,
         } as ColumnDataCrypto
     })
@@ -208,13 +208,13 @@ const parseCoinbaseProCSV = (input: string): CoinbaseProHeaders[] => {
 const getCoinbaseProAsColumns = (records: CoinbaseProHeaders[]): ColumnDataCrypto[] => {
     const ret = records.map(record => {
         return {
-            paivays: record.createdat.toUTCString(),
+            paivays: record.createdat.toLocaleString('fi-FI', { timeZone: 'UTC' }),
             tuote: record.product,
             arvo: `${record.size * record.price} ${record.pricefeetotalunit}`,
             maara: record.size,
-            kulut: `${record.fee ? record.fee : 0} ${record.pricefeetotalunit}`,
+            kulut: `${record.fee ? Number(record.fee).toFixed(2) : 0} ${record.pricefeetotalunit}`,
             kurssi: `${record.price} ${record.pricefeetotalunit}`,
-            kokonaissumma: `${record.total} ${record.pricefeetotalunit}`,
+            kokonaissumma: `${Number(record.total ? record.total : 0).toFixed(2)} ${record.pricefeetotalunit}`,
             operaatio: record.side,
         } as ColumnDataCrypto
     })
@@ -239,7 +239,7 @@ const prepareCoinbaseProForFIFO = (rawData: CoinbaseProHeaders[]): Operation[] =
 
 
 
-export { parseCoinbaseCSV, parseDegiroCSV, parseNordNetCSV, getDegiroAsColumns, getCoinbaseAsColumns, prepareCoinbaseForFIFO, parseCoinbaseProCSV, getCoinbaseProAsColumns,prepareCoinbaseProForFIFO }
+export { parseCoinbaseCSV, parseDegiroCSV, parseNordNetCSV, getDegiroAsColumns, getCoinbaseAsColumns, prepareCoinbaseForFIFO, parseCoinbaseProCSV, getCoinbaseProAsColumns, prepareCoinbaseProForFIFO }
 //parseCoinbaseCSV(inputCoinbase)
 //parseDegiroCSV(input)
 //parseNordNetCSV(inputNordNet)

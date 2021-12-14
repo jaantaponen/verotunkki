@@ -63,6 +63,14 @@ const Crypto = () => {
         },
     });
 
+
+    const clearRows = () => {
+        setFiles([])
+        setRows([])
+        setRawData([])
+        setShowTable(false)
+    }
+
     const calculateFIFO = () => {
         let fifoData: Transaction[] = []
         if (dataSource === 'Coinbase') {
@@ -75,7 +83,7 @@ const Crypto = () => {
             buydate: x.buydate.toISOString().substring(0, 16),
             selldate: x.selldate.toISOString().substring(0, 16),
             transferFee: `${Number(x.transferFee).toFixed(4)} EUR`,
-            profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`
+            profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`,
         })))
 
         setTmpResult(_.sumBy(fifoData, (o) => o.profitOrLoss))
@@ -85,29 +93,28 @@ const Crypto = () => {
     useEffect(() => {
         if (files.length > 0) {
             setZoneHeight(200)
-            
+            setShowTable(true)
             const data = parseCSV(files)
-            data.forEach(file => {
-                const dataSourceTmp = file.Source
-                if (dataSourceTmp === 'Coinbase') {
-                    setDataSource('Coinbase')
-                    const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
-                    setRawData(data as CoinbaseHeaders[])
-                    setRows(coinBaseColumns)
-                    setShowTable(true)
-                } else if (dataSourceTmp === 'CoinbasePro') {
-                    setDataSource('CoinbasePro')
-                    const coinBaseProColumns = getCoinbaseProAsColumns(data as CoinbaseProHeaders[])
-                    setRawData(data as CoinbaseProHeaders[])
-                    setRows(coinBaseProColumns)
-                    setShowTable(true)
-                }
-            })
-
+            const dataSource = data[0]?.Source
+            if (dataSource === 'Coinbase') {
+                setDataSource('Coinbase')
+                const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
+                setRawData([...rawData,...data] as CoinbaseHeaders[])
+                setRows([...rows, ...coinBaseColumns])
+            } else if (dataSource === 'CoinbasePro') {
+                setDataSource('CoinbasePro')
+                const coinBaseProColumns = getCoinbaseProAsColumns(data as CoinbaseProHeaders[])
+                setRawData([...rawData,...data] as CoinbaseProHeaders[])
+                setRows([...rows, ...coinBaseProColumns])
+            }
         }
-        console.log('Files changed: ', files)
 
     }, [files])
+
+    useEffect(() => {
+        console.log("rows parsed into rawdata", rawData)
+
+    }, [rawData])
 
 
     return (
@@ -141,14 +148,14 @@ const Crypto = () => {
                         Tuetut lähteet: Coinbase, Coinbase Pro
                     </Typography>
                     {showTable && <Stack direction="row" spacing={2}>
-                        <Button variant="outlined" startIcon={<DeleteIcon />}>
+                        <Button variant="outlined" onClick={clearRows} startIcon={<DeleteIcon />}>
                             Poistha
                         </Button>
                         <Button disabled={results.length > 0} onClick={calculateFIFO} variant="contained" endIcon={<SendIcon />}>
                             Laske
                         </Button>
                     </Stack>}
-                    <ResultTable mode="Crypto" rows={rows} />
+                    {showTable && <ResultTable mode="Crypto" rows={rows} />}
                     {results.length > 0 &&
                         <div>
                             <ResultTable mode="Result" rows={results} />
