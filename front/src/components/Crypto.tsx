@@ -8,8 +8,8 @@ import { Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell,
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
-import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseCSV, parseNordNetCSV, getCoinbaseAsColumns } from '../utils/parsers/loadTransactions'
-import { CoinbaseHeaders } from '../utils/parsers/types';
+import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseProCSV, parseCoinbaseCSV, parseNordNetCSV, prepareCoinbaseForFIFO, getCoinbaseAsColumns, getCoinbaseProAsColumns, prepareCoinbaseProForFIFO } from '../utils/parsers/loadTransactions'
+import { CoinbaseHeaders, CoinbaseProHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
 import { ColumnDataCrypto, ColumnDataTransaction, columnsCrypto } from './tableSettings';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,7 +17,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { calculateFIFOTransactions } from '../utils/fifo'
 import { Operation, Transaction } from '../utils/fifo/types'
 
-const parsers = [parseDegiroCSV, parseCoinbaseCSV, parseNordNetCSV]
+const parsers = [parseCoinbaseProCSV, parseDegiroCSV, parseCoinbaseCSV, parseNordNetCSV]
 /**
  * Workaround for browsers.
  * https://developer.mozilla.org/en-US/docs/Glossary/Base64#solution_1_%E2%80%93_escaping_the_string_before_encoding_it
@@ -50,12 +50,13 @@ const Crypto = () => {
     const [files, setFiles] = useState<FileObject[]>([]);
     const [showTable, setShowTable] = useState(false)
     const [rows, setRows] = useState<ColumnDataCrypto[]>([]);
-    const [rawData, setRawData] = useState<CoinbaseHeaders[]>([]);
+    const [rawData, setRawData] = useState<CoinbaseHeaders[] | CoinbaseProHeaders[]>([]);
     const [results, setResults] = useState<ColumnDataTransaction[]>([]);
+    const [dataSource, setDataSource] = useState<"Coinbase" | "CoinbasePro">();
 
     const [tmpResult, setTmpResult] = useState(0);
 
-    const fileCallback = (file: FileObject[]) => setFiles(file)
+    const fileCallback = (file: FileObject[]) => setFiles([...files, ...file])
     const theme = createTheme({
         typography: {
             fontSize: 14,
@@ -63,41 +64,45 @@ const Crypto = () => {
     });
 
     const calculateFIFO = () => {
-
-
-        const dataFifo: Operation[] = rawData.map(record => ({
-            symbol: record.Asset,
-            date: record.Timestamp,
-            price: record.SpotPriceatTransaction,
-            amount: record.QuantityTransacted,
-            type: ((record.TransactionType === "RECEIVE" || record.TransactionType === "BUY") ? "BUY" : "SELL"),
-            transactionFee: record.Fees,
-        }))
-        const a = calculateFIFOTransactions(dataFifo)
-        console.log("maol", a)
-        setResults(a.map(x => ({
+        let fifoData: Transaction[] = []
+        if (dataSource === 'Coinbase') {
+            fifoData = calculateFIFOTransactions(prepareCoinbaseForFIFO(rawData as CoinbaseHeaders[]))
+        } else if (dataSource === 'CoinbasePro') {
+            fifoData = calculateFIFOTransactions(prepareCoinbaseProForFIFO(rawData as CoinbaseProHeaders[]))
+        }
+        setResults(_.sortBy(fifoData, (o) => o.selldate).map(x => ({
             ...x,
-            buydate: x.buydate.toDateString(),
-            selldate: x.selldate.toDateString(),
-            profitOrLoss: `${x.profitOrLoss.toFixed(2)} EUR`
+            buydate: x.buydate.toISOString().substring(0, 16),
+            selldate: x.selldate.toISOString().substring(0, 16),
+            transferFee: `${Number(x.transferFee).toFixed(4)} EUR`,
+            profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`
         })))
 
-        setTmpResult(_.sumBy(a, (o) => o.profitOrLoss))
+        setTmpResult(_.sumBy(fifoData, (o) => o.profitOrLoss))
+
     }
 
     useEffect(() => {
         if (files.length > 0) {
             setZoneHeight(200)
-            setShowTable(true)
+            
             const data = parseCSV(files)
-            const dataSource = data[0]?.Source
-            if (dataSource === 'Coinbase') {
-                const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
-                setRawData(data as CoinbaseHeaders[])
-                setRows(coinBaseColumns)
-                console.log("hyvä elama", coinBaseColumns)
-            }
-
+            data.forEach(file => {
+                const dataSourceTmp = file.Source
+                if (dataSourceTmp === 'Coinbase') {
+                    setDataSource('Coinbase')
+                    const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
+                    setRawData(data as CoinbaseHeaders[])
+                    setRows(coinBaseColumns)
+                    setShowTable(true)
+                } else if (dataSourceTmp === 'CoinbasePro') {
+                    setDataSource('CoinbasePro')
+                    const coinBaseProColumns = getCoinbaseProAsColumns(data as CoinbaseProHeaders[])
+                    setRawData(data as CoinbaseProHeaders[])
+                    setRows(coinBaseProColumns)
+                    setShowTable(true)
+                }
+            })
 
         }
         console.log('Files changed: ', files)
@@ -143,7 +148,7 @@ const Crypto = () => {
                             Laske
                         </Button>
                     </Stack>}
-                    {(showTable && results.length === 0) && <ResultTable mode="Crypto" rows={rows} />}
+                    <ResultTable mode="Crypto" rows={rows} />
                     {results.length > 0 &&
                         <div>
                             <ResultTable mode="Result" rows={results} />
