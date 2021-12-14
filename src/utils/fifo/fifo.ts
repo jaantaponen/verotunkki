@@ -107,11 +107,12 @@ export function calculateFIFOCapitalGains(
 }
 
 /**
- * Calculates the FIFO capital gains for the given operation history.
- *
+ * Calculates the FIFO capital gains for the given operation history. 
+ * Transfer fees are divided between SELL operations, so the end resulting
+ * SELL batch trasnferprice for the bought asset remains the same.
  *
  * @param operationHistory History of operations (buy and sales) to
- * calculate the capital gains for.
+ * calculate the capital gains for. 
  *
  * @returns The FIFO transaction details by every sold security
  * example
@@ -146,12 +147,10 @@ export const calculateFIFOTransactions = (operationHistory: Operation[]): Transa
       ...x,
       transferFee: (x.amountsold / totalAmount) * x.transferFee
     }))
-    console.log("totalFee1", )
-    console.log("totalFeesActual2", )
-    const one = gainByDate.transactions[0] ? gainByDate.transactions[0].transferFee : 0
-    const two = _.sumBy(dividedFees, (o) => o.transferFee)
-    if (one !== two) {
-      console.error(`Amount of fees for do not match for ${gainByDate.transactions[0].ticker}: ${one} and ${two}`)
+    const transferFeeForSell = gainByDate.transactions[0] ? gainByDate.transactions[0].transferFee : 0
+    const transferFeeSummedFromSELLOperation = _.sumBy(dividedFees, (o) => o.transferFee)
+    if (transferFeeForSell !== transferFeeSummedFromSELLOperation) {
+      console.error(`Amount of fees for do not match for ${gainByDate.transactions[0]?.ticker}: ${transferFeeForSell} and ${transferFeeSummedFromSELLOperation}`)
     }
     return dividedFees
   });

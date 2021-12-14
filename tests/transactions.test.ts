@@ -1,5 +1,5 @@
-import { Operation } from '../src/fifo';
-import { calculateFIFOTransactions, calculateFIFOCapitalGains } from '../src/fifo';
+import { Operation } from '../src/utils/fifo';
+import { calculateFIFOTransactions, calculateFIFOCapitalGains } from '../src/utils/fifo';
 
 describe('calculateFIFO', () => {
   it('calculates FIFO transactions details with multiple tickers', () => {
@@ -64,7 +64,7 @@ describe('calculateFIFO', () => {
         profitOrLoss: -300,
         acquisitionPrice: 150,
         acquisitionFee: 4.2,
-        transferFee: 4.1
+        transferFee: 3.0749999999999997
       },
       {
         ticker: 'GME',
@@ -75,7 +75,7 @@ describe('calculateFIFO', () => {
         profitOrLoss: 0,
         acquisitionPrice: 50,
         acquisitionFee: 3.2,
-        transferFee: 4.1
+        transferFee: 1.025
       },
       {
         ticker: 'GME',
