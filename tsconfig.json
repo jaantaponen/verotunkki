@@ -1,40 +1,33 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "module": "commonjs",
     "target": "es2019",
     "lib": [
+      "es6",
       "dom",
-      "es2019"
-    ],
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx",
-    "sourceMap": true,
-    "stripInternal": true,
-    "declaration": true,
-    "declarationMap": true,
-    "declarationDir": "dist/types",
-    "outDir": "dist/esm5",
-    "resolveJsonModule": true,
-    "importHelpers": true,
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin",
-        "alwaysShowRuleFailuresAsWarnings": false
-      }
+      "es2016",
+      "es2017",
+      "es2019",
     ],
     "allowJs": true,
+    "outDir": "lib/esm",
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
-    "./src",
-    "./tests"
+    "src"
   ],
-  "compileOnSave": false
+  "exclude": [
+    "node_modules",
+    "lib"
+  ]
 }
