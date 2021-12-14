@@ -139,12 +139,25 @@ export function calculateFIFOCapitalGains(
       }
  *
  */
-export const calculateFIFOTransactions = (
-  operationHistory: Operation[]
-): Transaction[] =>
-  calculateFIFOCapitalGains(operationHistory).flatMap(
-    (gainByDate) => gainByDate.transactions
-  );
+export const calculateFIFOTransactions = (operationHistory: Operation[]): Transaction[] => {
+  const a = calculateFIFOCapitalGains(operationHistory).flatMap((gainByDate) => {
+    const totalAmount = _.sumBy(gainByDate.transactions, (o) => o.amountsold)
+    const dividedFees = gainByDate.transactions.map(x => ({
+      ...x,
+      transferFee: (x.amountsold / totalAmount) * x.transferFee
+    }))
+    console.log("totalFee1", )
+    console.log("totalFeesActual2", )
+    const one = gainByDate.transactions[0] ? gainByDate.transactions[0].transferFee : 0
+    const two = _.sumBy(dividedFees, (o) => o.transferFee)
+    if (one !== two) {
+      console.error(`Amount of fees for do not match for ${gainByDate.transactions[0].ticker}: ${one} and ${two}`)
+    }
+    return dividedFees
+  });
+  return a
+}
+
 
 const calculateCapitalGainsForSale = (
   operationHistory: Operation[],
@@ -181,16 +194,15 @@ const calculateCapitalGainsForSale = (
       sale.amount -= amountSold;
       // We reduce the transactionsfees from the capital gain
       const totalPrice =
-        amountSold * (sale.price - buy.price) -
-        sale.transactionFee -
-        buy.transactionFee;
+        amountSold * (sale.price - buy.price)
       capitalGainPerSellDate += totalPrice;
     }
   );
   // TODO: removee nii perkeleesti ja implementoi uudestaan paremmin
+  //if (Number(sale.amount ?  sale.amount.toFixed(6) : 0) > 0) {
   if (Math.round(sale.amount) > 0) {
     throw Error(
-      `Amount of sales for symbol ${sale.symbol} exceeds the amount of buys by ${sale.amount}.`
+      `Amount of sales for symbol ${sale.symbol} exceeds the amount of buys by ${sale.amount}. In transaction made in ${sale.date}`
     );
   }
 

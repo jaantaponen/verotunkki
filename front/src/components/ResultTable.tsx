@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import { ColumnCrypto, ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, ColumnSecurity, columnsSecurity, columnsTransaction, ColumnTransaction, ColumnDataTransaction } from './tableSettings'
@@ -22,11 +22,6 @@ const ResultTable = ({ rows, mode }: Props) => {
         columns = columnsTransaction
     }
 
-    // TODO: need to wrap in a state since this will only then update once in a render
-   /*  const columns: readonly ColumnSecurity[] | readonly ColumnCrypto[] = mode === "Security" ? columnsSecurity : columnsCrypto */
-
-
-
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -35,7 +30,7 @@ const ResultTable = ({ rows, mode }: Props) => {
         setPage(0);
     };
 
-    return (<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    return (<><Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 1400 }}>
             <Table stickyHeader aria-label="sticky table">
                 <TableHead>
@@ -52,7 +47,7 @@ const ResultTable = ({ rows, mode }: Props) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(rows)
+                    {rows
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, index) => {
                             return (
@@ -83,7 +78,7 @@ const ResultTable = ({ rows, mode }: Props) => {
             onRowsPerPageChange={handleChangeRowsPerPage}
         />
     </Paper>
-    )
+        </>)
 }
 
 export { ResultTable }

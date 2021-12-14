@@ -7,7 +7,7 @@ export interface ColumnSecurity {
 }
 
 export interface ColumnCrypto {
-    id: 'paivays' | 'tuote' | 'arvo' | 'maara' | 'arvo' | 'kulut' | 'kokonaissumma' | 'kurssi';
+    id: 'paivays' | 'tuote' | 'arvo' | 'maara' | 'arvo' | 'kulut' | 'kokonaissumma' | 'kurssi' | 'operaatio';
     label: string;
     minWidth?: number;
     align?: 'right';
@@ -32,9 +32,12 @@ const columnsTransaction: readonly ColumnTransaction[] = [
         format: (value: number) => value.toFixed(8)
     },
     { id: 'transferPrice', label: 'Luovutushinta', minWidth: 120 },
-    { id: 'acquisitionPrice', label: 'Hankintahinta', minWidth: 100 },
-    { id: 'acquisitionFee', label: 'Luovutuskulut', minWidth: 100 },
-    { id: 'transferFee', label: 'Kulut', minWidth: 80 },
+    {
+        id: 'acquisitionPrice', label: 'Hankintahinta', minWidth: 100,
+        format: (value: number) => value.toFixed(2)
+    },
+    { id: 'acquisitionFee', label: 'Hankintakulut', minWidth: 100 },
+    { id: 'transferFee', label: 'Luovutuskulut', minWidth: 80 },
     {
         id: 'profitOrLoss', label: 'Voitto/Tappio', minWidth: 170,
         format: (value: number) => value.toFixed(3)
@@ -58,14 +61,18 @@ const columnsSecurity: readonly ColumnSecurity[] = [
 
 const columnsCrypto: readonly ColumnCrypto[] = [
     { id: 'paivays', label: 'Paivays', minWidth: 150 },
+    { id: 'operaatio', label: 'Operaatio', minWidth: 100 },
     { id: 'tuote', label: 'Tuote', minWidth: 100 },
     { id: 'arvo', label: 'Arvo', minWidth: 100 },
     {
-        id: 'maara', label: 'Maara', minWidth: 100,
+        id: 'maara', label: 'Määrä', minWidth: 100,
         format: (value: number) => value.toFixed(2)
     },
     { id: 'kurssi', label: 'Kurssi', minWidth: 120 },
-    { id: 'kulut', label: 'Kulut', minWidth: 100 },
+    {
+        id: 'kulut', label: 'Kulut', minWidth: 100,
+        format: (value: number) => value.toFixed(4)
+    },
     { id: 'kokonaissumma', label: 'Kokonaissumma', minWidth: 170 },
 ];
 
@@ -84,12 +91,14 @@ export interface ColumnDataSecurity {
 
 export interface ColumnDataCrypto {
     paivays: string;
+    operation: string;
     tuote: string;
     arvo: string;
     maara: number;
     kulut: string;
     kurssi: string;
     kokonaissumma: string;
+    operaatio: string;
 }
 
 
@@ -101,7 +110,7 @@ export interface ColumnDataTransaction {
     transferPrice: number
     acquisitionPrice: number
     acquisitionFee: number
-    transferFee: number
+    transferFee: string
     profitOrLoss: string
 }
 
