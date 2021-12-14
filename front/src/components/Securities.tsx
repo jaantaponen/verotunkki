@@ -65,12 +65,8 @@ const Securities = () => {
             console.log("hyvä elämä2222", dataSource)
             if (dataSource === 'Degiro') {
                 const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
-                setRows(degiroColumns)
+                setRows([...rows, ...degiroColumns])
                 console.log("hyvä elama", degiroColumns)
-            } else if (dataSource === 'Coinbase') {
-                //const degiroColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
-                //setRows(degiroColumns)
-                //console.log("hyvä elama", degiroColumns)
             } else if (dataSource === 'Nordnet') {
 
             } else {

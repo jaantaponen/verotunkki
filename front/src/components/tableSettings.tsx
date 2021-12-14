@@ -70,7 +70,7 @@ const columnsCrypto: readonly ColumnCrypto[] = [
     },
     { id: 'kurssi', label: 'Kurssi', minWidth: 120 },
     {
-        id: 'kulut', label: 'Kulut', minWidth: 100,
+        id: 'kulut', label: 'Kulut', minWidth: 110,
         format: (value: number) => value.toFixed(4)
     },
     { id: 'kokonaissumma', label: 'Kokonaissumma', minWidth: 170 },

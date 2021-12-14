@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-
 import { Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import { ColumnCrypto, ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, ColumnSecurity, columnsSecurity, columnsTransaction, ColumnTransaction, ColumnDataTransaction } from './tableSettings'
 interface Props {
@@ -9,6 +8,7 @@ interface Props {
 
 
 const ResultTable = ({ rows, mode }: Props) => {
+
     // Table specific states
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -29,6 +29,10 @@ const ResultTable = ({ rows, mode }: Props) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    useEffect(() => {
+        window.scrollTo(0, 250)
+    }, [])
 
     return (<><Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 1400 }}>
@@ -78,7 +82,7 @@ const ResultTable = ({ rows, mode }: Props) => {
             onRowsPerPageChange={handleChangeRowsPerPage}
         />
     </Paper>
-        </>)
+    </>)
 }
 
 export { ResultTable }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Container from '@mui/material/Container';
 import { DropzoneAreaBase, FileObject } from 'react-mui-dropzone';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -6,11 +6,16 @@ import { createTheme, ThemeProvider } from '@mui/material';
 
 
 interface Props {
-    zoneHeight: number, 
+    zoneHeight: number,
     handleFiles: (arg0: FileObject[]) => void;
 }
 
 const Dropzone = ({ zoneHeight, handleFiles }: Props) => {
+    
+
+    const handleAlert = (message: any, variant: any) => {
+        console.log(`${variant}: ${message}`)
+    }
     /***
      * 
      * TODO REFACTOR ZONEHEIGHT INTO ENUM/BETTER LOGIC
@@ -32,10 +37,10 @@ const Dropzone = ({ zoneHeight, handleFiles }: Props) => {
             },
         }}>
             <DropzoneAreaBase
-                acceptedFiles={['.csv', 'image/*','application/vnd.ms-excel']}
+                acceptedFiles={['.csv', 'image/*', 'application/vnd.ms-excel']}
                 onAdd={handleFiles}
                 onDelete={(fileObj) => console.log('Removed File:', fileObj)}
-                onAlert={(message, variant) => console.log(`${variant}: ${message}`)}
+                onAlert={handleAlert}
                 Icon={UploadFileIcon as any}
                 dropzoneText={zoneHeight > 200 ? "Pudota CSV-tiedostoja tähän" : "Pudota lisää CSV-tiedostoja tähän"}
                 fileObjects={[]}
