@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 const relativePath = path.relative(process.cwd(), './tests/files');
-import { CoinbaseHeaders } from '../src/utils/parsers/types'
-import { getCoinbaseAsColumns, getCoinbaseProAsColumns, parseCoinbaseCSV, prepareCoinbaseForFIFO } from '../src/utils/parsers/loadTransactions'
+import { getCoinbaseAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordNetCSV, prepareCoinbaseForFIFO } from '../src/utils/parsers/loadTransactions'
 import _ from 'lodash'
 import { calculateFIFOTransactions } from '../src/utils/fifo';
 
@@ -164,5 +163,65 @@ describe('Coinbase', () => {
             .toThrow("Amount of sales for symbol LRC exceeds the amount of buys by 28.00000001. In transaction made in 2021-11-18T13:24:00.000Z")
     })
 });
+
+describe('CoinbasePro', () => {
+    beforeEach(() => {
+    });
+    it('parses the received CSV file into json', async () => {
+        const inputCoinbasePro = fs.readFileSync(`${relativePath}/coinbasePro.csv`, 'utf-8')
+        const res = JSON.stringify(await parseCoinbaseProCSV(inputCoinbasePro))
+        expect(JSON.parse(res)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/coinbasePro.json`, 'utf-8')))
+        )
+    })
+
+    it('throws an error when invalid data is parsed', async () => {
+        const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
+        await expect(parseCoinbaseProCSV(inputCoinbase)).rejects.toThrowError(Error);
+        await expect(parseCoinbaseProCSV("test123")).rejects.toThrowError(Error);
+        await expect(parseCoinbaseProCSV(undefined)).rejects.toThrowError("Invalid argument: got undefined at index 0");
+        await expect(parseCoinbaseProCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
+    })
+});
+
+describe('Degiro', () => {
+    beforeEach(() => {
+    });
+    it('parses the received CSV file into json', async () => {
+        const inputDegiro = fs.readFileSync(`${relativePath}/transactionsDegiro.csv`, 'utf-8')
+        const res = JSON.stringify(await parseDegiroCSV(inputDegiro))
+        expect(JSON.parse(res)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/transactionsDegiro.json`, 'utf-8')))
+        )
+    })
+
+    it('throws an error when invalid data is parsed', async () => {
+        const badInputDegiro = fs.readFileSync(`${relativePath}/transactionsNordnet.csv`, 'utf-8')
+        await expect(parseDegiroCSV(badInputDegiro)).rejects.toThrowError(Error);
+        await expect(parseDegiroCSV("test123")).rejects.toThrowError(TypeError);
+        await expect(parseDegiroCSV(undefined)).rejects.toThrowError("Invalid argument: got undefined at index 0");
+        await expect(parseDegiroCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
+    })
+});
+
+describe('Nordnet', () => {
+    beforeEach(() => {
+    });
+    it('parses the received CSV file into json', async () => {
+        const inputNordnet = fs.readFileSync(`${relativePath}/transactionsNordnet.csv`, 'utf16le').trim()
+        const res = JSON.stringify(await parseNordNetCSV(inputNordnet))
+        expect(JSON.parse(res)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/transactionsNordnet.json`, 'utf-8')))
+        )
+    })
+    it('throws an error when invalid data is parsed', async () => {
+        const badInputNordnet = fs.readFileSync(`${relativePath}/transactionsDegiro.csv`, 'utf-8')
+        await expect(parseNordNetCSV(badInputNordnet)).rejects.toThrowError(Error);
+        await expect(parseNordNetCSV("test123")).rejects.toThrowError(TypeError);
+        await expect(parseNordNetCSV(undefined)).rejects.toThrowError("Invalid argument: got undefined at index 0");
+        await expect(parseNordNetCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
+    })
+});
+
 
 export { }
