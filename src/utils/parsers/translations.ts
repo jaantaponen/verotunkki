@@ -21,12 +21,8 @@ const degiroFiToEn = {
 }
 
 const translateDegiro = (key: keyof typeof degiroFiToEn) => {
-    console.log(key)
-    console.log(degiroFiToEn[key])
     if (degiroFiToEn[key]) {
         return degiroFiToEn[key]
-    } else {
-        throw "Missing translation!"
     }
 }
 
