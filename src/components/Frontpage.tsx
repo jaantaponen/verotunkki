@@ -91,6 +91,4 @@ const FrontPageContent = () => {
     );
 }
 
-export default function FrontPage() {
-    return <FrontPageContent />;
-}
+export { FrontPageContent as Frontpage }

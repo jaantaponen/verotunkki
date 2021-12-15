@@ -91,24 +91,25 @@ const Crypto = () => {
     }
 
     useEffect(() => {
-        if (files.length > 0) {
-            setZoneHeight(200)
-            setShowTable(true)
-            const data = parseCSV(files)
-            const dataSource = data[0]?.Source
-            if (dataSource === 'Coinbase') {
-                setDataSource('Coinbase')
-                const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
-                setRawData([...rawData,...data] as CoinbaseHeaders[])
-                setRows([...rows, ...coinBaseColumns])
-            } else if (dataSource === 'CoinbasePro') {
-                setDataSource('CoinbasePro')
-                const coinBaseProColumns = getCoinbaseProAsColumns(data as CoinbaseProHeaders[])
-                setRawData([...rawData,...data] as CoinbaseProHeaders[])
-                setRows([...rows, ...coinBaseProColumns])
+        (async () => {
+            if (files.length > 0) {
+                setZoneHeight(200)
+                setShowTable(true)
+                const data = await parseCSV(files)
+                const dataSource = data[0]?.Source
+                if (dataSource === 'Coinbase') {
+                    setDataSource('Coinbase')
+                    const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
+                    setRawData([...rawData, ...data] as CoinbaseHeaders[])
+                    setRows([...rows, ...coinBaseColumns])
+                } else if (dataSource === 'CoinbasePro') {
+                    setDataSource('CoinbasePro')
+                    const coinBaseProColumns = getCoinbaseProAsColumns(data as CoinbaseProHeaders[])
+                    setRawData([...rawData, ...data] as CoinbaseProHeaders[])
+                    setRows([...rows, ...coinBaseProColumns])
+                }
             }
-        }
-
+        })()
     }, [files])
 
     useEffect(() => {

@@ -1,16 +1,28 @@
-import { parse } from 'csv-parse/dist/esm/sync'
-import translateDegiro from './translations.js'
+import translateDegiro from './translations'
 import moment from 'moment';
 import { Operation } from '../fifo/types'
 import { DegiroHeaders, CoinbaseHeaders, NordnetHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues } from './types'
 import { ColumnDataCrypto, ColumnDataSecurity } from '../../components/tableSettings'
 //const input = fs.readFileSync('./files/transactions.csv', 'utf8').trim()
-const parseDegiroCSV = (input: string): DegiroHeaders[] => {
+
+const loadParser: any = async () => {
+    if (process.env.NODE_ENV === 'test') {
+        const lib = await import('csv')
+        return lib.parse
+    } else {
+        const lib = await import('csv/dist/esm')
+        return lib.parse
+    }
+}
+
+
+const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
     let prevField = ""
+    const parse = await loadParser()
     const tmp = parse(input, {
-        cast: (value, context) => {
+        cast: (value: any, context: any) => {
             if (context.header) {
-                if (value === '') return translateDegiro(`${prevField}-valuutta`);
+                if (value === '') return translateDegiro(`${prevField}-valuutta` as any);
                 prevField = value
                 return translateDegiro(value)
             }
@@ -20,7 +32,12 @@ const parseDegiroCSV = (input: string): DegiroHeaders[] => {
         trim: true,
     });
 
-    const records: DegiroHeaders[] = tmp.map((transaction: any) => {
+    const results = []
+    for await (const record of tmp) {
+        results.push(record)
+    }
+
+    const records: DegiroHeaders[] = results.map((transaction: any) => {
         transaction['datetime'] = moment(`${transaction.date}-${transaction.time}`, "DD-MM-YYYY-HH-mm").toDate()
         return transaction
     })
@@ -59,12 +76,13 @@ const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
 }
 
 //const inputNordNet = fs.readFileSync('./files/transactions-and-notes-export2.csv', 'utf16le')
-const parseNordNetCSV = (input: string): NordnetHeaders[] => {
+const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
+    const parse = await loadParser()
     const tmp = parse(input, {
         delimiter: ["\t"],
         columns: true,
         trim: true,
-        cast: (value, context) => {
+        cast: (value: any, context: any) => {
             if (context.header) {
                 let header = value
                 if (header.includes('ä')) header = header.replace(/ä/g, 'a')
@@ -85,62 +103,75 @@ const parseNordNetCSV = (input: string): NordnetHeaders[] => {
                 column === 'Maksupaiva') return moment(value, "YYYY-MM-DD").toDate()
             return String(value)
         },
-    }) as NordnetHeaders[];
-    return tmp.map(x => ({
+    })
+
+    const results = []
+    for await (const record of tmp) {
+        results.push(record)
+    }
+
+    return results.map(x => ({
         ...x, "Source": "Nordnet"
-    }))
+    })) as NordnetHeaders[]
 }
 //const inputCoinbase = fs.readFileSync('./files/coinbase.csv', 'utf-8')
-const parseCoinbaseCSV = (input: string): CoinbaseHeaders[] => {
+const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
+    const parse = await loadParser()
     const tmp = parse(input, {
-        cast: (value, context) => {
+        cast: (value: any, context: any) => {
             if (context.header) {
                 if (value.includes('(')) return value.split('(')[0].replace(/\s/g, '')
                 return value.replace(/\s/g, '')
             }
-            if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm").toDate()
+            if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm").toISOString()
             if (context.column === 'TransactionType') return value.toUpperCase()
             return String(value)
         },
         columns: true,
         from_line: 8,
         trim: true,
-    }) as CoinbaseHeaders[];
-    return tmp.map(x => ({
+    })
+
+    const results = []
+    for await (const record of tmp) {
+        results.push(record)
+    }
+
+    return results.map(x => ({
         ...x, "Source": "Coinbase"
-    }))
+    })) as CoinbaseHeaders[];
 }
 
 const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
     const prepareRawFifo: CoinbaseHeaders[] = []
-    rawData.forEach(x => {
-        if (x.TransactionType === 'CONVERT') {
-            const info = x.Notes.split(' ')
+    rawData.forEach(statement => {
+        if (statement.TransactionType === 'CONVERT') {
+            const info = statement.Notes.split(' ')
             const soldAmount = info[1]
             const soldCurrency = info[2]
             const boughAmount = Number(info[4])
             const boughtCurrency = info[5]
             prepareRawFifo.push({
-                ...x,
+                ...statement,
                 TransactionType: "SELL",
                 Fees: 0,
-                Total: x.Total - x.Fees
+                Total: statement.Total - statement.Fees
             })
             prepareRawFifo.push({
-                ...x,
+                ...statement,
                 TransactionType: "BUY",
                 Asset: boughtCurrency,
                 QuantityTransacted: boughAmount,
-                SpotPriceatTransaction: x.Subtotal / boughAmount
+                SpotPriceatTransaction: statement.Subtotal / boughAmount
             })
-        } else if (x.TransactionType === 'COINBASE EARN') {
+        } else if (statement.TransactionType === 'COINBASE EARN') {
             prepareRawFifo.push({
-                ...x,
+                ...statement,
                 TransactionType: "BUY",
             })
-        } else if (x.TransactionType === 'RECEIVE') {
+        } else if (statement.TransactionType === 'RECEIVE') {
             prepareRawFifo.push({
-                ...x,
+                ...statement,
                 TransactionType: "BUY",
             })
         }
@@ -153,10 +184,10 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
             return {
                 symbol: record.Asset,
                 date: record.Timestamp,
-                price: record.SpotPriceatTransaction,
-                amount: record.QuantityTransacted,
+                price: Number(record.SpotPriceatTransaction),
+                amount: Number(record.QuantityTransacted),
                 type: record.TransactionType as "BUY" | "SELL",
-                transactionFee: record.Fees,
+                transactionFee: Number(record.Fees ?? 0),
             }
         })
     return dataFifo
@@ -166,12 +197,16 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
 
 const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] => {
     const ret = records.map(record => {
+        const value = `${record.Subtotal ?
+            Number(record.Subtotal).toFixed(2) :
+            (record.QuantityTransacted * record.SpotPriceatTransaction).toFixed(2)
+            } ${record.SpotPriceCurrency}`
         return {
             paivays: record.Timestamp.toLocaleString('fi-FI', { timeZone: 'UTC' }),
             tuote: record.Asset,
-            arvo: `${record.Subtotal ? record.Subtotal : record.QuantityTransacted * record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
+            arvo: value,
             maara: record.QuantityTransacted,
-            kulut: `${record.Fees ? Number(record.Fees).toFixed(2) : 0} ${record.SpotPriceCurrency}`,
+            kulut: `${Number(record.Fees ?? 0).toFixed(2)} ${record.SpotPriceCurrency}`,
             kurssi: `${record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
             kokonaissumma: `${Number(record.Total ? record.Total : 0).toFixed(2)} ${record.SpotPriceCurrency}`,
             operaatio: record.TransactionType,
@@ -182,9 +217,10 @@ const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] =>
 
 
 //const inputCoinbase = fs.readFileSync('./files/coinbase.csv', 'utf-8')
-const parseCoinbaseProCSV = (input: string): CoinbaseProHeaders[] => {
+const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]> => {
+    const parse = await loadParser()
     const tmp = parse(input, {
-        cast: (value, context) => {
+        cast: (value: any, context: any) => {
             if (context.header) {
                 if (value.includes('/')) return value.replace(/\//g, '').replace(/\s/g, '')
                 return value.replace(/\s/g, '')
@@ -196,11 +232,17 @@ const parseCoinbaseProCSV = (input: string): CoinbaseProHeaders[] => {
         trim: true,
     })
 
-    if (Object.keys(tmp).find(x => CoinBaseProHeaderValues.includes(x))) {
+    const results = []
+    for await (const record of tmp) {
+        results.push(record)
+    }
+
+    if (Object.keys(results).find(x => CoinBaseProHeaderValues.includes(x))) {
         throw Error('All headers not found in CoinbasePro file.')
     }
 
-    return tmp.map((x: any) => ({
+
+    return results.map((x: any) => ({
         ...x, "Source": "CoinbasePro"
     })) as CoinbaseProHeaders[]
 }
@@ -212,9 +254,9 @@ const getCoinbaseProAsColumns = (records: CoinbaseProHeaders[]): ColumnDataCrypt
             tuote: record.product,
             arvo: `${record.size * record.price} ${record.pricefeetotalunit}`,
             maara: record.size,
-            kulut: `${record.fee ? Number(record.fee).toFixed(2) : 0} ${record.pricefeetotalunit}`,
+            kulut: `${Number(record.fee ?? 0).toFixed(2)} ${record.pricefeetotalunit}`,
             kurssi: `${record.price} ${record.pricefeetotalunit}`,
-            kokonaissumma: `${Number(record.total ? record.total : 0).toFixed(2)} ${record.pricefeetotalunit}`,
+            kokonaissumma: `${Number(record.total ?? 0).toFixed(2)} ${record.pricefeetotalunit}`,
             operaatio: record.side,
         } as ColumnDataCrypto
     })
