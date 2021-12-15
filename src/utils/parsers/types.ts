@@ -107,3 +107,43 @@ export const CoinBaseHeaderValues = [
   'Fees',
   'Notes',
 ]
+
+export const DegiroHeaderValues = [
+  'date',
+  'time',
+  'security',
+  'ISIN',
+  'reference',
+  'venue',
+  'quantity',
+  'rate',
+  'rateCurrency',
+  'marketValue',
+  'marketValueCurrency',
+  'value',
+  'valueCurrency',
+  'exchangeRate',
+  'transactionCosts',
+  'transactionCostsCurrency',
+  'totalAmount',
+  'totalAmountCurrency',
+  'orderId',
+  'datetime'
+]
+
+export const NordnetHeaderValues = [
+  'Id', 'Kirjauspaiva',
+  'Kauppapaiva', 'Maksupaiva',
+  'Salkku', 'Tapahtumatyyppi',
+  'Arvopaperi', 'Instrumenttityyppi',
+  'ISIN', 'Maara',
+  'Kurssi', 'Korko',
+  'Kokonaiskulut', 'KokonaiskulutValuutta',
+  'Summa', 'Valuutta',
+  'Hankintaarvo', 'Tulos',
+  'Kokonaismaara', 'Saldo',
+  'Vaihtokurssi', 'Tapahtumateksti',
+  'Mitatointipaiva', 'Laskelma',
+  'Vahvistusnumero', 'Valityspalkkio',
+  'ValityspalkkioValuutta'
+]

@@ -1,7 +1,7 @@
 import translateDegiro from './translations'
 import moment from 'moment';
 import { Operation } from '../fifo/types'
-import { DegiroHeaders, CoinbaseHeaders, NordnetHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues, CoinBaseHeaderValues } from './types'
+import { DegiroHeaders, CoinbaseHeaders, NordnetHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues, CoinBaseHeaderValues, DegiroHeaderValues, NordnetHeaderValues } from './types'
 import { ColumnDataCrypto, ColumnDataSecurity } from '../../components/tableSettings'
 import _ from 'lodash';
 //const input = fs.readFileSync('./files/transactions.csv', 'utf8').trim()
@@ -37,6 +37,8 @@ const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
     for await (const record of tmp) {
         results.push(record)
     }
+    
+
 
     const records: DegiroHeaders[] = results.map((transaction: any) => {
         transaction['datetime'] = moment(`${transaction.date}-${transaction.time}`, "DD-MM-YYYY-HH-mm").toDate()
@@ -53,7 +55,10 @@ const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
                 transactionFee: Math.abs(record.transactionCosts)
             }
         }) */
-
+    if (results.every(x => _.difference(_.sortBy(DegiroHeaderValues), _.sortBy(Object.keys(x))).length !== 0)) {
+        throw TypeError('All headers not found in the provided Coinbase Pro file.')
+    }
+    
     return records.map(x => ({
         ...x, "Source": "Degiro"
     }))
@@ -111,6 +116,10 @@ const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
         results.push(record)
     }
 
+    if (results.every(x => _.difference(NordnetHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
+        throw TypeError('All headers not found in the provided Coinbase file.')
+    }
+
     return results.map(x => ({
         ...x, "Source": "Nordnet"
     })) as NordnetHeaders[]
@@ -137,8 +146,8 @@ const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
     for await (const record of tmp) {
         results.push(record)
     }
-  
-    if (results.every(x =>_.difference(CoinBaseHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
+
+    if (results.every(x => _.difference(CoinBaseHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
         throw TypeError('All headers not found in the provided Coinbase file.')
     }
 
@@ -239,7 +248,7 @@ const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]>
 
     const results = []
     for await (const record of tmp) results.push(record)
-    
+
 
     if (results.every(x => _.difference(_.sortBy(CoinBaseProHeaderValues), _.sortBy(Object.keys(x))).length !== 0)) {
         throw TypeError('All headers not found in the provided Coinbase Pro file.')
