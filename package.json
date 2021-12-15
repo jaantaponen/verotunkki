@@ -1,6 +1,7 @@
 {
   "name": "verohommeli",
   "version": "0.1.0",
+  "homepage": "https://jaantaponen.github.io/verotunkki",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.0",
