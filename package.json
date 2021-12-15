@@ -60,7 +60,6 @@
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.0.3",
     "@types/lodash": "^4.14.178",
-    "@types/papaparse": "^5.3.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^26.6.0",
     "babel-loader": "8.1.0",
