@@ -94,3 +94,16 @@ export const CoinBaseProHeaderValues = [
   "total",
   "pricefeetotalunit"
 ]
+
+export const CoinBaseHeaderValues = [
+  'Timestamp',
+  'TransactionType',
+  'Asset',
+  'QuantityTransacted',
+  'SpotPriceCurrency',
+  'SpotPriceatTransaction',
+  'Subtotal',
+  'Total',
+  'Fees',
+  'Notes',
+]

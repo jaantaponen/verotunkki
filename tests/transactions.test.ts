@@ -316,4 +316,7 @@ describe('calculateFIFO', () => {
 
     expect(() => calculateFIFOCapitalGains(operationHistory)).toThrow();
   });
+  it('throws when input data is invalid', () => {
+    //TODO
+  });
 });
