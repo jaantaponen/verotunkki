@@ -57,24 +57,24 @@ const Securities = () => {
     });
 
     useEffect(() => {
-        if (files.length > 0) {
-            setZoneHeight(200)
-            setShowTable(true)
-            const data = parseCSV(files)
-            const dataSource = data[0]?.Source
-            console.log("hyvä elämä2222", dataSource)
-            if (dataSource === 'Degiro') {
-                const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
-                setRows([...rows, ...degiroColumns])
-                console.log("hyvä elama", degiroColumns)
-            } else if (dataSource === 'Nordnet') {
+        (async () => {
+            if (files.length > 0) {
+                setZoneHeight(200)
+                setShowTable(true)
+                const data = await parseCSV(files)
+                const dataSource = data[0]?.Source
+                console.log("hyvä elämä2222", dataSource)
+                if (dataSource === 'Degiro') {
+                    const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
+                    setRows([...rows, ...degiroColumns])
+                    console.log("hyvä elama", degiroColumns)
+                } else if (dataSource === 'Nordnet') {
 
-            } else {
-                console.log("Nyt on oikeat hädät")
+                } else {
+                    console.log("Nyt on oikeat hädät")
+                }
             }
-        }
-        console.log('Files changed: ', files)
-
+        })()
     }, [files])
 
 

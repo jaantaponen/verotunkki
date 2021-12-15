@@ -1,10 +1,10 @@
 import React from 'react';
-import FrontPage from './components/Frontpage'
+import { Frontpage } from './components/Frontpage'
 
 const App = () => {
   return (
     <>
-    <FrontPage />
+      <Frontpage />
     </>
   );
 }

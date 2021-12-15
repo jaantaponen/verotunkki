@@ -1,0 +1,1258 @@
+[
+    {
+        "symbol": "ETH",
+        "date": "2021-02-09T09:35:00.000Z",
+        "price": 1457.17,
+        "amount": 0.0192222,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-02-11T10:27:00.000Z",
+        "price": 1466.6,
+        "amount": 0.03181498,
+        "type": "SELL",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-08T06:52:00.000Z",
+        "price": 2950.97,
+        "amount": 0.00034226,
+        "type": "BUY",
+        "transactionFee": 0.99
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-09T05:11:00.000Z",
+        "price": 3274.54,
+        "amount": 0.00030844,
+        "type": "BUY",
+        "transactionFee": 0.99
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-19T08:47:00.000Z",
+        "price": 2125.72,
+        "amount": 0.0110598,
+        "type": "BUY",
+        "transactionFee": 1.49
+    },
+    {
+        "symbol": "XLM",
+        "date": "2021-02-09T09:31:00.000Z",
+        "price": 0.3256,
+        "amount": 56.8541137,
+        "type": "BUY",
+        "transactionFee": 1.49
+    },
+    {
+        "symbol": "ENJ",
+        "date": "2021-10-08T19:25:00.000Z",
+        "price": 1.46,
+        "amount": 22.5520819,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "ENJ",
+        "date": "2021-10-12T02:55:00.000Z",
+        "price": 1.32,
+        "amount": 19.12858216,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "ENJ",
+        "date": "2021-10-21T13:52:00.000Z",
+        "price": 1.5,
+        "amount": 43.2955329,
+        "type": "SELL",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "ENJ",
+        "date": "2021-11-08T10:35:00.000Z",
+        "price": 2.77,
+        "amount": 14.87745155,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "ENJ",
+        "date": "2021-11-08T13:17:00.000Z",
+        "price": 2.75,
+        "amount": 8.53985805,
+        "type": "BUY",
+        "transactionFee": 1.49
+    },
+    {
+        "symbol": "ENJ",
+        "date": "2021-11-10T08:49:00.000Z",
+        "price": 2.71,
+        "amount": 23.4173096,
+        "type": "SELL",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-04T16:11:00.000Z",
+        "price": 0.9543,
+        "amount": 70.07519696,
+        "type": "BUY",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-08T13:17:00.000Z",
+        "price": 1.54,
+        "amount": 6.26134212,
+        "type": "BUY",
+        "transactionFee": 0.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-10T08:49:00.000Z",
+        "price": 2.88,
+        "amount": 19.93309254,
+        "type": "BUY",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-10T14:44:00.000Z",
+        "price": 2.82,
+        "amount": 30,
+        "type": "SELL",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-10T15:21:00.000Z",
+        "price": 2.9,
+        "amount": 27.15282691,
+        "type": "BUY",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-10T15:34:00.000Z",
+        "price": 2.74,
+        "amount": 40,
+        "type": "SELL",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-13T20:57:00.000Z",
+        "price": 2.28,
+        "amount": 45,
+        "type": "SELL",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-14T04:25:00.000Z",
+        "price": 2.62,
+        "amount": 35.08977449,
+        "type": "BUY",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-18T13:24:00.000Z",
+        "price": 1.92,
+        "amount": 74.69293899,
+        "type": "SELL",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-19T07:19:00.000Z",
+        "price": 2.2,
+        "amount": 27.90682308,
+        "type": "BUY",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-19T12:03:00.000Z",
+        "price": 2.45,
+        "amount": 32.31297158,
+        "type": "BUY",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-24T15:18:00.000Z",
+        "price": 2.62,
+        "amount": 61.32581231,
+        "type": "SELL",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-26T06:58:00.000Z",
+        "price": 2.47,
+        "amount": 48.94842547,
+        "type": "BUY",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-26T07:00:00.000Z",
+        "price": 2.49,
+        "amount": 18.09450793,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-12-05T10:49:00.000Z",
+        "price": 1.98,
+        "amount": 18.78894132,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "ADA",
+        "date": "2021-09-02T16:14:00.000Z",
+        "price": 2.51,
+        "amount": 11.148259,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "SHIB",
+        "date": "2021-10-27T13:27:00.000Z",
+        "price": 0.000058,
+        "amount": 484661.85857285,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "SHIB",
+        "date": "2021-10-27T16:14:00.000Z",
+        "price": 0.000067,
+        "amount": 793776.13288918,
+        "type": "BUY",
+        "transactionFee": 2.99
+    },
+    {
+        "symbol": "IOTX",
+        "date": "2021-11-11T03:15:00.000Z",
+        "price": 0.3116,
+        "amount": 89.88538091,
+        "type": "BUY",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "IOTX",
+        "date": "2021-11-13T13:53:00.000Z",
+        "price": 0.3174,
+        "amount": 42.55830165,
+        "type": "BUY",
+        "transactionFee": 1.49
+    },
+    {
+        "symbol": "IOTX",
+        "date": "2021-11-16T05:11:00.000Z",
+        "price": 0.2449,
+        "amount": 132.44368256,
+        "type": "SELL",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "SUKU",
+        "date": "2021-11-11T03:17:00.000Z",
+        "price": 1.07,
+        "amount": 22.03148882,
+        "type": "BUY",
+        "transactionFee": 1.49
+    },
+    {
+        "symbol": "SUKU",
+        "date": "2021-11-11T10:06:00.000Z",
+        "price": 1.09,
+        "amount": 21.60021683,
+        "type": "BUY",
+        "transactionFee": 1.49
+    },
+    {
+        "symbol": "SUKU",
+        "date": "2021-11-16T05:11:00.000Z",
+        "price": 0.8045,
+        "amount": 43.63170565,
+        "type": "SELL",
+        "transactionFee": 1.99
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-08T06:57:00.000Z",
+        "price": 2937.81,
+        "amount": 0.01282651,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-22T07:02:00.000Z",
+        "price": 1915.13,
+        "amount": 0.01658701,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-22T07:10:00.000Z",
+        "price": 1920.75,
+        "amount": 0.004767,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-26T10:15:00.000Z",
+        "price": 2291.87,
+        "amount": 0.01309849,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "OGN",
+        "date": "2021-05-26T10:15:00.000Z",
+        "price": 1.0483982445046844,
+        "amount": 28.20493086,
+        "type": "BUY",
+        "transactionFee": 0.45
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-31T14:08:00.000Z",
+        "price": 2136.5,
+        "amount": 0.003049,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-07T07:48:00.000Z",
+        "price": 2329.36,
+        "amount": 0.00429302,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "DOGE",
+        "date": "2021-06-07T07:48:00.000Z",
+        "price": 0.30778548313484144,
+        "amount": 32.16525971,
+        "type": "BUY",
+        "transactionFee": 0.1
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-28T04:53:00.000Z",
+        "price": 1711.38,
+        "amount": 0.02585281,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-29T03:10:00.000Z",
+        "price": 1770.99,
+        "amount": 0.00634,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-07-27T10:42:00.000Z",
+        "price": 1958.42,
+        "amount": 0.01501086,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-08-11T16:26:00.000Z",
+        "price": 2751.84,
+        "amount": 0.00908483,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ADA",
+        "date": "2021-08-11T16:26:00.000Z",
+        "price": 1.5779207794584655,
+        "amount": 15.697873,
+        "type": "BUY",
+        "transactionFee": 0.23
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-08-22T09:02:00.000Z",
+        "price": 2788.56,
+        "amount": 0.0125513,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ADA",
+        "date": "2021-08-22T09:02:00.000Z",
+        "price": 2.2501852779784306,
+        "amount": 15.456505,
+        "type": "BUY",
+        "transactionFee": 0.22
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-09-04T09:06:00.000Z",
+        "price": 3282.74,
+        "amount": 0.00395667,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-09-12T08:56:00.000Z",
+        "price": 2907.77,
+        "amount": 0.02980411,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-09-15T13:24:00.000Z",
+        "price": 2980.85,
+        "amount": 0.01431884,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-10-25T08:12:00.000Z",
+        "price": 3549.19,
+        "amount": 0.00500479,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-11-07T10:26:00.000Z",
+        "price": 3978.53,
+        "amount": 0.00839871,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "XLM",
+        "date": "2021-02-09T12:20:00.000Z",
+        "price": 0.32,
+        "amount": 56.8541137,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-02-09T12:20:00.000Z",
+        "price": 1445.2726085900015,
+        "amount": 0.01259278,
+        "type": "BUY",
+        "transactionFee": 0.14
+    },
+    {
+        "symbol": "XLM",
+        "date": "2021-06-15T03:11:00.000Z",
+        "price": 0.29,
+        "amount": 5.7640376,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "XLM",
+        "date": "2021-06-15T03:13:00.000Z",
+        "price": 0.29,
+        "amount": 5.7602857,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "XLM",
+        "date": "2021-06-15T03:15:00.000Z",
+        "price": 0.29,
+        "amount": 5.7531276,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "XLM",
+        "date": "2021-06-15T03:15:00.000Z",
+        "price": 0.29,
+        "amount": 5.7531276,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "XLM",
+        "date": "2021-06-15T03:16:00.000Z",
+        "price": 0.29,
+        "amount": 5.748861,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "XLM",
+        "date": "2021-06-15T03:17:00.000Z",
+        "price": 0.29,
+        "amount": 28.7794395,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-15T03:17:00.000Z",
+        "price": 2169.831114368956,
+        "amount": 0.00376527,
+        "type": "BUY",
+        "transactionFee": 0.08
+    },
+    {
+        "symbol": "COMP",
+        "date": "2021-06-15T03:26:00.000Z",
+        "price": 280.07,
+        "amount": 0.00882353,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "COMP",
+        "date": "2021-06-15T03:27:00.000Z",
+        "price": 279.82,
+        "amount": 0.00884044,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "COMP",
+        "date": "2021-06-15T03:28:00.000Z",
+        "price": 279.82,
+        "amount": 0.00884174,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "COMP",
+        "date": "2021-06-16T02:56:00.000Z",
+        "price": 265.98,
+        "amount": 0.02650571,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-16T02:56:00.000Z",
+        "price": 2082.3685822266702,
+        "amount": 0.00334715,
+        "type": "BUY",
+        "transactionFee": 0.08
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-02T13:39:00.000Z",
+        "price": 1.22,
+        "amount": 0.35468539,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-02T13:39:00.000Z",
+        "price": 1.22,
+        "amount": 0.35468539,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-02T13:40:00.000Z",
+        "price": 1.22,
+        "amount": 0.35468539,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "BAL",
+        "date": "2021-07-25T19:48:00.000Z",
+        "price": 16.03,
+        "amount": 0.05303228,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "BAL",
+        "date": "2021-07-25T19:49:00.000Z",
+        "price": 16.03,
+        "amount": 0.05303217,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "BAL",
+        "date": "2021-07-25T19:50:00.000Z",
+        "price": 16.03,
+        "amount": 0.05304387,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "BAL",
+        "date": "2021-07-25T19:52:00.000Z",
+        "price": 16.03,
+        "amount": 0.15910832,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-07-25T19:52:00.000Z",
+        "price": 1831.9545210020501,
+        "amount": 0.00137558,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "GRT",
+        "date": "2021-06-15T06:55:00.000Z",
+        "price": 0.57,
+        "amount": 1.44759699,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "GRT",
+        "date": "2021-06-15T06:56:00.000Z",
+        "price": 0.57,
+        "amount": 1.44634076,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "GRT",
+        "date": "2021-06-15T06:57:00.000Z",
+        "price": 0.57,
+        "amount": 1.44487791,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "GRT",
+        "date": "2021-06-15T06:58:00.000Z",
+        "price": 0.57,
+        "amount": 4.33881566,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-15T06:58:00.000Z",
+        "price": 2130.5644691416,
+        "amount": 0.00114993,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "GRT",
+        "date": "2021-07-20T07:22:00.000Z",
+        "price": 0.41,
+        "amount": 2.06143063,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "GRT",
+        "date": "2021-07-20T07:22:00.000Z",
+        "price": 0.41,
+        "amount": 2.06143063,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-07-20T07:22:00.000Z",
+        "price": 1485.2010325683368,
+        "amount": 0.00056558,
+        "type": "BUY",
+        "transactionFee": 0.01
+    },
+    {
+        "symbol": "MATIC",
+        "date": "2021-06-18T03:33:00.000Z",
+        "price": 1.24,
+        "amount": 0.67893272,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "MATIC",
+        "date": "2021-06-18T03:34:00.000Z",
+        "price": 1.24,
+        "amount": 0.67884054,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "MATIC",
+        "date": "2021-06-18T03:35:00.000Z",
+        "price": 1.24,
+        "amount": 0.67893272,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "MATIC",
+        "date": "2021-06-18T03:35:00.000Z",
+        "price": 1.24,
+        "amount": 2.03670598,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-18T03:35:00.000Z",
+        "price": 1956.3628935314314,
+        "amount": 0.00127277,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "ADA",
+        "date": "2021-10-24T14:30:00.000Z",
+        "price": 1.82,
+        "amount": 40,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ADA",
+        "date": "2021-11-02T13:44:00.000Z",
+        "price": 1.71,
+        "amount": 0.052532,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-02T13:44:00.000Z",
+        "price": 1.2655691369873125,
+        "amount": 0.07111425,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ANKR",
+        "date": "2021-09-03T05:51:00.000Z",
+        "price": 0.09,
+        "amount": 9.34579439,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ANKR",
+        "date": "2021-09-03T05:51:00.000Z",
+        "price": 0.09,
+        "amount": 9.34317481,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ANKR",
+        "date": "2021-09-03T05:52:00.000Z",
+        "price": 0.09,
+        "amount": 9.35103797,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ANKR",
+        "date": "2021-09-03T05:53:00.000Z",
+        "price": 0.09,
+        "amount": 28.04000717,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ADA",
+        "date": "2021-09-03T05:53:00.000Z",
+        "price": 2.5132119552487424,
+        "amount": 0.994743,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "OGN",
+        "date": "2021-05-31T14:24:00.000Z",
+        "price": 0.87,
+        "amount": 28.20493086,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-05-31T14:24:00.000Z",
+        "price": 2129.3683754451595,
+        "amount": 0.01135548,
+        "type": "BUY",
+        "transactionFee": 0.28
+    },
+    {
+        "symbol": "CTSI",
+        "date": "2021-10-21T03:25:00.000Z",
+        "price": 0.71,
+        "amount": 1.19990401,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CTSI",
+        "date": "2021-10-21T03:25:00.000Z",
+        "price": 0.71,
+        "amount": 1.20380402,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CTSI",
+        "date": "2021-10-21T03:25:00.000Z",
+        "price": 0.71,
+        "amount": 1.20380402,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CTSI",
+        "date": "2021-10-21T03:26:00.000Z",
+        "price": 0.72,
+        "amount": 3.60751205,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ENJ",
+        "date": "2021-10-21T03:26:00.000Z",
+        "price": 1.5604982507433856,
+        "amount": 1.61486884,
+        "type": "BUY",
+        "transactionFee": 0.06
+    },
+    {
+        "symbol": "DOGE",
+        "date": "2021-06-16T09:24:00.000Z",
+        "price": 0.26,
+        "amount": 32.16525971,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-16T09:24:00.000Z",
+        "price": 2021.5616688066082,
+        "amount": 0.00402659,
+        "type": "BUY",
+        "transactionFee": 0.08
+    },
+    {
+        "symbol": "MLN",
+        "date": "2021-11-20T06:26:00.000Z",
+        "price": 112.43,
+        "amount": 0.00787017,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "MLN",
+        "date": "2021-11-20T06:26:00.000Z",
+        "price": 112.43,
+        "amount": 0.00787017,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "MLN",
+        "date": "2021-11-20T06:27:00.000Z",
+        "price": 112.43,
+        "amount": 0.00787017,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "MLN",
+        "date": "2021-11-20T06:28:00.000Z",
+        "price": 113.51,
+        "amount": 0.02361051,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-20T06:28:00.000Z",
+        "price": 2.368859122636967,
+        "amount": 1.10601765,
+        "type": "BUY",
+        "transactionFee": 0.06
+    },
+    {
+        "symbol": "AMP",
+        "date": "2021-06-15T03:20:00.000Z",
+        "price": 0.07,
+        "amount": 11.97174668,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "AMP",
+        "date": "2021-06-15T03:21:00.000Z",
+        "price": 0.07,
+        "amount": 11.93317422,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "AMP",
+        "date": "2021-06-15T03:22:00.000Z",
+        "price": 0.07,
+        "amount": 11.84132623,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "AMP",
+        "date": "2021-06-28T04:59:00.000Z",
+        "price": 0.05,
+        "amount": 35.74624713,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-06-28T04:59:00.000Z",
+        "price": 1709.5330477708842,
+        "amount": 0.00104122,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "CHZ",
+        "date": "2021-09-17T10:01:00.000Z",
+        "price": 0.28,
+        "amount": 3.04971028,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CHZ",
+        "date": "2021-09-17T10:01:00.000Z",
+        "price": 0.28,
+        "amount": 3.04971028,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CHZ",
+        "date": "2021-09-17T10:01:00.000Z",
+        "price": 0.28,
+        "amount": 3.04971028,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CHZ",
+        "date": "2021-09-17T10:02:00.000Z",
+        "price": 0.28,
+        "amount": 9.14913084,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-09-17T10:02:00.000Z",
+        "price": 2934.1561390231122,
+        "amount": 0.00085885,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "BOND",
+        "date": "2021-07-06T03:11:00.000Z",
+        "price": 30.65,
+        "amount": 0.02740477,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "BOND",
+        "date": "2021-07-06T03:12:00.000Z",
+        "price": 30.64,
+        "amount": 0.02751032,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "BOND",
+        "date": "2021-07-06T03:13:00.000Z",
+        "price": 30.64,
+        "amount": 0.02751032,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "BOND",
+        "date": "2021-07-06T03:13:00.000Z",
+        "price": 30.57,
+        "amount": 0.08242541,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-07-06T03:13:00.000Z",
+        "price": 1960.2462069235896,
+        "amount": 0.00127535,
+        "type": "BUY",
+        "transactionFee": 0.02
+    },
+    {
+        "symbol": "RLY",
+        "date": "2021-08-29T04:17:00.000Z",
+        "price": 0.57,
+        "amount": 1.4907573,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "RLY",
+        "date": "2021-08-29T04:18:00.000Z",
+        "price": 0.57,
+        "amount": 1.49120191,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "RLY",
+        "date": "2021-08-29T04:20:00.000Z",
+        "price": 0.57,
+        "amount": 1.49097957,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "RLY",
+        "date": "2021-08-29T04:20:00.000Z",
+        "price": 0.57,
+        "amount": 4.47293878,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ADA",
+        "date": "2021-08-29T04:20:00.000Z",
+        "price": 2.3882814987793224,
+        "amount": 1.055152,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "CLV",
+        "date": "2021-07-26T09:19:00.000Z",
+        "price": 0.97,
+        "amount": 0.87719298,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CLV",
+        "date": "2021-07-26T09:20:00.000Z",
+        "price": 0.97,
+        "amount": 0.87719298,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CLV",
+        "date": "2021-07-26T09:21:00.000Z",
+        "price": 0.97,
+        "amount": 0.87719298,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CLV",
+        "date": "2021-07-26T09:23:00.000Z",
+        "price": 0.97,
+        "amount": 2.63157894,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-07-26T09:23:00.000Z",
+        "price": 1988.448063630338,
+        "amount": 0.00126732,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "CLV",
+        "date": "2021-12-13T18:53:00.000Z",
+        "price": 0.71,
+        "amount": 1.24223602,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CLV",
+        "date": "2021-12-13T18:53:00.000Z",
+        "price": 0.71,
+        "amount": 1.24223602,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "CLV",
+        "date": "2021-12-13T18:54:00.000Z",
+        "price": 0.71,
+        "amount": 2.48447204,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-12-13T18:54:00.000Z",
+        "price": 1.8538257124780717,
+        "amount": 0.92241681,
+        "type": "BUY",
+        "transactionFee": 0.06
+    },
+    {
+        "symbol": "FET",
+        "date": "2021-08-17T04:49:00.000Z",
+        "price": 0.44,
+        "amount": 1.94552529,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "FET",
+        "date": "2021-08-17T04:50:00.000Z",
+        "price": 0.44,
+        "amount": 1.94552529,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "FET",
+        "date": "2021-08-17T04:52:00.000Z",
+        "price": 0.44,
+        "amount": 1.94514686,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "FET",
+        "date": "2021-08-17T04:53:00.000Z",
+        "price": 0.44,
+        "amount": 5.83619744,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "ETH",
+        "date": "2021-08-17T04:53:00.000Z",
+        "price": 2682.2207084468664,
+        "amount": 0.00093952,
+        "type": "BUY",
+        "transactionFee": 0.03
+    },
+    {
+        "symbol": "IOTX",
+        "date": "2021-12-09T06:29:00.000Z",
+        "price": 0.15,
+        "amount": 5.6252461,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "IOTX",
+        "date": "2021-12-09T06:29:00.000Z",
+        "price": 0.15,
+        "amount": 5.6252461,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "IOTX",
+        "date": "2021-12-09T06:30:00.000Z",
+        "price": 0.15,
+        "amount": 5.6252461,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "IOTX",
+        "date": "2021-12-09T06:30:00.000Z",
+        "price": 0.16,
+        "amount": 16.87573831,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-12-09T06:30:00.000Z",
+        "price": 2.2175493718603763,
+        "amount": 1.17246544,
+        "type": "BUY",
+        "transactionFee": 0.05
+    },
+    {
+        "symbol": "AUCTION",
+        "date": "2021-11-02T13:40:00.000Z",
+        "price": 33.09,
+        "amount": 0.02602134,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "AUCTION",
+        "date": "2021-11-02T13:40:00.000Z",
+        "price": 33.14,
+        "amount": 0.02602134,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "AUCTION",
+        "date": "2021-11-02T13:40:00.000Z",
+        "price": 33.09,
+        "amount": 0.02602134,
+        "type": "BUY",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "AUCTION",
+        "date": "2021-11-02T13:43:00.000Z",
+        "price": 33.18,
+        "amount": 0.07806402,
+        "type": "SELL",
+        "transactionFee": 0
+    },
+    {
+        "symbol": "LRC",
+        "date": "2021-11-02T13:43:00.000Z",
+        "price": 1.2368399133265608,
+        "amount": 2.04553554,
+        "type": "BUY",
+        "transactionFee": 0.06
+    }
+]

@@ -9,7 +9,6 @@
     "@mui/material": "^5.2.3",
     "@mui/types": "^7.1.0",
     "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "@types/node": "^12.20.37",
     "@types/react": "^17.0.37",
@@ -23,13 +22,14 @@
     "react-mui-dropzone": "^4.0.5",
     "react-router-dom": "^6.1.1",
     "react-scripts": "4.0.3",
+    "ts-node": "^10.4.0",
     "typescript": "^4.5.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest --verbose --runInBand",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "test:watch": "npm t -- --watch --runInBand",
     "eject": "react-scripts eject"
   },
@@ -53,9 +53,18 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-async-to-generator": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
+    "@babel/preset-react": "^7.16.5",
+    "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.0.3",
+    "@types/lodash": "^4.14.178",
+    "@types/papaparse": "^5.3.1",
+    "babel-core": "^6.26.3",
     "babel-jest": "^26.6.0",
-    "jest": "^26.6.0"
+    "babel-loader": "8.1.0",
+    "cross-env": "^7.0.3",
+    "jest": "26.6.0"
   }
 }

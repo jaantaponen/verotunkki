@@ -20,7 +20,7 @@ const degiroFiToEn = {
     "Order ID": "orderId"
 }
 
-const translateDegiro = (key) => {
+const translateDegiro = (key: keyof typeof degiroFiToEn) => {
     console.log(key)
     console.log(degiroFiToEn[key])
     if (degiroFiToEn[key]) {
