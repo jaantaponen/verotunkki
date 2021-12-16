@@ -16,18 +16,22 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import { calculateFIFOTransactions } from '../utils/fifo'
 import { Operation, Transaction } from '../utils/fifo/types'
-import { chooseCSVParser } from '../utils/parsers/parseUtils'
+import { chooseCSVParser } from '../utils/parsers/helpers'
 
 const parsers = [parseCoinbaseCSV, parseCoinbaseProCSV]
+
+export interface rawDatas {
+    Coinbase: CoinbaseHeaders[]
+    CoinbasePro: CoinbaseProHeaders[]
+}
 
 const Crypto = () => {
     const [zoneHeight, setZoneHeight] = useState(400);
     const [files, setFiles] = useState<FileObject[]>([]);
     const [showTable, setShowTable] = useState(false)
     const [rows, setRows] = useState<ColumnDataCrypto[]>([]);
-    const [rawData, setRawData] = useState<CoinbaseHeaders[] | CoinbaseProHeaders[]>([]);
+    const [rawData, setRawData] = useState<rawDatas>({} as rawDatas);
     const [results, setResults] = useState<ColumnDataTransaction[]>([]);
-    const [dataSource, setDataSource] = useState<"Coinbase" | "CoinbasePro">();
     const [parseError, setParseError] = useState("")
     const [errorFifo, setErrorFifo] = useState("")
 
@@ -44,23 +48,25 @@ const Crypto = () => {
     const clearRows = () => {
         setFiles([])
         setRows([])
-        setRawData([])
+        setRawData({} as rawDatas)
         setShowTable(false)
+        setZoneHeight(400)
     }
 
     const calculateFIFO = () => {
-        console.log("nauraa")
-        let fifoData: Transaction[] = []
+        const fifoData: Transaction[] = []
         try {
-            if (dataSource === 'Coinbase') {
-                fifoData = calculateFIFOTransactions(prepareCoinbaseForFIFO(rawData as CoinbaseHeaders[]))
-            } else if (dataSource === 'CoinbasePro') {
-                fifoData = calculateFIFOTransactions(prepareCoinbaseProForFIFO(rawData as CoinbaseProHeaders[]))
+            if (rawData?.Coinbase) {
+                fifoData.push(...calculateFIFOTransactions(prepareCoinbaseForFIFO(rawData.Coinbase as CoinbaseHeaders[])))
             }
+            if (rawData?.CoinbasePro) {
+                fifoData.push(...calculateFIFOTransactions(prepareCoinbaseProForFIFO(rawData.CoinbasePro as CoinbaseProHeaders[])))
+            }
+            console.log("rickrocll", fifoData)
             setResults(_.sortBy(fifoData, (o) => o.selldate).map(x => ({
                 ...x,
-                buydate: x.buydate.toISOString().substring(0, 16),
-                selldate: x.selldate.toISOString().substring(0, 16),
+                buydate: new Date(x.buydate).toISOString().substring(0, 16),
+                selldate: new Date(x.selldate).toISOString().substring(0, 16),
                 transferFee: `${Number(x.transferFee).toFixed(4)} EUR`,
                 profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`,
             })))
@@ -68,14 +74,12 @@ const Crypto = () => {
         } catch (e: any) {
             setErrorFifo(e.message)
         }
-
     }
 
     useEffect(() => {
         (async () => {
             if (files.length > 0) {
                 const data = await chooseCSVParser(files, parsers)
-                console.log(data)
                 const dataSource = data[0]?.Source
                 if (dataSource === 'Error') {
                     const msg = data[0]['Error'].message
@@ -86,20 +90,32 @@ const Crypto = () => {
                     }
 
                 } else if (dataSource === 'Coinbase') {
-                    setDataSource('Coinbase')
                     const coinBaseColumns = getCoinbaseAsColumns(data as CoinbaseHeaders[])
-                    setRawData([...rawData, ...data] as CoinbaseHeaders[])
-                    setRows([...rows, ...coinBaseColumns])
+                    const rawcopy = { ...rawData }
+                    setRawData({
+                        ...rawData,
+                        "Coinbase": [...(rawcopy?.Coinbase ? rawcopy.Coinbase : []), ...data]
+                    })
+                    setRows(_.sortBy([...rows, ...coinBaseColumns], (o) => o.paivays))
                     setZoneHeight(200)
                     setShowTable(true)
                 } else if (dataSource === 'CoinbasePro') {
-                    setDataSource('CoinbasePro')
+                    const currencyError = data.find((x: any) => x?.Error === "Invalid currency detected")
+                    if (currencyError)
+                        setParseError(`${currencyError.Error} In trancactions made in ${currencyError
+                            .createdat.toLocaleString('en-GB', { timeZone: 'UTC' })}.`)
+
                     const coinBaseProColumns = getCoinbaseProAsColumns(data as CoinbaseProHeaders[])
-                    setRawData([...rawData, ...data] as CoinbaseProHeaders[])
-                    setRows([...rows, ...coinBaseProColumns])
+                    const rawcopy = { ...rawData }
+                    setRawData({
+                        ...rawData,
+                        "CoinbasePro": [...(rawcopy?.CoinbasePro ? rawcopy.CoinbasePro : []), ...data]
+                    })
+                    setRows(_.sortBy([...rows, ...coinBaseProColumns], (o) => o.paivays))
                     setZoneHeight(200)
                     setShowTable(true)
                 }
+                setFiles([])
 
             }
         })()
@@ -107,7 +123,6 @@ const Crypto = () => {
 
     useEffect(() => {
         console.log("rows parsed into rawdata", rawData)
-
     }, [rawData])
 
 
@@ -151,7 +166,7 @@ const Crypto = () => {
                             Laske
                         </Button>
                     </Stack>}
-                    {showTable && <ResultTable mode="Crypto" rows={rows} />}
+                    {(showTable && results.length === 0) && <ResultTable mode="Crypto" rows={rows} />}
                     {results.length > 0 &&
                         <div>
                             <ResultTable mode="Result" rows={results} />

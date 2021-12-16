@@ -1,10 +1,10 @@
 import translateDegiro from './translations'
 import moment from 'moment';
 import { Operation } from '../fifo/types'
-import { DegiroHeaders, CoinbaseHeaders, NordnetHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues, CoinBaseHeaderValues, DegiroHeaderValues, NordnetHeaderValues } from './types'
+import { DegiroHeaders, CoinbaseHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues, CoinBaseHeaderValues, DegiroHeaderValues, NordnetHeaderValues, NordnetHeaders } from './types'
 import { ColumnDataCrypto, ColumnDataSecurity } from '../../components/tableSettings'
 import _ from 'lodash';
-import { loadParser } from './parseUtils';
+import { loadParser } from './helpers';
 
 
 const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
@@ -59,6 +59,20 @@ const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
     return ret
 }
 
+const prepareDegiroForFIFO = (rawData: DegiroHeaders[]): Operation[] => {
+    return rawData
+        .map(record => {
+            return {
+                symbol: record.security,
+                date: record.datetime,
+                price: record.rate,
+                amount: record.quantity,
+                type: record.quantity > 0 ? "BUY" : "SELL",
+                transactionFee: Math.max(record.transactionCosts),
+            }
+        })
+}
+
 
 const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
     const parse = await loadParser()
@@ -102,6 +116,39 @@ const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
         ...x, "Source": "Nordnet"
     })) as NordnetHeaders[]
 }
+
+const getNordnetAsColumns = (records: NordnetHeaders[]): ColumnDataSecurity[] => {
+    const ret = records.map(record => {
+        return {
+            paivays: record.Kauppapaiva.toUTCString(),
+            tuote: record.Arvopaperi,
+            isin: record.ISIN,
+            arvo: `${record.Summa} ${record.Valuutta}`,
+            maara: record.Maara,
+            kulut: record.Kokonaiskulut,
+            kurssi: `${record.Kurssi} ${record.Valuutta}`,
+            kokonaissumma: `${record.Summa - record.Kokonaiskulut} ${record.Valuutta}`,
+        } as ColumnDataSecurity
+    })
+    return ret
+}
+
+
+const prepareNordnetForFIFO = (rawData: NordnetHeaders[]): Operation[] => {
+    return rawData
+        .filter(x => x.Tapahtumatyyppi === 'MYYNTI' || x.Tapahtumatyyppi === 'OSTO')
+        .map(record => {
+            return {
+                symbol: record.Arvopaperi,
+                date: record.Kauppapaiva,
+                price: record.Kurssi,
+                amount: record.Maara,
+                type: record.Tapahtumatyyppi === 'OSTO' ? "BUY" : "SELL",
+                transactionFee: record.Kokonaiskulut,
+            }
+        })
+}
+
 
 const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
     const parse = await loadParser()
@@ -188,7 +235,7 @@ const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] =>
             (record.QuantityTransacted * record.SpotPriceatTransaction).toFixed(2)
             } ${record.SpotPriceCurrency}`
         return {
-            paivays: record.Timestamp.toLocaleString('fi-FI', { timeZone: 'UTC' }),
+            paivays: new Date(record.Timestamp).toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.Asset,
             arvo: value,
             maara: record.QuantityTransacted,
@@ -201,8 +248,6 @@ const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] =>
     return ret
 }
 
-
-//const inputCoinbase = fs.readFileSync('./files/coinbase.csv', 'utf-8')
 const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]> => {
     const parse = await loadParser()
     const tmp = parse(input, {
@@ -228,14 +273,16 @@ const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]>
 
 
     return results.map((x: any) => ({
-        ...x, "Source": "CoinbasePro"
+        ...x, 
+        Source: "CoinbasePro",
+        Error: (x.pricefeetotalunit !== "EUR" ? "Invalid currency detected" : undefined)
     })) as CoinbaseProHeaders[]
 }
 
 const getCoinbaseProAsColumns = (records: CoinbaseProHeaders[]): ColumnDataCrypto[] => {
     const ret = records.map(record => {
         return {
-            paivays: record.createdat.toLocaleString('fi-FI', { timeZone: 'UTC' }),
+            paivays: record.createdat.toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.product,
             arvo: `${record.size * record.price} ${record.pricefeetotalunit}`,
             maara: record.size,
@@ -273,5 +320,8 @@ export {
     prepareCoinbaseForFIFO,
     parseCoinbaseProCSV,
     getCoinbaseProAsColumns,
-    prepareCoinbaseProForFIFO
+    prepareCoinbaseProForFIFO,
+    getNordnetAsColumns,
+    prepareNordnetForFIFO,
+    prepareDegiroForFIFO
 }

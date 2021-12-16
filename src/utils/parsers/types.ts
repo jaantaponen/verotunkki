@@ -39,8 +39,8 @@ export interface CoinbaseHeaders {
 
 export interface NordnetHeaders {
   Id: string;
-  Kirjauspaiva: string;
-  Kauppapaiva: string;
+  Kirjauspaiva: Date;
+  Kauppapaiva: Date;
   Maksupaiva: string;
   Salkku: string;
   Tapahtumatyyppi: string;
