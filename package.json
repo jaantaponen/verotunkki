@@ -32,8 +32,8 @@
     "test:watch": "npm t -- --watch --runInBand",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
-    "eslint": "eslint 'src/**/*.ts'",
-    "eslint:fix": "eslint --fix 'src/**/*.ts'"
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint --fix 'src/**/*.ts'"
   },
   "eslintConfig": {
     "extends": [
