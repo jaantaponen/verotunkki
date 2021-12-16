@@ -151,6 +151,7 @@ const prepareNordnetForFIFO = (rawData: NordnetHeaders[]): Operation[] => {
 
 
 const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
+    const startAt = _.findIndex(input.split('\n'), (o) => o.startsWith('Timestamp,Transaction'))
     const parse = await loadParser()
     const results = parse(input, {
         cast: (value: any, context: any) => {
@@ -163,7 +164,7 @@ const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
             return String(value)
         },
         columns: true,
-        from_line: 8,
+        from_line: startAt + 1,
         trim: true,
     })
     if ((results ?? []).every((x: any) => _.difference(CoinBaseHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
@@ -216,7 +217,7 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
         .map(record => {
             return {
                 symbol: record.Asset,
-                date: record.Timestamp,
+                date: new Date(record.Timestamp),
                 price: Number(record.SpotPriceatTransaction),
                 amount: Number(record.QuantityTransacted),
                 type: record.TransactionType as "BUY" | "SELL",
@@ -275,6 +276,7 @@ const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]>
     return results.map((x: any) => ({
         ...x, 
         Source: "CoinbasePro",
+        product: x.product.split('-')[0],
         Error: (x.pricefeetotalunit !== "EUR" ? "Invalid currency detected" : undefined)
     })) as CoinbaseProHeaders[]
 }
@@ -302,11 +304,11 @@ const prepareCoinbaseProForFIFO = (rawData: CoinbaseProHeaders[]): Operation[] =
         .map(record => {
             return {
                 symbol: record.product,
-                date: record.createdat,
-                price: record.price,
-                amount: record.size,
+                date: new Date(record.createdat),
+                price: Number(record.price),
+                amount: Number(record.size),
                 type: record.side as "BUY" | "SELL",
-                transactionFee: record.fee,
+                transactionFee: Number(record.fee),
             }
         })
 }

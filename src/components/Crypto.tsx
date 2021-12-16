@@ -54,23 +54,26 @@ const Crypto = () => {
     }
 
     const calculateFIFO = () => {
-        const fifoData: Transaction[] = []
+        const fifoData: Operation[] = []
         try {
             if (rawData?.Coinbase) {
-                fifoData.push(...calculateFIFOTransactions(prepareCoinbaseForFIFO(rawData.Coinbase as CoinbaseHeaders[])))
+                fifoData.push(...prepareCoinbaseForFIFO(rawData.Coinbase as CoinbaseHeaders[]))
+                console.log("added1")
             }
             if (rawData?.CoinbasePro) {
-                fifoData.push(...calculateFIFOTransactions(prepareCoinbaseProForFIFO(rawData.CoinbasePro as CoinbaseProHeaders[])))
+                console.log("added2")
+                fifoData.push(...prepareCoinbaseProForFIFO(rawData.CoinbasePro as CoinbaseProHeaders[]))
             }
-            console.log("rickrocll", fifoData)
-            setResults(_.sortBy(fifoData, (o) => o.selldate).map(x => ({
+            console.log(fifoData.filter(x => x.symbol === 'LINK'))
+            const finalFifo = calculateFIFOTransactions(fifoData)
+            setResults(_.sortBy(finalFifo, (o) => o.selldate).map(x => ({
                 ...x,
                 buydate: new Date(x.buydate).toISOString().substring(0, 16),
                 selldate: new Date(x.selldate).toISOString().substring(0, 16),
                 transferFee: `${Number(x.transferFee).toFixed(4)} EUR`,
                 profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`,
             })))
-            setTmpResult(_.sumBy(fifoData, (o) => o.profitOrLoss))
+            setTmpResult(_.sumBy(finalFifo, (o) => o.profitOrLoss))
         } catch (e: any) {
             setErrorFifo(e.message)
         }
