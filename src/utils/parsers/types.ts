@@ -19,6 +19,7 @@ export interface DegiroHeaders {
   orderId: string;
   datetime: Date;
   Source: "Degiro";
+  Error?: string;
 }
 
 export interface CoinbaseHeaders {
@@ -33,6 +34,7 @@ export interface CoinbaseHeaders {
   Fees: number;
   Notes: string;
   Source: "Coinbase";
+  Error?: string;
 }
 
 export interface NordnetHeaders {
@@ -64,6 +66,7 @@ export interface NordnetHeaders {
   Valityspalkkio: number;
   ValityspalkkioValuutta: string;
   Source: "Nordnet";
+  Error?: string;
 }
 
 export interface CoinbaseProHeaders {
@@ -79,6 +82,7 @@ export interface CoinbaseProHeaders {
   total: number;
   pricefeetotalunit: string;
   Source: "CoinbasePro"
+  Error?: string;
 }
 
 export const CoinBaseProHeaderValues = [

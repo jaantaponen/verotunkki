@@ -40,7 +40,7 @@ describe('Coinbase', () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbasePro.csv`, 'utf-8')
         await expect(parseCoinbaseCSV(inputCoinbase)).rejects.toThrowError(TypeError);
         await expect(parseCoinbaseCSV("test123")).rejects.toThrowError(TypeError);
-        await expect(parseCoinbaseCSV(undefined)).rejects.toThrowError("Invalid argument: got undefined at index 0");
+        await expect(parseCoinbaseCSV(undefined)).rejects.toThrowError("All headers not found in the provided Coinbase file.");
         await expect(parseCoinbaseCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
     })
 
@@ -160,7 +160,7 @@ describe('Coinbase', () => {
         const res = await parseCoinbaseCSV(inputCoinbase)
         const unprocessedFIFO = prepareCoinbaseForFIFO(res)
         expect(() => calculateFIFOTransactions(unprocessedFIFO))
-            .toThrow("Amount of sales for symbol LRC exceeds the amount of buys by 28.00000001. In transaction made in 2021-11-18T13:24:00.000Z")
+            .toThrow("Amount of sales for ticker LRC exceeds the amount of buys by 28.00000001. In transaction made in 18/11/2021, 13:24:00")
     })
 });
 
@@ -179,7 +179,7 @@ describe('CoinbasePro', () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
         await expect(parseCoinbaseProCSV(inputCoinbase)).rejects.toThrowError(Error);
         await expect(parseCoinbaseProCSV("test123")).rejects.toThrowError(Error);
-        await expect(parseCoinbaseProCSV(undefined)).rejects.toThrowError("Invalid argument: got undefined at index 0");
+        await expect(parseCoinbaseProCSV(undefined)).rejects.toThrowError("All headers not found in the provided Coinbase Pro file.");
         await expect(parseCoinbaseProCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
     })
 });
@@ -199,7 +199,7 @@ describe('Degiro', () => {
         const badInputDegiro = fs.readFileSync(`${relativePath}/transactionsNordnet.csv`, 'utf-8')
         await expect(parseDegiroCSV(badInputDegiro)).rejects.toThrowError(Error);
         await expect(parseDegiroCSV("test123")).rejects.toThrowError(TypeError);
-        await expect(parseDegiroCSV(undefined)).rejects.toThrowError("Invalid argument: got undefined at index 0");
+        await expect(parseDegiroCSV(undefined)).rejects.toThrowError("All headers not found in the provided Degiro file.");
         await expect(parseDegiroCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
     })
 });
@@ -218,7 +218,7 @@ describe('Nordnet', () => {
         const badInputNordnet = fs.readFileSync(`${relativePath}/transactionsDegiro.csv`, 'utf-8')
         await expect(parseNordNetCSV(badInputNordnet)).rejects.toThrowError(Error);
         await expect(parseNordNetCSV("test123")).rejects.toThrowError(TypeError);
-        await expect(parseNordNetCSV(undefined)).rejects.toThrowError("Invalid argument: got undefined at index 0");
+        await expect(parseNordNetCSV(undefined)).rejects.toThrowError("All headers not found in the provided Nordnet file.");
         await expect(parseNordNetCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
     })
 });

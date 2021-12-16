@@ -14,34 +14,8 @@ import { ResultTable } from './ResultTable'
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import { ColumnDataSecurity } from './tableSettings';
-
-const parsers = [parseDegiroCSV, parseCoinbaseCSV, parseNordNetCSV]
-/**
- * Workaround for browsers.
- * https://developer.mozilla.org/en-US/docs/Glossary/Base64#solution_1_%E2%80%93_escaping_the_string_before_encoding_it
- */
-const b64_to_utf8 = (str: string) => {
-    return decodeURIComponent(escape(window.atob(str)));
-}
-
-/**
- * Gets the current file and checks it againts parsers.
- * @param filesCopy 
- * @returns headers
- */
-const parseCSV = (filesCopy: FileObject[]) => {
-    for (let i = 0; i < parsers.length; i++) {
-        try {
-            const fileContentBuffer = Buffer.from(b64_to_utf8(filesCopy[0].data!.toString().split(',')[1]))
-            const fileContent = fileContentBuffer.toString('utf8')
-            const parsedData = parsers[i](fileContent)
-            return parsedData
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    return []
-}
+import {chooseCSVParser} from '../utils/parsers/parseUtils'
+const parsers = [parseDegiroCSV, parseNordNetCSV]
 
 const Securities = () => {
     const [zoneHeight, setZoneHeight] = useState(400);
@@ -61,17 +35,13 @@ const Securities = () => {
             if (files.length > 0) {
                 setZoneHeight(200)
                 setShowTable(true)
-                const data = await parseCSV(files)
+                const data = await chooseCSVParser(files, parsers)
                 const dataSource = data[0]?.Source
-                console.log("hyvä elämä2222", dataSource)
                 if (dataSource === 'Degiro') {
                     const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
                     setRows([...rows, ...degiroColumns])
-                    console.log("hyvä elama", degiroColumns)
                 } else if (dataSource === 'Nordnet') {
 
-                } else {
-                    console.log("Nyt on oikeat hädät")
                 }
             }
         })()
