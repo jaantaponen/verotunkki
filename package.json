@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false && react-scripts build",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "test:watch": "npm t -- --watch --runInBand",
     "eject": "react-scripts eject",
