@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import { Dropzone } from './components/Dropzone'
 import { Frontpage } from './components/Frontpage'
 import { Securities } from './components/Securities'
