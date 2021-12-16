@@ -2,7 +2,7 @@
     {
         "portfolio": "default",
         "tradeid": "125369",
-        "product": "CRO-EUR",
+        "product": "CRO",
         "side": "BUY",
         "createdat": "2021-11-22T11:12:48.795Z",
         "size": "0.60000000",
@@ -16,7 +16,7 @@
     {
         "portfolio": "default",
         "tradeid": "125370",
-        "product": "CRO-EUR",
+        "product": "CRO",
         "side": "BUY",
         "createdat": "2021-11-22T11:12:48.795Z",
         "size": "3.70000000",
@@ -30,7 +30,7 @@
     {
         "portfolio": "default",
         "tradeid": "125375",
-        "product": "CRO-EUR",
+        "product": "CRO",
         "side": "BUY",
         "createdat": "2021-11-22T11:15:19.107Z",
         "size": "195.70000000",
@@ -44,7 +44,7 @@
     {
         "portfolio": "default",
         "tradeid": "166260",
-        "product": "CRO-EUR",
+        "product": "CRO",
         "side": "BUY",
         "createdat": "2021-11-24T17:34:00.271Z",
         "size": "100.00000000",
@@ -58,7 +58,7 @@
     {
         "portfolio": "default",
         "tradeid": "1068414",
-        "product": "USDT-EUR",
+        "product": "USDT",
         "side": "BUY",
         "createdat": "2021-09-10T18:48:37.146Z",
         "size": "11.80000000",
@@ -72,7 +72,7 @@
     {
         "portfolio": "default",
         "tradeid": "1096602",
-        "product": "USDT-EUR",
+        "product": "USDT",
         "side": "SELL",
         "createdat": "2021-09-13T13:03:03.144Z",
         "size": "11.80000000",
@@ -86,7 +86,7 @@
     {
         "portfolio": "default",
         "tradeid": "2835930",
-        "product": "SOL-EUR",
+        "product": "SOL",
         "side": "BUY",
         "createdat": "2021-11-10T21:10:52.402Z",
         "size": "0.50000000",
@@ -100,7 +100,7 @@
     {
         "portfolio": "default",
         "tradeid": "2866020",
-        "product": "SOL-EUR",
+        "product": "SOL",
         "side": "BUY",
         "createdat": "2021-11-12T06:12:34.816Z",
         "size": "0.50000000",
@@ -114,7 +114,7 @@
     {
         "portfolio": "default",
         "tradeid": "2956497",
-        "product": "SOL-EUR",
+        "product": "SOL",
         "side": "BUY",
         "createdat": "2021-11-16T10:13:31.887Z",
         "size": "2.00000000",
@@ -128,7 +128,7 @@
     {
         "portfolio": "default",
         "tradeid": "3015813",
-        "product": "SOL-EUR",
+        "product": "SOL",
         "side": "BUY",
         "createdat": "2021-11-18T14:03:36.959Z",
         "size": "2.00000000",
@@ -142,7 +142,7 @@
     {
         "portfolio": "Portfolio",
         "tradeid": "5048862",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "BUY",
         "createdat": "2021-10-12T05:54:00.284Z",
         "size": "108.14000000",
@@ -156,7 +156,7 @@
     {
         "portfolio": "Portfolio",
         "tradeid": "5053233",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "BUY",
         "createdat": "2021-10-12T09:57:35.562Z",
         "size": "110.56000000",
@@ -170,7 +170,7 @@
     {
         "portfolio": "default",
         "tradeid": "5191043",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "SELL",
         "createdat": "2021-10-20T17:59:58.532Z",
         "size": "218.70000000",
@@ -184,7 +184,7 @@
     {
         "portfolio": "default",
         "tradeid": "5345852",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "BUY",
         "createdat": "2021-10-27T10:00:00.568Z",
         "size": "457.89000000",
@@ -198,7 +198,7 @@
     {
         "portfolio": "default",
         "tradeid": "5365066",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "BUY",
         "createdat": "2021-10-27T17:47:13.427Z",
         "size": "234.02000000",
@@ -212,7 +212,7 @@
     {
         "portfolio": "default",
         "tradeid": "5558297",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "BUY",
         "createdat": "2021-11-04T15:22:03.343Z",
         "size": "308.10000000",
@@ -226,7 +226,7 @@
     {
         "portfolio": "default",
         "tradeid": "5965052",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "BUY",
         "createdat": "2021-11-24T11:28:41.399Z",
         "size": "211.82000000",
@@ -240,7 +240,7 @@
     {
         "portfolio": "default",
         "tradeid": "5976536",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "BUY",
         "createdat": "2021-11-24T17:24:35.740Z",
         "size": "76.24000000",
@@ -254,7 +254,7 @@
     {
         "portfolio": "default",
         "tradeid": "5976537",
-        "product": "ADA-EUR",
+        "product": "ADA",
         "side": "BUY",
         "createdat": "2021-11-24T17:24:35.740Z",
         "size": "267.11000000",
@@ -268,7 +268,7 @@
     {
         "portfolio": "default",
         "tradeid": "24973572",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-08-30T19:07:48.741Z",
         "size": "0.04275053",
@@ -282,7 +282,7 @@
     {
         "portfolio": "default",
         "tradeid": "24995640",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-08-31T07:04:41.288Z",
         "size": "0.04408721",
@@ -296,7 +296,7 @@
     {
         "portfolio": "default",
         "tradeid": "25000536",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-08-31T08:03:17.374Z",
         "size": "0.16408721",
@@ -310,7 +310,7 @@
     {
         "portfolio": "default",
         "tradeid": "25479203",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-09-07T15:08:23.162Z",
         "size": "0.17021887",
@@ -324,7 +324,7 @@
     {
         "portfolio": "default",
         "tradeid": "25687129",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-09-08T19:15:24.885Z",
         "size": "0.17326936",
@@ -338,7 +338,7 @@
     {
         "portfolio": "default",
         "tradeid": "25796339",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-09-10T08:05:02.799Z",
         "size": "0.18058033",
@@ -352,7 +352,7 @@
     {
         "portfolio": "default",
         "tradeid": "26003521",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-09-13T13:03:55.489Z",
         "size": "0.00364576",
@@ -366,7 +366,7 @@
     {
         "portfolio": "default",
         "tradeid": "26143295",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-09-15T15:10:07.733Z",
         "size": "0.18422609",
@@ -380,7 +380,7 @@
     {
         "portfolio": "default",
         "tradeid": "26391490",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-09-20T06:20:37.501Z",
         "size": "0.12883948",
@@ -394,7 +394,7 @@
     {
         "portfolio": "default",
         "tradeid": "26391492",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-09-20T06:20:37.750Z",
         "size": "0.65428838",
@@ -408,7 +408,7 @@
     {
         "portfolio": "default",
         "tradeid": "26614517",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-09-21T21:19:19.867Z",
         "size": "0.16872161",
@@ -422,7 +422,7 @@
     {
         "portfolio": "default",
         "tradeid": "27190409",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-10-01T10:28:48.759Z",
         "size": "0.95271214",
@@ -436,7 +436,7 @@
     {
         "portfolio": "default",
         "tradeid": "28577508",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-10-27T10:17:30.487Z",
         "size": "0.05765235",
@@ -450,7 +450,7 @@
     {
         "portfolio": "default",
         "tradeid": "28580248",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-10-27T10:41:44.692Z",
         "size": "0.04550000",
@@ -464,7 +464,7 @@
     {
         "portfolio": "default",
         "tradeid": "28613793",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-10-27T19:33:42.580Z",
         "size": "0.07080000",
@@ -478,7 +478,7 @@
     {
         "portfolio": "default",
         "tradeid": "28700701",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-10-29T00:46:32.468Z",
         "size": "0.17395235",
@@ -492,7 +492,7 @@
     {
         "portfolio": "default",
         "tradeid": "29759071",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-11-16T07:20:16.499Z",
         "size": "0.04595950",
@@ -506,7 +506,7 @@
     {
         "portfolio": "default",
         "tradeid": "29770990",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-11-16T09:12:47.202Z",
         "size": "0.09473808",
@@ -520,7 +520,7 @@
     {
         "portfolio": "default",
         "tradeid": "30329329",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-11-25T14:32:44.404Z",
         "size": "0.14069758",
@@ -534,7 +534,7 @@
     {
         "portfolio": "default",
         "tradeid": "30383364",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-11-26T08:51:51.856Z",
         "size": "0.15000000",
@@ -548,7 +548,7 @@
     {
         "portfolio": "default",
         "tradeid": "30666930",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-11-30T12:52:45.285Z",
         "size": "0.03402781",
@@ -562,7 +562,7 @@
     {
         "portfolio": "default",
         "tradeid": "30666931",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-11-30T12:52:45.285Z",
         "size": "0.10794992",
@@ -576,7 +576,7 @@
     {
         "portfolio": "default",
         "tradeid": "30666932",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "SELL",
         "createdat": "2021-11-30T12:52:45.285Z",
         "size": "0.00802227",
@@ -590,7 +590,7 @@
     {
         "portfolio": "default",
         "tradeid": "30928455",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-12-03T20:19:23.854Z",
         "size": "0.20000000",
@@ -604,7 +604,7 @@
     {
         "portfolio": "default",
         "tradeid": "31542929",
-        "product": "ETH-EUR",
+        "product": "ETH",
         "side": "BUY",
         "createdat": "2021-12-10T15:13:55.875Z",
         "size": "0.02778033",

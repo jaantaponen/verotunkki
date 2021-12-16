@@ -21,8 +21,8 @@ describe('Coinbase', () => {
     it('formats columns correctly', async () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
         const res = await parseCoinbaseCSV(inputCoinbase)
-        const columns = getCoinbaseAsColumns(res)
-        expect(columns).toEqual(
+        const columns = JSON.stringify(getCoinbaseAsColumns(res))
+        expect(JSON.parse(columns)).toEqual(
             (JSON.parse(fs.readFileSync(`${relativePath}/coinbaseColumns.json`, 'utf-8')))
         )
     })
@@ -30,8 +30,8 @@ describe('Coinbase', () => {
     it('processes rawdata correctly for FIFO operation', async () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbaseWithConverts.csv`, 'utf-8')
         const res = await parseCoinbaseCSV(inputCoinbase)
-        const unprocessedFIFO = prepareCoinbaseForFIFO(res)
-        expect(unprocessedFIFO).toEqual(
+        const unprocessedFIFO = JSON.stringify(prepareCoinbaseForFIFO(res))
+        expect(JSON.parse(unprocessedFIFO)).toEqual(
             (JSON.parse(fs.readFileSync(`${relativePath}/coinbaseWithConverts.json`, 'utf-8')))
         )
     })
@@ -59,7 +59,7 @@ describe('Coinbase', () => {
             "Source": "Coinbase"
         } as any,])).toEqual([
             {
-                paivays: '2021-05-10T05:14:00.000Z',
+                paivays: '10/05/2021, 05:14:00',
                 tuote: 'ETH',
                 arvo: 'NaN undefined',
                 maara: '0.0008909',
@@ -73,8 +73,8 @@ describe('Coinbase', () => {
     it('processes rawdata and executes FIFO', async () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
         const res = await parseCoinbaseCSV(inputCoinbase)
-        const unprocessedFIFO = prepareCoinbaseForFIFO(res)
-        expect(calculateFIFOTransactions(unprocessedFIFO)).toEqual([
+        const unprocessedFIFO = JSON.stringify(prepareCoinbaseForFIFO(res))
+        expect(calculateFIFOTransactions(JSON.parse(unprocessedFIFO))).toEqual([
             {
                 ticker: 'ETH',
                 buydate: '2021-05-10T05:14:00.000Z',

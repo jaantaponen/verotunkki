@@ -151,7 +151,7 @@ const prepareNordnetForFIFO = (rawData: NordnetHeaders[]): Operation[] => {
 
 
 const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
-    const startAt = _.findIndex(input.split('\n'), (o) => o.startsWith('Timestamp,Transaction'))
+    const startAt = _.findIndex(input?.split('\n'), (o) => o?.startsWith('Timestamp,Transaction'))
     const parse = await loadParser()
     const results = parse(input, {
         cast: (value: any, context: any) => {
@@ -164,7 +164,7 @@ const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
             return String(value)
         },
         columns: true,
-        from_line: startAt + 1,
+        from_line: startAt > 0 ? startAt + 1 : 1,
         trim: true,
     })
     if ((results ?? []).every((x: any) => _.difference(CoinBaseHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
