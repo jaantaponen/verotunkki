@@ -41,7 +41,7 @@ const Securities = () => {
                     const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
                     setRows([...rows, ...degiroColumns])
                 } else if (dataSource === 'Nordnet') {
-
+                    console.error("not yet implemented")
                 }
             }
         })()
