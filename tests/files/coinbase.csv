@@ -3,7 +3,7 @@
 
 
 Transactions
-User,admin@example.fi,6ea1235207a30aa213cb8250e
+User,example@example.fi,169375202a6aa213cb8250e
 
 Timestamp,Transaction Type,Asset,Quantity Transacted,Spot Price Currency,Spot Price at Transaction,Subtotal,Total (inclusive of fees),Fees,Notes
 2021-05-10T08:14:59Z,Buy,ETH,0.0008909,EUR,3378.61,3.01,4.00,0.990000,Bought 0.0008909 ETH for €4.00 EUR
