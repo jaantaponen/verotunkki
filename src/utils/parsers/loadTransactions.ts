@@ -59,7 +59,7 @@ const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
     return ret
 }
 
-//const inputNordNet = fs.readFileSync('./files/transactions-and-notes-export2.csv', 'utf16le')
+
 const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
     const parse = await loadParser()
     const tmp = parse(input, {
@@ -102,7 +102,7 @@ const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
         ...x, "Source": "Nordnet"
     })) as NordnetHeaders[]
 }
-//const inputCoinbase = fs.readFileSync('./files/coinbase.csv', 'utf-8')
+
 const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
     const parse = await loadParser()
     const results = parse(input, {
@@ -133,8 +133,8 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
     rawData.forEach(statement => {
         if (statement.TransactionType === 'CONVERT') {
             const info = statement.Notes.split(' ')
-            const soldAmount = info[1]
-            const soldCurrency = info[2]
+            //const soldAmount = info[1]
+            //const soldCurrency = info[2]
             const boughAmount = Number(info[4])
             const boughtCurrency = info[5]
             prepareRawFifo.push({

@@ -44,7 +44,6 @@ const Dropzone = ({ zoneHeight, handleFiles }: Props) => {
                 Icon={UploadFileIcon as any}
                 dropzoneText={zoneHeight > 200 ? "Pudota CSV-tiedostoja tähän" : "Pudota lisää CSV-tiedostoja tähän"}
                 fileObjects={[]}
-
             />
         </Container>
     );

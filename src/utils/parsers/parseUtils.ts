@@ -35,6 +35,7 @@ const chooseCSVParser = async (filesCopy: FileObject[], parsers: any[]) => {
  */
 const loadParser: any = async () => {
     if (process.env.NODE_ENV === 'test') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore  
         const lib = await import('csv/dist/cjs/sync.cjs')
         return lib.parse
