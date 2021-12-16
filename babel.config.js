@@ -6,5 +6,5 @@ module.exports = {
       "runtime": "automatic"
     }],
   ],
-  plugins: ['@babel/plugin-transform-runtime', "@babel/transform-regenerator", "@babel/plugin-syntax-dynamic-import",]
+  plugins: ['@babel/plugin-transform-runtime', "@babel/transform-regenerator", "@babel/plugin-syntax-dynamic-import","@babel/plugin-transform-modules-commonjs"]
 };

@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 const relativePath = path.relative(process.cwd(), './tests/files');
-import { CoinbaseHeaders } from '../src/utils/parsers/types'
-import { getCoinbaseAsColumns, getCoinbaseProAsColumns, parseCoinbaseCSV, prepareCoinbaseForFIFO } from '../src/utils/parsers/loadTransactions'
+import { getCoinbaseAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordNetCSV, prepareCoinbaseForFIFO } from '../src/utils/parsers/loadTransactions'
 import _ from 'lodash'
 import { calculateFIFOTransactions } from '../src/utils/fifo';
 
@@ -22,8 +21,8 @@ describe('Coinbase', () => {
     it('formats columns correctly', async () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
         const res = await parseCoinbaseCSV(inputCoinbase)
-        const columns = getCoinbaseAsColumns(res)
-        expect(columns).toEqual(
+        const columns = JSON.stringify(getCoinbaseAsColumns(res))
+        expect(JSON.parse(columns)).toEqual(
             (JSON.parse(fs.readFileSync(`${relativePath}/coinbaseColumns.json`, 'utf-8')))
         )
     })
@@ -31,8 +30,8 @@ describe('Coinbase', () => {
     it('processes rawdata correctly for FIFO operation', async () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbaseWithConverts.csv`, 'utf-8')
         const res = await parseCoinbaseCSV(inputCoinbase)
-        const unprocessedFIFO = prepareCoinbaseForFIFO(res)
-        expect(unprocessedFIFO).toEqual(
+        const unprocessedFIFO = JSON.stringify(prepareCoinbaseForFIFO(res))
+        expect(JSON.parse(unprocessedFIFO)).toEqual(
             (JSON.parse(fs.readFileSync(`${relativePath}/coinbaseWithConverts.json`, 'utf-8')))
         )
     })
@@ -41,7 +40,7 @@ describe('Coinbase', () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbasePro.csv`, 'utf-8')
         await expect(parseCoinbaseCSV(inputCoinbase)).rejects.toThrowError(TypeError);
         await expect(parseCoinbaseCSV("test123")).rejects.toThrowError(TypeError);
-        await expect(parseCoinbaseCSV(undefined)).rejects.toThrowError("Invalid argument: got undefined at index 0");
+        await expect(parseCoinbaseCSV(undefined)).rejects.toThrowError("All headers not found in the provided Coinbase file.");
         await expect(parseCoinbaseCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
     })
 
@@ -60,7 +59,7 @@ describe('Coinbase', () => {
             "Source": "Coinbase"
         } as any,])).toEqual([
             {
-                paivays: '2021-05-10T05:14:00.000Z',
+                paivays: '10/05/2021, 05:14:00',
                 tuote: 'ETH',
                 arvo: 'NaN undefined',
                 maara: '0.0008909',
@@ -74,8 +73,8 @@ describe('Coinbase', () => {
     it('processes rawdata and executes FIFO', async () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
         const res = await parseCoinbaseCSV(inputCoinbase)
-        const unprocessedFIFO = prepareCoinbaseForFIFO(res)
-        expect(calculateFIFOTransactions(unprocessedFIFO)).toEqual([
+        const unprocessedFIFO = JSON.stringify(prepareCoinbaseForFIFO(res))
+        expect(calculateFIFOTransactions(JSON.parse(unprocessedFIFO))).toEqual([
             {
                 ticker: 'ETH',
                 buydate: '2021-05-10T05:14:00.000Z',
@@ -161,8 +160,68 @@ describe('Coinbase', () => {
         const res = await parseCoinbaseCSV(inputCoinbase)
         const unprocessedFIFO = prepareCoinbaseForFIFO(res)
         expect(() => calculateFIFOTransactions(unprocessedFIFO))
-            .toThrow("Amount of sales for symbol LRC exceeds the amount of buys by 28.00000001. In transaction made in 2021-11-18T13:24:00.000Z")
+            .toThrow("Amount of sales for ticker LRC exceeds the amount of buys by 28.00000001. In transaction made in 18/11/2021, 13:24:00")
     })
 });
+
+describe('CoinbasePro', () => {
+    beforeEach(() => {
+    });
+    it('parses the received CSV file into json', async () => {
+        const inputCoinbasePro = fs.readFileSync(`${relativePath}/coinbasePro.csv`, 'utf-8')
+        const res = JSON.stringify(await parseCoinbaseProCSV(inputCoinbasePro))
+        expect(JSON.parse(res)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/coinbasePro.json`, 'utf-8')))
+        )
+    })
+
+    it('throws an error when invalid data is parsed', async () => {
+        const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
+        await expect(parseCoinbaseProCSV(inputCoinbase)).rejects.toThrowError(Error);
+        await expect(parseCoinbaseProCSV("test123")).rejects.toThrowError(Error);
+        await expect(parseCoinbaseProCSV(undefined)).rejects.toThrowError("All headers not found in the provided Coinbase Pro file.");
+        await expect(parseCoinbaseProCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
+    })
+});
+
+describe('Degiro', () => {
+    beforeEach(() => {
+    });
+    it('parses the received CSV file into json', async () => {
+        const inputDegiro = fs.readFileSync(`${relativePath}/transactionsDegiro.csv`, 'utf-8')
+        const res = JSON.stringify(await parseDegiroCSV(inputDegiro))
+        expect(JSON.parse(res)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/transactionsDegiro.json`, 'utf-8')))
+        )
+    })
+
+    it('throws an error when invalid data is parsed', async () => {
+        const badInputDegiro = fs.readFileSync(`${relativePath}/transactionsNordnet.csv`, 'utf-8')
+        await expect(parseDegiroCSV(badInputDegiro)).rejects.toThrowError(Error);
+        await expect(parseDegiroCSV("test123")).rejects.toThrowError(TypeError);
+        await expect(parseDegiroCSV(undefined)).rejects.toThrowError("All headers not found in the provided Degiro file.");
+        await expect(parseDegiroCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
+    })
+});
+
+describe('Nordnet', () => {
+    beforeEach(() => {
+    });
+    it('parses the received CSV file into json', async () => {
+        const inputNordnet = fs.readFileSync(`${relativePath}/transactionsNordnet.csv`, 'utf16le').trim()
+        const res = JSON.stringify(await parseNordNetCSV(inputNordnet))
+        expect(JSON.parse(res)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/transactionsNordnet.json`, 'utf-8')))
+        )
+    })
+    it('throws an error when invalid data is parsed', async () => {
+        const badInputNordnet = fs.readFileSync(`${relativePath}/transactionsDegiro.csv`, 'utf-8')
+        await expect(parseNordNetCSV(badInputNordnet)).rejects.toThrowError(Error);
+        await expect(parseNordNetCSV("test123")).rejects.toThrowError(TypeError);
+        await expect(parseNordNetCSV(undefined)).rejects.toThrowError("All headers not found in the provided Nordnet file.");
+        await expect(parseNordNetCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
+    })
+});
+
 
 export { }

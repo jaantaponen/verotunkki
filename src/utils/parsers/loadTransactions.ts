@@ -1,20 +1,10 @@
 import translateDegiro from './translations'
 import moment from 'moment';
 import { Operation } from '../fifo/types'
-import { DegiroHeaders, CoinbaseHeaders, NordnetHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues, CoinBaseHeaderValues } from './types'
+import { DegiroHeaders, CoinbaseHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues, CoinBaseHeaderValues, DegiroHeaderValues, NordnetHeaderValues, NordnetHeaders } from './types'
 import { ColumnDataCrypto, ColumnDataSecurity } from '../../components/tableSettings'
 import _ from 'lodash';
-//const input = fs.readFileSync('./files/transactions.csv', 'utf8').trim()
-
-const loadParser: any = async () => {
-    if (process.env.NODE_ENV === 'test') {
-        const lib = await import('csv')
-        return lib.parse
-    } else {
-        const lib = await import('csv/dist/esm')
-        return lib.parse
-    }
-}
+import { loadParser } from './helpers';
 
 
 const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
@@ -42,17 +32,10 @@ const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
         transaction['datetime'] = moment(`${transaction.date}-${transaction.time}`, "DD-MM-YYYY-HH-mm").toDate()
         return transaction
     })
-    /* 
-        const transactions: Operation[] = records.map(record => {
-            return {
-                symbol: record.security,
-                date: record.datetime,
-                price: Math.abs(record.value / record.quantity), // get price in EUR
-                amount: Math.abs(record.quantity),
-                type: record.quantity > 0 ? "BUY" : "SELL",
-                transactionFee: Math.abs(record.transactionCosts)
-            }
-        }) */
+
+    if (results.every(x => _.difference(_.sortBy(DegiroHeaderValues), _.sortBy(Object.keys(x))).length !== 0)) {
+        throw TypeError('All headers not found in the provided Degiro file.')
+    }
 
     return records.map(x => ({
         ...x, "Source": "Degiro"
@@ -76,7 +59,21 @@ const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
     return ret
 }
 
-//const inputNordNet = fs.readFileSync('./files/transactions-and-notes-export2.csv', 'utf16le')
+const prepareDegiroForFIFO = (rawData: DegiroHeaders[]): Operation[] => {
+    return rawData
+        .map(record => {
+            return {
+                symbol: record.security,
+                date: record.datetime,
+                price: record.rate,
+                amount: record.quantity,
+                type: record.quantity > 0 ? "BUY" : "SELL",
+                transactionFee: Math.max(record.transactionCosts),
+            }
+        })
+}
+
+
 const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
     const parse = await loadParser()
     const tmp = parse(input, {
@@ -111,14 +108,52 @@ const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
         results.push(record)
     }
 
+    if (results.every(x => _.difference(NordnetHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
+        throw TypeError('All headers not found in the provided Nordnet file.')
+    }
+
     return results.map(x => ({
         ...x, "Source": "Nordnet"
     })) as NordnetHeaders[]
 }
-//const inputCoinbase = fs.readFileSync('./files/coinbase.csv', 'utf-8')
+
+const getNordnetAsColumns = (records: NordnetHeaders[]): ColumnDataSecurity[] => {
+    const ret = records.map(record => {
+        return {
+            paivays: record.Kauppapaiva.toUTCString(),
+            tuote: record.Arvopaperi,
+            isin: record.ISIN,
+            arvo: `${record.Summa} ${record.Valuutta}`,
+            maara: record.Maara,
+            kulut: record.Kokonaiskulut,
+            kurssi: `${record.Kurssi} ${record.Valuutta}`,
+            kokonaissumma: `${record.Summa - record.Kokonaiskulut} ${record.Valuutta}`,
+        } as ColumnDataSecurity
+    })
+    return ret
+}
+
+
+const prepareNordnetForFIFO = (rawData: NordnetHeaders[]): Operation[] => {
+    return rawData
+        .filter(x => x.Tapahtumatyyppi === 'MYYNTI' || x.Tapahtumatyyppi === 'OSTO')
+        .map(record => {
+            return {
+                symbol: record.Arvopaperi,
+                date: record.Kauppapaiva,
+                price: record.Kurssi,
+                amount: record.Maara,
+                type: record.Tapahtumatyyppi === 'OSTO' ? "BUY" : "SELL",
+                transactionFee: record.Kokonaiskulut,
+            }
+        })
+}
+
+
 const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
+    const startAt = _.findIndex(input?.split('\n'), (o) => o?.startsWith('Timestamp,Transaction'))
     const parse = await loadParser()
-    const tmp = parse(input, {
+    const results = parse(input, {
         cast: (value: any, context: any) => {
             if (context.header) {
                 if (value.includes('(')) return value.split('(')[0].replace(/\s/g, '')
@@ -129,20 +164,14 @@ const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
             return String(value)
         },
         columns: true,
-        from_line: 8,
+        from_line: startAt > 0 ? startAt + 1 : 1,
         trim: true,
     })
-
-    const results: any[] = []
-    for await (const record of tmp) {
-        results.push(record)
-    }
-  
-    if (results.every(x =>_.difference(CoinBaseHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
+    if ((results ?? []).every((x: any) => _.difference(CoinBaseHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
         throw TypeError('All headers not found in the provided Coinbase file.')
     }
 
-    return results.map(x => ({
+    return results.map((x: any) => ({
         ...x, "Source": "Coinbase"
     })) as CoinbaseHeaders[];
 }
@@ -152,8 +181,8 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
     rawData.forEach(statement => {
         if (statement.TransactionType === 'CONVERT') {
             const info = statement.Notes.split(' ')
-            const soldAmount = info[1]
-            const soldCurrency = info[2]
+            //const soldAmount = info[1]
+            //const soldCurrency = info[2]
             const boughAmount = Number(info[4])
             const boughtCurrency = info[5]
             prepareRawFifo.push({
@@ -188,7 +217,7 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
         .map(record => {
             return {
                 symbol: record.Asset,
-                date: record.Timestamp,
+                date: new Date(record.Timestamp),
                 price: Number(record.SpotPriceatTransaction),
                 amount: Number(record.QuantityTransacted),
                 type: record.TransactionType as "BUY" | "SELL",
@@ -207,7 +236,7 @@ const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] =>
             (record.QuantityTransacted * record.SpotPriceatTransaction).toFixed(2)
             } ${record.SpotPriceCurrency}`
         return {
-            paivays: record.Timestamp.toLocaleString('fi-FI', { timeZone: 'UTC' }),
+            paivays: new Date(record.Timestamp).toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.Asset,
             arvo: value,
             maara: record.QuantityTransacted,
@@ -220,8 +249,6 @@ const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] =>
     return ret
 }
 
-
-//const inputCoinbase = fs.readFileSync('./files/coinbase.csv', 'utf-8')
 const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]> => {
     const parse = await loadParser()
     const tmp = parse(input, {
@@ -239,7 +266,7 @@ const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]>
 
     const results = []
     for await (const record of tmp) results.push(record)
-    
+
 
     if (results.every(x => _.difference(_.sortBy(CoinBaseProHeaderValues), _.sortBy(Object.keys(x))).length !== 0)) {
         throw TypeError('All headers not found in the provided Coinbase Pro file.')
@@ -247,14 +274,17 @@ const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]>
 
 
     return results.map((x: any) => ({
-        ...x, "Source": "CoinbasePro"
+        ...x, 
+        Source: "CoinbasePro",
+        product: x.product.split('-')[0],
+        Error: (x.pricefeetotalunit !== "EUR" ? "Invalid currency detected" : undefined)
     })) as CoinbaseProHeaders[]
 }
 
 const getCoinbaseProAsColumns = (records: CoinbaseProHeaders[]): ColumnDataCrypto[] => {
     const ret = records.map(record => {
         return {
-            paivays: record.createdat.toLocaleString('fi-FI', { timeZone: 'UTC' }),
+            paivays: record.createdat.toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.product,
             arvo: `${record.size * record.price} ${record.pricefeetotalunit}`,
             maara: record.size,
@@ -274,19 +304,26 @@ const prepareCoinbaseProForFIFO = (rawData: CoinbaseProHeaders[]): Operation[] =
         .map(record => {
             return {
                 symbol: record.product,
-                date: record.createdat,
-                price: record.price,
-                amount: record.size,
+                date: new Date(record.createdat),
+                price: Number(record.price),
+                amount: Number(record.size),
                 type: record.side as "BUY" | "SELL",
-                transactionFee: record.fee,
+                transactionFee: Number(record.fee),
             }
         })
 }
 
-
-
-export { parseCoinbaseCSV, parseDegiroCSV, parseNordNetCSV, getDegiroAsColumns, getCoinbaseAsColumns, prepareCoinbaseForFIFO, parseCoinbaseProCSV, getCoinbaseProAsColumns, prepareCoinbaseProForFIFO }
-//parseCoinbaseCSV(inputCoinbase)
-//parseDegiroCSV(input)
-//parseNordNetCSV(inputNordNet)
-//console.log(parseDegiroCSV(input))
+export {
+    parseCoinbaseCSV,
+    parseDegiroCSV,
+    parseNordNetCSV,
+    getDegiroAsColumns,
+    getCoinbaseAsColumns,
+    prepareCoinbaseForFIFO,
+    parseCoinbaseProCSV,
+    getCoinbaseProAsColumns,
+    prepareCoinbaseProForFIFO,
+    getNordnetAsColumns,
+    prepareNordnetForFIFO,
+    prepareDegiroForFIFO
+}

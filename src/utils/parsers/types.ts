@@ -19,6 +19,7 @@ export interface DegiroHeaders {
   orderId: string;
   datetime: Date;
   Source: "Degiro";
+  Error?: string;
 }
 
 export interface CoinbaseHeaders {
@@ -33,12 +34,13 @@ export interface CoinbaseHeaders {
   Fees: number;
   Notes: string;
   Source: "Coinbase";
+  Error?: string;
 }
 
 export interface NordnetHeaders {
   Id: string;
-  Kirjauspaiva: string;
-  Kauppapaiva: string;
+  Kirjauspaiva: Date;
+  Kauppapaiva: Date;
   Maksupaiva: string;
   Salkku: string;
   Tapahtumatyyppi: string;
@@ -64,6 +66,7 @@ export interface NordnetHeaders {
   Valityspalkkio: number;
   ValityspalkkioValuutta: string;
   Source: "Nordnet";
+  Error?: string;
 }
 
 export interface CoinbaseProHeaders {
@@ -79,6 +82,7 @@ export interface CoinbaseProHeaders {
   total: number;
   pricefeetotalunit: string;
   Source: "CoinbasePro"
+  Error?: string;
 }
 
 export const CoinBaseProHeaderValues = [
@@ -106,4 +110,44 @@ export const CoinBaseHeaderValues = [
   'Total',
   'Fees',
   'Notes',
+]
+
+export const DegiroHeaderValues = [
+  'date',
+  'time',
+  'security',
+  'ISIN',
+  'reference',
+  'venue',
+  'quantity',
+  'rate',
+  'rateCurrency',
+  'marketValue',
+  'marketValueCurrency',
+  'value',
+  'valueCurrency',
+  'exchangeRate',
+  'transactionCosts',
+  'transactionCostsCurrency',
+  'totalAmount',
+  'totalAmountCurrency',
+  'orderId',
+  'datetime'
+]
+
+export const NordnetHeaderValues = [
+  'Id', 'Kirjauspaiva',
+  'Kauppapaiva', 'Maksupaiva',
+  'Salkku', 'Tapahtumatyyppi',
+  'Arvopaperi', 'Instrumenttityyppi',
+  'ISIN', 'Maara',
+  'Kurssi', 'Korko',
+  'Kokonaiskulut', 'KokonaiskulutValuutta',
+  'Summa', 'Valuutta',
+  'Hankintaarvo', 'Tulos',
+  'Kokonaismaara', 'Saldo',
+  'Vaihtokurssi', 'Tapahtumateksti',
+  'Mitatointipaiva', 'Laskelma',
+  'Vahvistusnumero', 'Valityspalkkio',
+  'ValityspalkkioValuutta'
 ]

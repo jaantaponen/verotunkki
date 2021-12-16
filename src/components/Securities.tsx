@@ -4,50 +4,43 @@ import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
+import { Alert, Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
-import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseCSV, parseNordNetCSV, getCoinbaseAsColumns } from '../utils/parsers/loadTransactions'
-import { DegiroHeaders, NordnetHeaders, CoinbaseHeaders } from '../utils/parsers/types';
+import { parseDegiroCSV, getDegiroAsColumns, parseNordNetCSV, getNordnetAsColumns, prepareDegiroForFIFO, prepareNordnetForFIFO } from '../utils/parsers/loadTransactions'
+import { CoinbaseHeaders, CoinbaseProHeaders, DegiroHeaders, NordnetHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
-import { ColumnDataSecurity } from './tableSettings';
-
-const parsers = [parseDegiroCSV, parseCoinbaseCSV, parseNordNetCSV]
-/**
- * Workaround for browsers.
- * https://developer.mozilla.org/en-US/docs/Glossary/Base64#solution_1_%E2%80%93_escaping_the_string_before_encoding_it
- */
-const b64_to_utf8 = (str: string) => {
-    return decodeURIComponent(escape(window.atob(str)));
-}
-
-/**
- * Gets the current file and checks it againts parsers.
- * @param filesCopy 
- * @returns headers
- */
-const parseCSV = (filesCopy: FileObject[]) => {
-    for (let i = 0; i < parsers.length; i++) {
-        try {
-            const fileContentBuffer = Buffer.from(b64_to_utf8(filesCopy[0].data!.toString().split(',')[1]))
-            const fileContent = fileContentBuffer.toString('utf8')
-            const parsedData = parsers[i](fileContent)
-            return parsedData
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    return []
-}
+import { ColumnDataSecurity, ColumnDataTransaction } from './tableSettings';
+import { chooseCSVParser } from '../utils/parsers/helpers'
+import _ from 'lodash';
+import { calculateFIFOTransactions } from '../utils/fifo';
+import { Transaction } from '../utils/fifo/types';
+const parsers = [parseDegiroCSV, parseNordNetCSV]
 
 const Securities = () => {
     const [zoneHeight, setZoneHeight] = useState(400);
     const [files, setFiles] = useState<FileObject[]>([]);
     const [showTable, setShowTable] = useState(false)
+    const [rawData, setRawData] = useState<DegiroHeaders[] | NordnetHeaders[]>([]);
+    const [results, setResults] = useState<ColumnDataTransaction[]>([]);
+    const [dataSource, setDataSource] = useState<"Degiro" | "Nordnet">();
     const [rows, setRows] = useState<ColumnDataSecurity[]>([]);
+    const [parseError, setParseError] = useState("")
+    const [errorFifo, setErrorFifo] = useState("")
+
+
+    const [tmpResult, setTmpResult] = useState(0);
+
+    const clearRows = () => {
+        setFiles([])
+        setRows([])
+        setRawData([])
+        setShowTable(false)
+        setZoneHeight(400)
+    }
 
     const fileCallback = (file: FileObject[]) => setFiles(file)
     const theme = createTheme({
@@ -56,22 +49,51 @@ const Securities = () => {
         },
     });
 
+
+
+    const calculateFIFO = () => {
+        let fifoData: Transaction[] = []
+        try {
+            if (dataSource === 'Degiro') {
+                fifoData = calculateFIFOTransactions(prepareDegiroForFIFO(rawData as DegiroHeaders[]))
+            } else if (dataSource === 'Nordnet') {
+                fifoData = calculateFIFOTransactions(prepareNordnetForFIFO(rawData as NordnetHeaders[]))
+            }
+            console.log("maol", fifoData)
+            setResults(_.sortBy(fifoData, (o) => o.selldate).map(x => ({
+                ...x,
+                buydate: x.buydate.toISOString().substring(0, 16),
+                selldate: x.selldate.toISOString().substring(0, 16),
+                transferFee: `${Number(x.transferFee).toFixed(4)} EUR`,
+                profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`,
+            })))
+            setTmpResult(_.sumBy(fifoData, (o) => o.profitOrLoss))
+        } catch (e: any) {
+            setErrorFifo(e.message)
+        }
+    }
+
     useEffect(() => {
         (async () => {
             if (files.length > 0) {
                 setZoneHeight(200)
                 setShowTable(true)
-                const data = await parseCSV(files)
+                const data = await chooseCSVParser(files, parsers)
                 const dataSource = data[0]?.Source
-                console.log("hyvä elämä2222", dataSource)
                 if (dataSource === 'Degiro') {
+                    setDataSource('Degiro')
                     const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
+                    setRawData([...rawData, ...data] as DegiroHeaders[])
                     setRows([...rows, ...degiroColumns])
-                    console.log("hyvä elama", degiroColumns)
+                    setZoneHeight(200)
+                    setShowTable(true)
                 } else if (dataSource === 'Nordnet') {
-
-                } else {
-                    console.log("Nyt on oikeat hädät")
+                    setDataSource('Nordnet')
+                    const nordnetColumns = getNordnetAsColumns(data as NordnetHeaders[])
+                    setRawData([...rawData, ...data] as NordnetHeaders[])
+                    setRows([...rows, ...nordnetColumns])
+                    setZoneHeight(200)
+                    setShowTable(true)
                 }
             }
         })()
@@ -104,19 +126,26 @@ const Securities = () => {
                     <Typography alignSelf="center" align="center" variant="h6" sx={{ pt: 0 }} component="p">
                         Arvopaperit
                     </Typography>
+                    {parseError && <Alert severity="error">{parseError}</Alert>}
                     <Dropzone zoneHeight={zoneHeight} handleFiles={fileCallback} />
                     <Typography alignSelf="flex-start" sx={{ pl: 4 }} component="p">
                         Tuetut lähteet: Nordnet, Degiro
                     </Typography>
+                    {errorFifo && <Alert severity="error">{errorFifo}</Alert>}
                     {showTable && <Stack direction="row" spacing={2}>
-                        <Button variant="outlined" startIcon={<DeleteIcon />}>
-                            Delete
+                        <Button variant="outlined" onClick={clearRows} startIcon={<DeleteIcon />}>
+                            Poistha
                         </Button>
-                        <Button variant="contained" endIcon={<SendIcon />}>
-                            Send
+                        <Button disabled={results.length > 0} onClick={calculateFIFO} variant="contained" endIcon={<SendIcon />}>
+                            Laske
                         </Button>
                     </Stack>}
-                    {showTable && <ResultTable mode="Security" rows={rows} />}
+                    {(showTable && results.length === 0) && <ResultTable mode="Security" rows={rows} />}
+                    {showTable && results.length > 0 &&
+                        <div>
+                            <ResultTable mode="Result" rows={results} />
+                            <p>Total naurut: {tmpResult.toFixed(2)} EUR</p>
+                        </div>}
                 </Stack>
                 <Copyright />
             </Container>

@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, createTheme, Paper, Stack, styled, ThemeProvider } from '@mui/material';
 
 const FrontPageContent = () => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const theme = createTheme({
         typography: {
             fontSize: 14,

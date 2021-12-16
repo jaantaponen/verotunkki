@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import { Dropzone } from './components/Dropzone'
 import { Frontpage } from './components/Frontpage'
 import { Securities } from './components/Securities'
@@ -8,7 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Crypto } from './components/Crypto'
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <Routes>
       <Route path="/" element={<Frontpage />} />
       <Route path="maol" element={<Dropzone handleFiles={() => console.log("hyvä elämä")} zoneHeight={400} />} />
