@@ -37,7 +37,7 @@ const Dropzone = ({ zoneHeight, handleFiles }: Props) => {
             },
         }}>
             <DropzoneAreaBase
-                acceptedFiles={['.csv', 'image/*', 'application/vnd.ms-excel']}
+                acceptedFiles={['text/x-csv', 'text/plain', 'application/vnd.ms-excel']}
                 onAdd={handleFiles}
                 onDelete={(fileObj) => console.log('Removed File:', fileObj)}
                 onAlert={handleAlert}
