@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 const relativePath = path.relative(process.cwd(), './tests/files');
-import { getCoinbaseAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordNetCSV, prepareCoinbaseForFIFO } from '../src/utils/parsers/loadTransactions'
+import { getCoinbaseAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordNetCSV, prepareCoinbaseForFIFO, prepareDegiroForFIFO } from '../src/utils/parsers/loadTransactions'
 import _ from 'lodash'
 import { calculateFIFOTransactions } from '../src/utils/fifo';
 
@@ -74,85 +74,85 @@ describe('Coinbase', () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
         const res = await parseCoinbaseCSV(inputCoinbase)
         const unprocessedFIFO = JSON.stringify(prepareCoinbaseForFIFO(res))
-        expect(calculateFIFOTransactions(JSON.parse(unprocessedFIFO))).toEqual([
+        expect(calculateFIFOTransactions(JSON.parse(unprocessedFIFO))).toEqual(  [
             {
-                ticker: 'ETH',
-                buydate: '2021-05-10T05:14:00.000Z',
-                selldate: '2021-08-21T11:15:00.000Z',
-                amountsold: 0.0008909,
-                transferPrice: 2784.01,
-                profitOrLoss: -0.5297291399999999,
-                acquisitionPrice: 3378.61,
-                acquisitionFee: 0.99,
-                transferFee: 0.0369599429825673
+              ticker: 'ETH',
+              buydate: '2021-05-10T05:14:59.000Z',
+              selldate: '2021-08-21T11:15:48.000Z',
+              amountsold: 0.0008909,
+              transferPrice: 2784.01,
+              profitOrLoss: -0.5297291399999999,
+              acquisitionPrice: 3378.61,
+              acquisitionFee: 0.99,
+              transferFee: 0.0369599429825673
             },
             {
-                ticker: 'ETH',
-                buydate: '2021-05-22T12:13:00.000Z',
-                selldate: '2021-08-21T11:15:00.000Z',
-                amountsold: 0.05598209,
-                transferPrice: 2784.01,
-                profitOrLoss: 49.827978846300006,
-                acquisitionPrice: 1893.94,
-                acquisitionFee: 0,
-                transferFee: 2.3224771067964425
+              ticker: 'ETH',
+              buydate: '2021-05-22T12:13:53.000Z',
+              selldate: '2021-08-21T11:15:48.000Z',
+              amountsold: 0.05598209,
+              transferPrice: 2784.01,
+              profitOrLoss: 49.827978846300006,
+              acquisitionPrice: 1893.94,
+              acquisitionFee: 0,
+              transferFee: 2.3224771067964425
             },
             {
-                ticker: 'ETH',
-                buydate: '2021-05-28T06:36:00.000Z',
-                selldate: '2021-08-21T11:15:00.000Z',
-                amountsold: 0.14882114,
-                transferPrice: 2784.01,
-                profitOrLoss: 113.11299566840002,
-                acquisitionPrice: 2023.95,
-                acquisitionFee: 0,
-                transferFee: 6.174004769335127
+              ticker: 'ETH',
+              buydate: '2021-05-28T06:36:17.000Z',
+              selldate: '2021-08-21T11:15:48.000Z',
+              amountsold: 0.14882114,
+              transferPrice: 2784.01,
+              profitOrLoss: 113.11299566840002,
+              acquisitionPrice: 2023.95,
+              acquisitionFee: 0,
+              transferFee: 6.174004769335127
             },
             {
-                ticker: 'ETH',
-                buydate: '2021-06-10T05:35:00.000Z',
-                selldate: '2021-08-21T11:15:00.000Z',
-                amountsold: 0.10075589,
-                transferPrice: 2784.01,
-                profitOrLoss: 70.58453873950002,
-                acquisitionPrice: 2083.46,
-                acquisitionFee: 0,
-                transferFee: 4.179966269567654
+              ticker: 'ETH',
+              buydate: '2021-06-10T05:35:45.000Z',
+              selldate: '2021-08-21T11:15:48.000Z',
+              amountsold: 0.10075589,
+              transferPrice: 2784.01,
+              profitOrLoss: 70.58453873950002,
+              acquisitionPrice: 2083.46,
+              acquisitionFee: 0,
+              transferFee: 4.179966269567654
             },
             {
-                ticker: 'ETH',
-                buydate: '2021-07-01T05:55:00.000Z',
-                selldate: '2021-08-21T11:15:00.000Z',
-                amountsold: 0.10072289,
-                transferPrice: 2784.01,
-                profitOrLoss: 101.06232613930001,
-                acquisitionPrice: 1780.64,
-                acquisitionFee: 0,
-                transferFee: 4.178597229138396
+              ticker: 'ETH',
+              buydate: '2021-07-01T05:55:08.000Z',
+              selldate: '2021-08-21T11:15:48.000Z',
+              amountsold: 0.10072289,
+              transferPrice: 2784.01,
+              profitOrLoss: 101.06232613930001,
+              acquisitionPrice: 1780.64,
+              acquisitionFee: 0,
+              transferFee: 4.178597229138396
             },
             {
-                ticker: 'ETH',
-                buydate: '2021-07-20T05:28:00.000Z',
-                selldate: '2021-08-21T11:15:00.000Z',
-                amountsold: 0.1000584,
-                transferPrice: 2784.01,
-                profitOrLoss: 129.09434709600004,
-                acquisitionPrice: 1493.82,
-                acquisitionFee: 0,
-                transferFee: 4.1510301480827385
+              ticker: 'ETH',
+              buydate: '2021-07-20T05:28:04.000Z',
+              selldate: '2021-08-21T11:15:48.000Z',
+              amountsold: 0.1000584,
+              transferPrice: 2784.01,
+              profitOrLoss: 129.09434709600004,
+              acquisitionPrice: 1493.82,
+              acquisitionFee: 0,
+              transferFee: 4.1510301480827385
             },
             {
-                ticker: 'ETH',
-                buydate: '2021-08-09T10:16:00.000Z',
-                selldate: '2021-08-21T11:15:00.000Z',
-                amountsold: 0.10044249,
-                transferPrice: 2784.01,
-                profitOrLoss: 13.1559573402,
-                acquisitionPrice: 2653.03,
-                acquisitionFee: 0,
-                transferFee: 4.166964534097077
+              ticker: 'ETH',
+              buydate: '2021-08-09T10:16:27.000Z',
+              selldate: '2021-08-21T11:15:48.000Z',
+              amountsold: 0.10044249,
+              transferPrice: 2784.01,
+              profitOrLoss: 13.1559573402,
+              acquisitionPrice: 2653.03,
+              acquisitionFee: 0,
+              transferFee: 4.166964534097077
             }
-        ])
+          ])
     })
 
     it('processes data with more sells than buys and executes FIFO with exception', async () => {
@@ -160,7 +160,7 @@ describe('Coinbase', () => {
         const res = await parseCoinbaseCSV(inputCoinbase)
         const unprocessedFIFO = prepareCoinbaseForFIFO(res)
         expect(() => calculateFIFOTransactions(unprocessedFIFO))
-            .toThrow("Amount of sales for ticker LRC exceeds the amount of buys by 28.00000001. In transaction made in 18/11/2021, 13:24:00")
+            .toThrow("Amount of sales for ticker LRC exceeds the amount of buys by 28.00000000999999. In transaction made in 18/11/2021, 13:24:55")
     })
 });
 
@@ -193,6 +193,25 @@ describe('Degiro', () => {
         expect(JSON.parse(res)).toEqual(
             (JSON.parse(fs.readFileSync(`${relativePath}/transactionsDegiro.json`, 'utf-8')))
         )
+    })
+
+    it('correctly calculates fifo without seconds info', async () => {
+        const inputDegiro = fs.readFileSync(`${relativePath}/transactionWithoutSecondsDegiro.csv`, 'utf-8')
+        const res = (await parseDegiroCSV(inputDegiro))
+        const fifoRaw = prepareDegiroForFIFO(res)
+        expect(calculateFIFOTransactions(fifoRaw)).toEqual([
+            {
+                ticker: 'GAMESTOP CORPORATION C',
+                buydate: '2021-02-01T22:00:00.000Z',
+                selldate: '2021-02-01T22:00:00.000Z',
+                amountsold: -3,
+                transferPrice: '194.5000',
+                profitOrLoss: -313.5,
+                acquisitionPrice: '90.0000',
+                acquisitionFee: -0.51,
+                transferFee: -0.51
+            }
+        ])
     })
 
     it('throws an error when invalid data is parsed', async () => {
