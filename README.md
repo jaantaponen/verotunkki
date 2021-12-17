@@ -1,46 +1,39 @@
-# Getting Started with Create React App
+# Verotunkki
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project initiated from the need to inform the Finnish Tax Administration (Verottaja) with transactions (wheter security or crypto) with FIFO based calculations. The aim of the project is to provide fast and easy calculation of your taxable capital gains (or losses).
 
-## Available Scripts
+Visit [verotunkki.fi](verotunkki.fi) to test it out!
 
-In the project directory, you can run:
 
-### `npm start`
+#### Instructions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Run the development server with 
+```console
+npm start
+``` 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+To run the unit tests with Jest use
+```console
+npm run tests
+``` 
 
-### `npm test`
+## FAQ
+**Q:** How does Verotunkki calculate the results?
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**A:** The method Verotunkki calculates and the groups the results of your transactions is a very common format called First in, First Out [(FIFO)](https://www.investopedia.com/terms/f/fifo.asp). This means if you give the algorithm a valid source of data it will produce a list with your sell orders divided as many buy transaction of what you have. From this data it's very easy to just sum your capital losses/gains. You can view an examples of the algorithm from the test [transactions](./tests/transactions.test.ts).
 
-### `npm run build`
+##
+**Q:** What values do I need to report to the Tax Adminstartion (Verottaja)?
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**A:** After inserting valid infromation, you can see the Capital Gain, Capital Loss and total transaction per capital type at the bottom of the page.
+The same fields can be found from Omavero. Use the instructions provided on the official [site](https://www.vero.fi/henkiloasiakkaat/omaisuus/sijoitukset/virtuaalivaluutat/) to fill out official tax form.
+##
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Q:** Help my CSV is incorrectly!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**A:** Currently only Coinbase, Coinbase Pro, Nordnet and Degiro are supported as source of CSV files. If you have more complex transactions than there are tests for, please open an [issue](https://github.com/jaantaponen/verotunkki/issues/new)! Don't forget to provide the problematic CSV file.
+##
 
-### `npm run eject`
+**Q:** I want to help out, what can I do?
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+**A:** I would be so happy if you could help out! Writing more unit tests, improve the UI/UX. Fork the project and submit a PR!
