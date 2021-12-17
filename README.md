@@ -29,7 +29,7 @@ npm run tests
 The same fields can be found from Omavero. Use the instructions provided on the official [site](https://www.vero.fi/henkiloasiakkaat/omaisuus/sijoitukset/virtuaalivaluutat/) to fill out official tax form.
 ##
 
-**Q:** Help my CSV is incorrectly!
+**Q:** Help my CSV is parsed incorrectly!
 
 **A:** Currently only Coinbase, Coinbase Pro, Nordnet and Degiro are supported as source of CSV files. If you have more complex transactions than there are tests for, please open an [issue](https://github.com/jaantaponen/verotunkki/issues/new)! Don't forget to provide the problematic CSV file.
 ##
