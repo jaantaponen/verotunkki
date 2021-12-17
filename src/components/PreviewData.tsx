@@ -15,7 +15,7 @@ import { ResultCard } from './ResultCard'
 import { ColumnDataCrypto, ColumnDataSecurity, ColumnDataTransaction, columnsCrypto } from './tableSettings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import DownloadIcon from '@mui/icons-material/Download';
 import { calculateFIFOTransactions } from '../utils/fifo'
 import { Operation, Transaction } from '../utils/fifo/types'
 import { chooseCSVParser } from '../utils/parsers/helpers'
@@ -265,7 +265,7 @@ const PreviewData = ({ mode }: Props) => {
                         <Alert severity="warning" >
                             You have made transactions that have not been traded in EUR. Do you want to use an external API to fetch the currency info? EXPERIMENTAL!
                         </Alert>
-                        <Button variant="contained" onClick={currencyClick} endIcon={<ArrowDownwardIcon />} >Fetch</Button>
+                        <Button variant="contained" onClick={currencyClick} endIcon={<DownloadIcon />} >Fetch</Button>
                     </Stack>}
 
                     {showTable && !showCurrencyFetchButton && <Stack direction="row" spacing={2}>
