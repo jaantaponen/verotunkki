@@ -4,13 +4,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { Alert, Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
+import { Alert, Box, Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
 import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseProCSV, parseCoinbaseCSV, parseNordNetCSV, prepareCoinbaseForFIFO, getCoinbaseAsColumns, getCoinbaseProAsColumns, prepareCoinbaseProForFIFO, getNordnetAsColumns, prepareDegiroForFIFO, prepareNordnetForFIFO } from '../utils/parsers/loadTransactions'
 import { CoinbaseHeaders, CoinbaseProHeaders, DegiroHeaders, NordnetHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
+import { ResultCard } from './ResultCard'
 import { ColumnDataCrypto, ColumnDataSecurity, ColumnDataTransaction, columnsCrypto } from './tableSettings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
@@ -31,6 +32,14 @@ interface rawDatas {
     Nordnet: NordnetHeaders[]
 }
 
+interface calculatedResultsType {
+    capitalGains: number,
+    capitalLosses: number,
+    transactionTotal: number,
+    netProfit: number
+}
+
+
 interface Props {
     mode: "CRYPTO" | "SECURITY"
 }
@@ -45,12 +54,12 @@ const PreviewData = ({ mode }: Props) => {
     const [parseError, setParseError] = useState("")
     const [errorFifo, setErrorFifo] = useState("")
     const [showCurrencyFetchButton, setShowCurrencyFetchButton] = useState(false)
-    const [tmpResult, setTmpResult] = useState(0);
+    const [calculatedResults, setCalculatedResults] = useState({} as calculatedResultsType);
     const fileCallback = (file: FileObject[]) => setFiles([...files, ...file])
     const theme = createTheme({
         typography: {
             fontSize: 14,
-        },
+        }
     });
 
     const clearRows = () => {
@@ -85,7 +94,16 @@ const PreviewData = ({ mode }: Props) => {
                 transferFee: `${Number(x.transferFee).toFixed(4)} EUR`,
                 profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`,
             })))
-            setTmpResult(_.sumBy(finalFifo, (o) => o.profitOrLoss))
+
+
+            setCalculatedResults({
+                capitalGains: _.sumBy(finalFifo, (o) => o.profitOrLoss > 0 ? o.profitOrLoss : 0),
+                capitalLosses: _.sumBy(finalFifo, (o) => o.profitOrLoss < 0 ? o.profitOrLoss : 0),
+                transactionTotal: _.sumBy(finalFifo, (o) => Math.abs(o.transferFee) + Math.abs(o.acquisitionFee)),
+                netProfit: _.sumBy(finalFifo, (o) => o.profitOrLoss - (Math.abs(o.transferFee) + Math.abs(o.acquisitionFee)))
+            })
+
+
         } catch (e: any) {
             setErrorFifo(e.message)
         }
@@ -208,7 +226,36 @@ const PreviewData = ({ mode }: Props) => {
                         {mode === 'CRYPTO' ? "Virtuaalivaluutat" : "Arvopaperit"}
                     </Typography>
                     {parseError && <Alert severity="error">{parseError}</Alert>}
-                    <Dropzone zoneHeight={zoneHeight} handleFiles={fileCallback} />
+                    {results.length === 0 && <Dropzone zoneHeight={zoneHeight} handleFiles={fileCallback} />}
+                    {results.length > 0 &&
+                        <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ pb: 4 }}>
+                            <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
+                                <ResultCard header="Gross Capital Gain"
+                                    content={calculatedResults.capitalGains.toFixed(2)}
+                                    footer="Gains" footerSecondary="before losses and fees"
+                                    contentColor="success.light"
+                                />
+                                <ResultCard header="Gross Capital Loss"
+                                    content={calculatedResults.capitalLosses.toFixed(2)}
+                                    footer="Losses"
+                                    footerSecondary="before gains and fees"
+                                    contentColor="error.light"
+                                />
+                            </Stack>
+                            <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
+                                <ResultCard header="Transaction Fees"
+                                    content={calculatedResults.transactionTotal.toFixed(2)}
+                                    footer="Fees" footerSecondary="acquisition and transfer Fees"
+                                    contentColor="error.light"
+                                />
+                                <ResultCard header="Net Capital Gain"
+                                    content={calculatedResults.netProfit.toFixed(2)}
+                                    footer="Total"
+                                    footerSecondary="Gains with fees and losses"
+                                    contentColor={calculatedResults.netProfit > 0 ? 'success.light' : 'error.light'}
+                                />
+                            </Stack>
+                        </Stack>}
                     <Typography alignSelf="flex-start" sx={{ pl: 4 }} component="p">
                         {mode === 'CRYPTO' ? "Tuetut lähteet: Coinbase, Coinbase Pro" : "Tuetut lähteet: Nordnet, Degiro"}
                     </Typography>
@@ -229,11 +276,7 @@ const PreviewData = ({ mode }: Props) => {
                         </Button>
                     </Stack>}
                     {(showTable && results.length === 0) && <ResultTable mode={mode} rows={rows} />}
-                    {results.length > 0 &&
-                        <div>
-                            <ResultTable mode="RESULT" rows={results} />
-                            <p>Net Capital Gain: {tmpResult.toFixed(2)} EUR</p>
-                        </div>}
+                    {results.length > 0 && <ResultTable mode="RESULT" rows={results} />}
                 </Stack>
                 <Copyright />
             </Container>
