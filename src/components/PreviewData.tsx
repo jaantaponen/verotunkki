@@ -59,6 +59,7 @@ const PreviewData = ({ mode }: Props) => {
         setRawData({} as rawDatas)
         setShowTable(false)
         setZoneHeight(400)
+        setResults([])
     }
 
     const calculateFIFO = () => {
@@ -76,9 +77,6 @@ const PreviewData = ({ mode }: Props) => {
             if (rawData?.Nordnet) {
                 fifoData.push(...prepareNordnetForFIFO(rawData.Nordnet as NordnetHeaders[]))
             }
-
-
-            console.log(fifoData.filter(x => x.symbol === 'LINK'))
             const finalFifo = calculateFIFOTransactions(fifoData)
             setResults(_.sortBy(finalFifo, (o) => o.selldate).map(x => ({
                 ...x,
@@ -93,32 +91,30 @@ const PreviewData = ({ mode }: Props) => {
         }
     }
 
-    const createColumnsFromRaw = (newRawData: any) => {
-        const columnData = [] as any[]
-        Object.keys(newRawData).forEach((header: any) => {
+    const createColumnsFromRaw = (newRawData: rawDatas) => {
+        const columnData: any = []
+        Object.keys(newRawData).forEach((header) => {
             if (header === 'Coinbase') {
-                columnData.push(getCoinbaseAsColumns(newRawData.Coinbase as CoinbaseHeaders[]))
+                columnData.push(getCoinbaseAsColumns(newRawData.Coinbase as CoinbaseHeaders[]) as ColumnDataCrypto[])
             } else if (header === 'CoinbasePro') {
-                const currencyError = newRawData.CoinbasePro.find((x: any) => x?.Error === "Invalid currency detected")
+                const currencyError = newRawData.CoinbasePro.find(x => x?.Error === "Invalid currency detected")
                 if (currencyError)
                     setParseError(`${currencyError.Error} In trancactions made in ${currencyError
                         .createdat.toLocaleString('en-GB', { timeZone: 'UTC' })}.`)
-                columnData.push(getCoinbaseProAsColumns(newRawData.CoinbasePro as CoinbaseProHeaders[]))
+                columnData.push(getCoinbaseProAsColumns(newRawData.CoinbasePro as CoinbaseProHeaders[]) as ColumnDataCrypto[])
             } else if (header === 'Degiro') {
-                columnData.push(getDegiroAsColumns(newRawData.Degiro as DegiroHeaders[]))
+                columnData.push(getDegiroAsColumns(newRawData.Degiro as DegiroHeaders[]) as ColumnDataSecurity[])
             } else if (header === 'Nordnet') {
-                columnData.push(getNordnetAsColumns(newRawData.Nordnet as NordnetHeaders[]))
+                columnData.push(getNordnetAsColumns(newRawData.Nordnet as NordnetHeaders[]) as ColumnDataSecurity[])
             }
         })
-        setRows(_.flatten(columnData))
+        setRows(_.flatten(columnData) as ColumnDataCrypto[] | ColumnDataSecurity[])
         setZoneHeight(200)
         setShowTable(true)
     }
 
     const currencyClick = () => {
         (async () => {
-
-            console.log(rawData)
             const fixedCurrencies = await Promise.all(rawData.CoinbasePro.map(async x => {
                 const requestDate = moment(x.createdat).format('YYYY-MM-DD');
                 const unitAsEur = (await (await axios.get(`https://api.coinbase.com/v2/prices/${x.sizeunit}-EUR/spot?date=${requestDate}`)).data.data)?.amount
@@ -160,14 +156,14 @@ const PreviewData = ({ mode }: Props) => {
                 } else {
                     createColumnsFromRaw({
                         ...rawData,
-                        [data[0]?.Source]: data
+                        [dataSource]: data
                     })
                     setRawData({
                         ...rawData,
-                        [data[0]?.Source]: data
+                        [dataSource]: data
                     })
                 }
-                
+
                 setFiles([])
             }
         })()
