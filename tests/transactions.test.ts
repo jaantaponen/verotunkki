@@ -138,23 +138,23 @@ describe('calculateFIFO', () => {
         transactions: [
           {
             ticker: "Yhtio Oy",
-            buydate: new Date('2015-01-01'),
-            selldate: new Date('2017-01-01'),
-            amountsold: 200,
-            transferPrice: 20,
-            profitOrLoss: -2000,
-            acquisitionPrice: 30,
-            acquisitionFee: 0,
-            transferFee: 0
-          },
-          {
-            ticker: "Yhtio Oy",
             buydate: new Date('2016-01-01'),
             selldate: new Date('2017-01-01'),
             amountsold: 800,
             transferPrice: 20,
             profitOrLoss: 6000,
             acquisitionPrice: 12.5,
+            acquisitionFee: 0,
+            transferFee: 0
+          },
+          {
+            ticker: "Yhtio Oy",
+            buydate: new Date('2015-01-01'),
+            selldate: new Date('2017-01-01'),
+            amountsold: 200,
+            transferPrice: 20,
+            profitOrLoss: -2000,
+            acquisitionPrice: 30,
             acquisitionFee: 0,
             transferFee: 0
           }
@@ -215,68 +215,68 @@ describe('calculateFIFO', () => {
         transactionFee: 0,
       },
     ]
-    const capitalGains = calculateFIFOCapitalGains(operationHistory)
-    expect(capitalGains).toEqual([
+    const capitalGains = JSON.stringify(calculateFIFOCapitalGains(operationHistory))
+    expect(JSON.parse(capitalGains)).toEqual([
       {
-        "capitalGainPerSellDate": 500,
-        "transactions": [
-          {
-            "ticker": "STK1",
-            "buydate": new Date("2020-01-01"),
-            "selldate": new Date("2020-03-01"),
-            "amountsold": 5,
-            "transferPrice": 200,
-            "profitOrLoss": 500,
-            "acquisitionPrice": 100,
-            "acquisitionFee": 0,
-            "transferFee": 0
-          }
-        ]
+          "capitalGainPerSellDate": 500,
+          "transactions": [
+              {
+                  "ticker": "STK1",
+                  "buydate": "2020-01-01T00:00:00.000Z",
+                  "selldate": "2020-03-01T00:00:00.000Z",
+                  "amountsold": 5,
+                  "transferPrice": 200,
+                  "profitOrLoss": 500,
+                  "acquisitionPrice": 100,
+                  "acquisitionFee": 0,
+                  "transferFee": 0
+              }
+          ]
       },
       {
-        "capitalGainPerSellDate": 500,
-        "transactions": [
-          {
-            "ticker": "STK2",
-            "buydate": new Date("2020-02-01"),
-            "selldate": new Date("2021-01-01"),
-            "amountsold": 10,
-            "transferPrice": 200,
-            "profitOrLoss": 500,
-            "acquisitionPrice": 150,
-            "acquisitionFee": 0,
-            "transferFee": 0
-          }
-        ]
+          "capitalGainPerSellDate": 500,
+          "transactions": [
+              {
+                  "ticker": "STK2",
+                  "buydate": "2020-02-01T00:00:00.000Z",
+                  "selldate": "2021-01-01T00:00:00.000Z",
+                  "amountsold": 10,
+                  "transferPrice": 200,
+                  "profitOrLoss": 500,
+                  "acquisitionPrice": 150,
+                  "acquisitionFee": 0,
+                  "transferFee": 0
+              }
+          ]
       },
       {
-        "capitalGainPerSellDate": 1500,
-        "transactions": [
-          {
-            "ticker": "STK1",
-            "buydate": new Date("2020-01-01"),
-            "selldate": new Date("2022-01-01"),
-            "amountsold": 5,
-            "transferPrice": 300,
-            "profitOrLoss": 1000,
-            "acquisitionPrice": 100,
-            "acquisitionFee": 0,
-            "transferFee": 0
-          },
-          {
-            "ticker": "STK1",
-            "buydate": new Date("2020-04-01"),
-            "selldate": new Date("2022-01-01"),
-            "amountsold": 10,
-            "transferPrice": 300,
-            "profitOrLoss": 500,
-            "acquisitionPrice": 250,
-            "acquisitionFee": 0,
-            "transferFee": 0
-          }
-        ]
+          "capitalGainPerSellDate": 1500,
+          "transactions": [
+              {
+                  "ticker": "STK1",
+                  "buydate": "2020-04-01T00:00:00.000Z",
+                  "selldate": "2022-01-01T00:00:00.000Z",
+                  "amountsold": 10,
+                  "transferPrice": 300,
+                  "profitOrLoss": 500,
+                  "acquisitionPrice": 250,
+                  "acquisitionFee": 0,
+                  "transferFee": 0
+              },
+              {
+                  "ticker": "STK1",
+                  "buydate": "2020-01-01T00:00:00.000Z",
+                  "selldate": "2022-01-01T00:00:00.000Z",
+                  "amountsold": 5,
+                  "transferPrice": 300,
+                  "profitOrLoss": 1000,
+                  "acquisitionPrice": 100,
+                  "acquisitionFee": 0,
+                  "transferFee": 0
+              }
+          ]
       }
-    ])
+  ])
   })
 
   it("throws when a symbol's sales have a bigger amount than its buys", () => {
