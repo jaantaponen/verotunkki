@@ -2,8 +2,8 @@
 
 This project initiated from the need to inform the Finnish Tax Administration (Verottaja) with transactions (wheter security or crypto) with FIFO based calculations. The aim of the project is to provide fast and easy calculation of your taxable capital gains (or losses).
 
-Visit [verotunkki.fi](verotunkki.fi) to test it out!
-
+Visit [verotunkki.fi](https://verotunkki.fi) to test it out!
+![Build and deploy](https://github.com/jaantaponen/verotunkki/actions/workflows/build-deploy.yml/badge.svg)
 
 #### Instructions
 
