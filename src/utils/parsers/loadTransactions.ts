@@ -1,5 +1,6 @@
 import translateDegiro from './translations'
 import moment from 'moment';
+import 'moment-timezone';
 import { Operation } from '../fifo/types'
 import { DegiroHeaders, CoinbaseHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues, CoinBaseHeaderValues, DegiroHeaderValues, NordnetHeaderValues, NordnetHeaders } from './types'
 import { ColumnDataCrypto, ColumnDataSecurity } from '../../components/tableSettings'
@@ -159,7 +160,8 @@ const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
                 if (value.includes('(')) return value.split('(')[0].replace(/\s/g, '')
                 return value.replace(/\s/g, '')
             }
-            if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm").toISOString()
+            moment.tz
+            if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm").tz('Europe/Helsinki').toDate()
             if (context.column === 'TransactionType') return value.toUpperCase()
             return String(value)
         },
