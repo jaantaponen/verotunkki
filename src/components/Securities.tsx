@@ -100,8 +100,8 @@ const Securities = () => {
     }, [files])
 
 
-    return (
-        <ThemeProvider theme={theme}>
+    return (<p>aa</p>
+/*         <ThemeProvider theme={theme}>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
             <CssBaseline />
             <Container component="main" sx={{ pt: 8, pb: 4 }}>
@@ -149,7 +149,7 @@ const Securities = () => {
                 </Stack>
                 <Copyright />
             </Container>
-        </ThemeProvider>
+        </ThemeProvider> */
     );
 }
 

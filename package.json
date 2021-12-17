@@ -29,8 +29,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
-    "test": "TZ=UTC+2 cross-env NODE_ENV=test jest --verbose --runInBand",
-    "test:watch": "npm t -- --watch --runInBand",
+    "test": "TZ=UTC+2 cross-env NODE_ENV=test jest --verbose --runInBand --silent",
+    "test:debug": "TZ=UTC+2 cross-env NODE_ENV=test jest --verbose --runInBand",
+    "test:watch": "npm run test:debug -- --watch --runInBand",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
     "lint": "eslint 'src/**/*.ts'",
