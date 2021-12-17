@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup timezone
-      uses: zcong1993/setup-timezone@master
+      uses: jaantaponen/setup-timezone@master
       with:
         timezone: Europe/Helsinki
     
@@ -29,12 +29,12 @@ jobs:
     
     - name: Install NPM packages
       run: npm ci
+
+    - name: Run tests
+      run: npm run test
     
     - name: Build project
       run: npm run build
-    
-    - name: Run tests
-      run: npm run test
 
     - name: Upload production-ready build files
       uses: actions/upload-artifact@v2
