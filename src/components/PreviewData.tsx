@@ -162,6 +162,7 @@ const PreviewData = ({ mode }: Props) => {
     useEffect(() => {
         (async () => {
             if (files.length > 0) {
+                console.log("files Debug", files)
                 const data = await chooseCSVParser(files, mode === "CRYPTO" ? parsersCrypto : parsersSecurity)
                 const dataSource = data[0]?.Source
                 if (dataSource === 'Error') {
