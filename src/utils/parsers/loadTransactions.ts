@@ -161,7 +161,7 @@ const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
                 return value.replace(/\s/g, '')
             }
             moment.tz
-            if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm").tz('Europe/Helsinki').toDate()
+            if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm").toDate()
             if (context.column === 'TransactionType') return value.toUpperCase()
             return String(value)
         },

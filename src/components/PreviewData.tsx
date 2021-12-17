@@ -89,8 +89,8 @@ const PreviewData = ({ mode }: Props) => {
             const finalFifo = calculateFIFOTransactions(fifoData)
             setResults(_.sortBy(finalFifo, (o) => o.selldate).map(x => ({
                 ...x,
-                buydate: new Date(x.buydate).toISOString().substring(0, 16),
-                selldate: new Date(x.selldate).toISOString().substring(0, 16),
+                buydate: new Date(x.buydate).toLocaleString('en-GB', { timeZone: 'UTC' }),
+                selldate: new Date(x.selldate).toLocaleString('en-GB', { timeZone: 'UTC' }),
                 transferFee: `${Number(x.transferFee).toFixed(4)} EUR`,
                 profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`,
             })))

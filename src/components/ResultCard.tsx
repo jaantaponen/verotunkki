@@ -44,7 +44,7 @@ const ResultCard = ({ header, content, footer, footerSecondary, contentColor }: 
             </Box>
             <Box
                 sx={{
-                    color: Number(content) > 0 ? 'success.light' : 'error.light',
+                    color: contentColor,
                     display: 'inline',
                     fontWeight: 'medium',
                     mx: 0.5,
