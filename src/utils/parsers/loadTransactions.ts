@@ -30,7 +30,7 @@ const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
     }
 
     const records: DegiroHeaders[] = results.map((transaction: any) => {
-        transaction['datetime'] = moment(`${transaction.date}-${transaction.time}`, "DD-MM-YYYY-HH-mm").toDate()
+        transaction['datetime'] = moment(`${transaction.date}-${transaction.time}`, "DD-MM-YYYY-HH-mm").toISOString()
         return transaction
     })
 
@@ -47,7 +47,7 @@ const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
 const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
     const ret = records.map(record => {
         return {
-            paivays: record.datetime.toUTCString(),
+            paivays: new Date(record.datetime).toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.security,
             isin: record.ISIN,
             arvo: `${record.value} ${record.valueCurrency}`,
@@ -121,7 +121,7 @@ const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
 const getNordnetAsColumns = (records: NordnetHeaders[]): ColumnDataSecurity[] => {
     const ret = records.map(record => {
         return {
-            paivays: record.Kauppapaiva.toUTCString(),
+            paivays: new Date(record.Kauppapaiva).toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.Arvopaperi,
             isin: record.ISIN,
             arvo: `${record.Summa} ${record.Valuutta}`,
@@ -161,7 +161,7 @@ const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
                 return value.replace(/\s/g, '')
             }
             moment.tz
-            if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm").toDate()
+            if (context.column === 'Timestamp') return moment(value, "YYYY-MM-DD-HH-mm-ss").toISOString()
             if (context.column === 'TransactionType') return value.toUpperCase()
             return String(value)
         },
@@ -259,7 +259,7 @@ const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]>
                 if (value.includes('/')) return value.replace(/\//g, '').replace(/\s/g, '')
                 return value.replace(/\s/g, '')
             }
-            if (context.column === 'createdat') return new Date(value)
+            if (context.column === 'createdat') return new Date(value).toISOString()
             return String(value)
         },
         columns: true,

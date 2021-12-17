@@ -165,13 +165,13 @@ const calculateCapitalGainsForSale = (
   let capitalGainPerSellDate = 0;
   const transactions: Transaction[] = [];
 
-  const relatedBuyTransactions = operationHistory.filter(
+  const relatedBuyTransactions = _.orderBy(operationHistory, (o: Operation) => [o.date, o.type], ['asc', 'desc']).filter(
     ({ type, symbol, date }) =>
-      type === 'BUY' && symbol === sale.symbol && date < sale.date
+      type === 'BUY' && symbol === sale.symbol && date <= sale.date
   );
 
   // Order the result set in ASC order so the oldest buy operations are handled first
-  _.orderBy(relatedBuyTransactions, (o: Operation) => o.date, 'asc').forEach(
+  relatedBuyTransactions.forEach(
     (buy) => {
       const amountSold = Math.min(sale.amount, buy.amount);
       // if the total amount of held shares have not yet been sold
