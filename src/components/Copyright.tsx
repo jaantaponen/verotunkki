@@ -16,7 +16,7 @@ const Copyright = () => {
                 Tarkista tiedot aina itse virheiden varalta.
             </Typography>
             <Typography alignSelf="center" align="center" component="p" sx={{ pt: 0 }}>
-                Oleta, että tämän sivuston tekijät eivät tiedä mitään veroista.
+                Olet itse vastuussa omista veroistasi.
             </Typography>
             <Typography alignSelf="center" align="center" component="p" sx={{ pt: 0 }}>
                 Sivustolle lähettämiäsi tiedostoja käsitellään vain paikallisesti selaimessasi.
