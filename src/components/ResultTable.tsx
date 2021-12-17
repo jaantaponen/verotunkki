@@ -3,7 +3,7 @@ import { Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, Tabl
 import { ColumnCrypto, ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, ColumnSecurity, columnsSecurity, columnsTransaction, ColumnTransaction, ColumnDataTransaction } from './tableSettings'
 interface Props {
     rows: ColumnDataSecurity[] | ColumnDataCrypto[] | ColumnDataTransaction[],
-    mode: "Crypto" | "Security" | 'Result',
+    mode: "CRYPTO" | "SECURITY" | 'RESULT',
 }
 
 
@@ -14,11 +14,11 @@ const ResultTable = ({ rows, mode }: Props) => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     let columns: readonly ColumnSecurity[] | readonly ColumnCrypto[] | readonly ColumnTransaction[] = []
-    if (mode === "Security") {
+    if (mode === "SECURITY") {
         columns = columnsSecurity
-    } else if (mode === "Crypto") {
+    } else if (mode === "CRYPTO") {
         columns = columnsCrypto
-    } else if (mode === "Result") {
+    } else if (mode === "RESULT") {
         columns = columnsTransaction
     }
 
@@ -29,6 +29,7 @@ const ResultTable = ({ rows, mode }: Props) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
 
     useEffect(() => {
         window.scrollTo(0, 250)

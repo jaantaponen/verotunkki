@@ -8,28 +8,35 @@ import { Alert, Button, createTheme, Paper, Stack, styled, Table, TableBody, Tab
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
-import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseProCSV, parseCoinbaseCSV, parseNordNetCSV, prepareCoinbaseForFIFO, getCoinbaseAsColumns, getCoinbaseProAsColumns, prepareCoinbaseProForFIFO } from '../utils/parsers/loadTransactions'
-import { CoinbaseHeaders, CoinbaseProHeaders } from '../utils/parsers/types';
+import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseProCSV, parseCoinbaseCSV, parseNordNetCSV, prepareCoinbaseForFIFO, getCoinbaseAsColumns, getCoinbaseProAsColumns, prepareCoinbaseProForFIFO, getNordnetAsColumns, prepareDegiroForFIFO, prepareNordnetForFIFO } from '../utils/parsers/loadTransactions'
+import { CoinbaseHeaders, CoinbaseProHeaders, DegiroHeaders, NordnetHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
-import { ColumnDataCrypto, ColumnDataTransaction, columnsCrypto } from './tableSettings';
+import { ColumnDataCrypto, ColumnDataSecurity, ColumnDataTransaction, columnsCrypto } from './tableSettings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import { calculateFIFOTransactions } from '../utils/fifo'
 import { Operation, Transaction } from '../utils/fifo/types'
 import { chooseCSVParser } from '../utils/parsers/helpers'
 
-const parsers = [parseCoinbaseCSV, parseCoinbaseProCSV]
+const parsersCrypto = [parseCoinbaseCSV, parseCoinbaseProCSV]
+const parsersSecurity = [parseDegiroCSV, parseNordNetCSV]
 
-export interface rawDatas {
+interface rawDatas {
     Coinbase: CoinbaseHeaders[]
     CoinbasePro: CoinbaseProHeaders[]
+    Degiro: DegiroHeaders[]
+    Nordnet: NordnetHeaders[]
 }
 
-const Crypto = () => {
+interface Props {
+    mode: "CRYPTO" | "SECURITY"
+}
+
+const PreviewData = ({ mode }: Props) => {
     const [zoneHeight, setZoneHeight] = useState(400);
     const [files, setFiles] = useState<FileObject[]>([]);
     const [showTable, setShowTable] = useState(false)
-    const [rows, setRows] = useState<ColumnDataCrypto[]>([]);
+    const [rows, setRows] = useState<ColumnDataCrypto[] | ColumnDataSecurity[]>([]);
     const [rawData, setRawData] = useState<rawDatas>({} as rawDatas);
     const [results, setResults] = useState<ColumnDataTransaction[]>([]);
     const [parseError, setParseError] = useState("")
@@ -58,12 +65,18 @@ const Crypto = () => {
         try {
             if (rawData?.Coinbase) {
                 fifoData.push(...prepareCoinbaseForFIFO(rawData.Coinbase as CoinbaseHeaders[]))
-                console.log("added1")
             }
             if (rawData?.CoinbasePro) {
-                console.log("added2")
                 fifoData.push(...prepareCoinbaseProForFIFO(rawData.CoinbasePro as CoinbaseProHeaders[]))
             }
+            if (rawData?.Degiro) {
+                fifoData.push(...prepareDegiroForFIFO(rawData.Degiro as DegiroHeaders[]))
+            }
+            if (rawData?.Nordnet) {
+                fifoData.push(...prepareNordnetForFIFO(rawData.Nordnet as NordnetHeaders[]))
+            }
+
+
             console.log(fifoData.filter(x => x.symbol === 'LINK'))
             const finalFifo = calculateFIFOTransactions(fifoData)
             setResults(_.sortBy(finalFifo, (o) => o.selldate).map(x => ({
@@ -82,7 +95,7 @@ const Crypto = () => {
     useEffect(() => {
         (async () => {
             if (files.length > 0) {
-                const data = await chooseCSVParser(files, parsers)
+                const data = await chooseCSVParser(files, mode === "CRYPTO" ? parsersCrypto : parsersSecurity)
                 const dataSource = data[0]?.Source
                 if (dataSource === 'Error') {
                     const msg = data[0]['Error'].message
@@ -97,9 +110,9 @@ const Crypto = () => {
                     const rawcopy = { ...rawData }
                     setRawData({
                         ...rawData,
-                        "Coinbase": [...(rawcopy?.Coinbase ? rawcopy.Coinbase : []), ...data]
+                        Coinbase: [...(rawcopy?.Coinbase ? rawcopy.Coinbase : []), ...data]
                     })
-                    setRows(_.sortBy([...rows, ...coinBaseColumns], (o) => o.paivays))
+                    setRows(_.sortBy([...rows as ColumnDataCrypto[], ...coinBaseColumns], (o) => o.paivays))
                     setZoneHeight(200)
                     setShowTable(true)
                 } else if (dataSource === 'CoinbasePro') {
@@ -112,9 +125,29 @@ const Crypto = () => {
                     const rawcopy = { ...rawData }
                     setRawData({
                         ...rawData,
-                        "CoinbasePro": [...(rawcopy?.CoinbasePro ? rawcopy.CoinbasePro : []), ...data]
+                        CoinbasePro: [...(rawcopy?.CoinbasePro ? rawcopy.CoinbasePro : []), ...data]
                     })
-                    setRows(_.sortBy([...rows, ...coinBaseProColumns], (o) => o.paivays))
+                    setRows(_.sortBy([...rows as ColumnDataCrypto[], ...coinBaseProColumns], (o) => o.paivays))
+                    setZoneHeight(200)
+                    setShowTable(true)
+                } else if (dataSource === 'Nordnet') {
+                    const nordnetColumns = getNordnetAsColumns(data as NordnetHeaders[])
+                    const rawcopy = { ...rawData }
+                    setRawData({
+                        ...rawData,
+                        Nordnet: [...(rawcopy?.Nordnet ? rawcopy.Nordnet : []), ...data]
+                    })
+                    setRows(_.sortBy([...rows as ColumnDataSecurity[], ...nordnetColumns], (o) => o.paivays))
+                    setZoneHeight(200)
+                    setShowTable(true)
+                } else if (dataSource === 'Degiro') {
+                    const degiroColumns = getDegiroAsColumns(data as DegiroHeaders[])
+                    const rawcopy = { ...rawData }
+                    setRawData({
+                        ...rawData,
+                        Degiro: [...(rawcopy?.Nordnet ? rawcopy.Nordnet : []), ...data]
+                    })
+                    setRows(_.sortBy([...rows as ColumnDataSecurity[], ...degiroColumns], (o) => o.paivays))
                     setZoneHeight(200)
                     setShowTable(true)
                 }
@@ -153,12 +186,12 @@ const Crypto = () => {
                         VEROTUNKKI
                     </Typography>
                     <Typography alignSelf="center" align="center" variant="h6" sx={{ pt: 0 }} component="p">
-                        Virtuaalivaluutat
+                        {mode === 'CRYPTO' ? "Virtuaalivaluutat" : "Arvopaperit"}
                     </Typography>
                     {parseError && <Alert severity="error">{parseError}</Alert>}
                     <Dropzone zoneHeight={zoneHeight} handleFiles={fileCallback} />
                     <Typography alignSelf="flex-start" sx={{ pl: 4 }} component="p">
-                        Tuetut lähteet: Coinbase, Coinbase Pro
+                        {mode === 'CRYPTO' ? "Tuetut lähteet: Coinbase, Coinbase Pro" : "Tuetut lähteet: Nordnet, Degiro"}
                     </Typography>
                     {errorFifo && <Alert severity="error">{errorFifo}</Alert>}
                     {showTable && <Stack direction="row" spacing={2}>
@@ -169,11 +202,11 @@ const Crypto = () => {
                             Laske
                         </Button>
                     </Stack>}
-                    {(showTable && results.length === 0) && <ResultTable mode="Crypto" rows={rows} />}
+                    {(showTable && results.length === 0) && <ResultTable mode={mode} rows={rows} />}
                     {results.length > 0 &&
                         <div>
-                            <ResultTable mode="Result" rows={results} />
-                            <p>Total naurut: {tmpResult.toFixed(2)} EUR</p>
+                            <ResultTable mode="RESULT" rows={results} />
+                            <p>Net Capital Gain: {tmpResult.toFixed(2)} EUR</p>
                         </div>}
                 </Stack>
                 <Copyright />
@@ -182,4 +215,4 @@ const Crypto = () => {
     );
 }
 
-export { Crypto }
+export { PreviewData }
