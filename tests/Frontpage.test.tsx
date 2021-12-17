@@ -84,7 +84,7 @@ describe("compontents render", () => {
             </BrowserRouter>
         )
         expect(component.container).toHaveTextContent(
-            'Oleta, että tämän sivuston tekijät eivät tiedä mitään veroista.'
+            'Olet itse vastuussa omista veroistasi.'
         )
     })
 
