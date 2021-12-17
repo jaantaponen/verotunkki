@@ -16,6 +16,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Setup timezone
+      uses: jaantaponen/setup-timezone@master
+      with:
+        timezone: Europe/Helsinki
     
     - name: Install Node.js
       uses: actions/setup-node@v1
@@ -24,12 +29,12 @@ jobs:
     
     - name: Install NPM packages
       run: npm ci
+
+    - name: Run tests
+      run: npm run test
     
     - name: Build project
       run: npm run build
-    
-    - name: Run tests
-      run: npm run test
 
     - name: Upload production-ready build files
       uses: actions/upload-artifact@v2

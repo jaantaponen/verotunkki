@@ -17,6 +17,7 @@
     "csv-parse": "^5.0.3",
     "lodash": "4.17.21",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-mui-dropzone": "^4.0.5",
@@ -28,7 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "test": "TZ=UTC+2 cross-env NODE_ENV=test jest --verbose --runInBand",
     "test:watch": "npm t -- --watch --runInBand",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",

@@ -12,8 +12,8 @@ describe('Coinbase', () => {
 
     it('parses the received CSV file into json', async () => {
         const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
-        const res = await parseCoinbaseCSV(inputCoinbase)
-        expect(res).toEqual(
+        const res = JSON.stringify(await parseCoinbaseCSV(inputCoinbase))
+        expect(JSON.parse(res)).toEqual(
             (JSON.parse(fs.readFileSync(`${relativePath}/coinbase.json`, 'utf-8')))
         )
     })
