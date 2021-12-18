@@ -251,8 +251,9 @@ const PreviewData = ({ mode }: Props) => {
             }
         })()
     }, [files])
-    
+
     useEffect(() => {
+        console.log("rowdataa", rowDataColumn)
         const enableCurrencyWarning = rowDataColumn
             .filter(invalid => invalid?.kokonaissumma?.split(' ')[1] !== 'EUR'
                 && (invalid.operation === 'BUY'
