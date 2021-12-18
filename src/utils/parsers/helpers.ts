@@ -23,7 +23,7 @@ const chooseCSVParser = async (filesCopy: FileObject[], parsers: any[]) => {
     for (let i = 0; i < parsers.length; i++) {
         try {
             const inputFile = filesCopy[0].data ? filesCopy[0].data.toString().split(',')[1] : ""
-            const fileContentBuffer = parsers[i].name === 'parseNordNetCSV' ? decodeUTF16LE(atob(inputFile)) : b64_to_utf8(inputFile)
+            const fileContentBuffer = parsers[i].name === 'getDataNordnet' ? decodeUTF16LE(atob(inputFile)) : b64_to_utf8(inputFile)
             const fileContent = fileContentBuffer.toString()
             const parsedData = await parsers[i](fileContent)
             return parsedData

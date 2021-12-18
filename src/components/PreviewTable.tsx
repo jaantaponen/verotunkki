@@ -3,24 +3,25 @@ import { Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, Tabl
 import { ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, columnsTransaction, ColumnTransaction, ColumnDataTransaction, columnsSecurity } from './tableSettings'
 import { DataGrid, GridCellEditCommitParams, GridRowsProp } from '@mui/x-data-grid';
 import { rawDatas } from './PreviewData';
+import _ from 'lodash';
 
 interface Props {
     rows: ColumnDataSecurity[] | ColumnDataCrypto[],
     mode: 'CRYPTO' | 'SECURITY'
-    rawData: rawDatas
-    rawDatatSetCallback(arg0: rawDatas) : void
+    rawDataAsColumns: ColumnDataSecurity[] | ColumnDataCrypto[],
+    rawDatatSetCallback(arg0: ColumnDataSecurity[] | ColumnDataCrypto[]): void
 }
 
-const PreviewTable = ({ rows, mode, rawData, rawDatatSetCallback }: Props) => {
+const PreviewTable = ({ rows, mode, rawDataAsColumns, rawDatatSetCallback }: Props) => {
     const [cellCommit, setCellCommit] = useState({} as any);
 
     useEffect(() => {
-        const rawCopy: any = {...rawData}
-        Object.keys(rawCopy).forEach((key: any)=> {
-            const a = rawCopy[key].find((y : any) => y.id === cellCommit.row.id)
-            console.log(a)
-        })
-
+        if (cellCommit?.row?.id) {
+            const matchingRow = rawDataAsColumns.find(y => y.id === cellCommit.row.id) 
+            const newObj = {...matchingRow, [cellCommit.field] : cellCommit.value} as ColumnDataSecurity | ColumnDataCrypto
+            const arr =  rawDataAsColumns.map(item => item.id === newObj.id ? newObj : item) as ColumnDataSecurity[] | ColumnDataCrypto[]
+            rawDatatSetCallback(arr)
+        }
     }, [cellCommit])
 
     return (

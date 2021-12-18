@@ -69,7 +69,8 @@ const columnsCrypto: GridColumns = [
     { field: 'maara', headerName: 'Määrä', type: 'string', editable: true, minWidth: 120 },
     { field: 'kurssi', headerName: 'Kurssi', type: 'string', editable: true, minWidth: 120 },
     { field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110 },
-    { field: 'kokonaissumma', headerName: 'Kokonaissumma', ...currencyFormat, editable: true, minWidth: 170 },
+    { field: 'kokonaissumma', headerName: 'Kokonaissumma', type: 'string', editable: true, minWidth: 170 },
+    //{ field: 'kokonaissumma', headerName: 'Kokonaissumma', ...currencyFormat, editable: true, minWidth: 170 },
 ];
 
 
@@ -88,7 +89,7 @@ const columnsTransaction: GridColumns = [
 
 export interface ColumnDataSecurity {
     readonly id: string;
-    paivays: string;
+    paivays: Date;
     tuote: string;
     isin: string;
     arvo: string;
@@ -102,7 +103,7 @@ export interface ColumnDataSecurity {
 
 export interface ColumnDataCrypto {
     readonly id: string;
-    paivays: string;
+    paivays: Date;
     operation: string;
     tuote: string;
     arvo: string;
@@ -116,8 +117,8 @@ export interface ColumnDataCrypto {
 export interface ColumnDataTransaction {
     readonly id: number;
     ticker: string
-    buydate: string
-    selldate: string
+    buydate: Date
+    selldate: Date
     amountsold: number
     transferPrice: number
     acquisitionPrice: number

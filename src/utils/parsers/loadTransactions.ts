@@ -13,7 +13,7 @@ const getDataDegiro = async (input: string) => {
     const orig = await parseDegiroCSV(input)
     const column = getDegiroAsColumns(orig)
     return {
-        orig: orig,
+        orig: {Degiro : orig},
         rows: column
     }
 }
@@ -22,7 +22,7 @@ const getDataNordnet = async (input: string) => {
     const orig = await parseNordnetCSV(input)
     const column = getNordnetAsColumns(orig)
     return {
-        orig: orig,
+        orig: {Nordnet : orig},
         rows: column
     }
 }
@@ -30,7 +30,7 @@ const getDataCoinbase = async (input: string) => {
     const orig = await parseCoinbaseCSV(input)
     const column = getCoinbaseAsColumns(orig)
     return {
-        orig: orig,
+        orig: {Coinbase : orig},
         rows: column
     }
 }
@@ -39,7 +39,7 @@ const getDataCoinbasePro = async (input: string) => {
     const orig = await parseCoinbaseProCSV(input)
     const column = getCoinbaseProAsColumns(orig)
     return {
-        orig: orig,
+        orig: {CoinbasePro : orig},
         rows: column
     }
 }
@@ -88,7 +88,7 @@ const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
     const ret = records.map(record => {
         return {
             id: record.id,
-            paivays: new Date(record.datetime).toLocaleString('en-GB', { timeZone: 'UTC' }),
+            paivays: new Date(record.datetime),
             tuote: record.security,
             isin: record.ISIN,
             arvo: `${record.value} ${record.valueCurrency}`,
@@ -111,7 +111,7 @@ const prepareDegiroForFIFO = (rawData: DegiroHeaders[]): Operation[] => {
                 price: record.rate,
                 amount: record.quantity,
                 type: record.quantity > 0 ? "BUY" : "SELL",
-                transactionFee: Math.max(record.transactionCosts),
+                transactionFee: Math.abs(record.transactionCosts),
             }
         })
 }
@@ -170,7 +170,7 @@ const getNordnetAsColumns = (records: NordnetHeaders[]): ColumnDataSecurity[] =>
     const ret = records.map(record => {
         return {
             id: record.id,
-            paivays: new Date(record.Kauppapaiva).toLocaleString('en-GB', { timeZone: 'UTC' }),
+            paivays: new Date(record.Kauppapaiva),
             tuote: record.Arvopaperi,
             isin: record.ISIN,
             arvo: `${record.Summa} ${record.Valuutta}`,
@@ -293,7 +293,7 @@ const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] =>
             Number(record.Subtotal) : (record.QuantityTransacted * record.SpotPriceatTransaction)} ${record.SpotPriceCurrency}`
         return {
             id: record.id,
-            paivays: new Date(record.Timestamp).toLocaleString('en-GB', { timeZone: 'UTC' }),
+            paivays: new Date(record.Timestamp),
             tuote: record.Asset,
             arvo: value,
             maara: record.QuantityTransacted,
@@ -347,7 +347,7 @@ const getCoinbaseProAsColumns = (records: CoinbaseProHeaders[]): ColumnDataCrypt
     const ret = records.map(record => {
         return {
             id: record.id,
-            paivays: record.createdat.toLocaleString('en-GB', { timeZone: 'UTC' }),
+            paivays: record.createdat,
             tuote: record.product,
             arvo: `${record.size * record.price} ${record.pricefeetotalunit}`,
             maara: record.size,
