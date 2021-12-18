@@ -13,7 +13,11 @@ const getDataDegiro = async (input: string) => {
     const orig = await parseDegiroCSV(input)
     const column = getDegiroAsColumns(orig)
     return {
+<<<<<<< HEAD
         orig: {Degiro : orig},
+=======
+        orig: orig,
+>>>>>>> change to datagrid rendering, initial pdf & csv export
         rows: column
     }
 }
@@ -22,7 +26,11 @@ const getDataNordnet = async (input: string) => {
     const orig = await parseNordnetCSV(input)
     const column = getNordnetAsColumns(orig)
     return {
+<<<<<<< HEAD
         orig: {Nordnet : orig},
+=======
+        orig: orig,
+>>>>>>> change to datagrid rendering, initial pdf & csv export
         rows: column
     }
 }
@@ -30,7 +38,11 @@ const getDataCoinbase = async (input: string) => {
     const orig = await parseCoinbaseCSV(input)
     const column = getCoinbaseAsColumns(orig)
     return {
+<<<<<<< HEAD
         orig: {Coinbase : orig},
+=======
+        orig: orig,
+>>>>>>> change to datagrid rendering, initial pdf & csv export
         rows: column
     }
 }
@@ -39,11 +51,16 @@ const getDataCoinbasePro = async (input: string) => {
     const orig = await parseCoinbaseProCSV(input)
     const column = getCoinbaseProAsColumns(orig)
     return {
+<<<<<<< HEAD
         orig: {CoinbasePro : orig},
+=======
+        orig: orig,
+>>>>>>> change to datagrid rendering, initial pdf & csv export
         rows: column
     }
 }
 
+<<<<<<< HEAD
 
 /**
  * 
@@ -51,6 +68,8 @@ const getDataCoinbasePro = async (input: string) => {
  *
  */
 
+=======
+>>>>>>> change to datagrid rendering, initial pdf & csv export
 const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
     let prevField = ""
     const parse = await loadParser()
