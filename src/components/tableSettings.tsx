@@ -74,15 +74,15 @@ const columnsCrypto: GridColumns = [
 
 
 const columnsTransaction: GridColumns = [
-    { field: 'ticker', headerName: 'Tuote', type: 'string', editable: true, minWidth: 50, },
-    { field: 'buydate', headerName: 'Hankintapäivä', type: 'date', editable: true, minWidth: 160 },
-    { field: 'selldate', headerName: 'Luovutuspäivä', type: 'date', editable: true, minWidth: 160 },
-    { field: 'amountsold', headerName: 'Myyty kpl', type: 'number', editable: true, minWidth: 50 },
-    { field: 'transferPrice', headerName: 'Luovutushinta', type: 'string', editable: true, minWidth: 120 },
-    { field: 'acquisitionPrice', headerName: 'Hankintahinta', type: 'string', editable: true, minWidth: 120 },
-    { field: 'acquisitionFee', headerName: 'Hankintakulut', type: 'string', editable: true, minWidth: 120 },
-    { field: 'transferFee', headerName: 'Luovutuskulut', type: 'string', editable: true, minWidth: 120 },
-    { field: 'profitOrLoss', headerName: 'Voitto/Tappio', type: 'string', editable: true, minWidth: 170 },
+    { field: 'ticker', headerName: 'Tuote', type: 'string', editable: false, minWidth: 50, },
+    { field: 'buydate', headerName: 'Hankintapäivä', type: 'date', editable: false, minWidth: 160 },
+    { field: 'selldate', headerName: 'Luovutuspäivä', type: 'date', editable: false, minWidth: 160 },
+    { field: 'amountsold', headerName: 'Myyty kpl', type: 'number', editable: false, minWidth: 50 },
+    { field: 'transferPrice', headerName: 'Luovutushinta', type: 'string', editable: false, minWidth: 120 },
+    { field: 'acquisitionPrice', headerName: 'Hankintahinta', type: 'string', editable: false, minWidth: 120 },
+    { field: 'acquisitionFee', headerName: 'Hankintakulut', type: 'string', editable: false, minWidth: 120 },
+    { field: 'transferFee', headerName: 'Luovutuskulut', type: 'string', editable: false, minWidth: 120 },
+    { field: 'profitOrLoss', headerName: 'Voitto/Tappio', type: 'string', editable: false, minWidth: 170 },
 ];
 
 
