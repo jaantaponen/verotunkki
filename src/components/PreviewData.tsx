@@ -134,7 +134,6 @@ const PreviewData = ({ mode }: Props) => {
                 const obj = correctedCoinbaseData.find(newObj => newObj.id === item.id)
                 return obj ? obj : item
             }) as ColumnDataSecurity[] | ColumnDataCrypto[]
-
             /**
              * In this function we need to get the 1values with the string.split function.
              * Since some columns are formattes as value & currency (Ex. 10 EUR).
@@ -252,6 +251,14 @@ const PreviewData = ({ mode }: Props) => {
             }
         })()
     }, [files])
+    
+    useEffect(() => {
+        const enableCurrencyWarning = rowDataColumn
+            .filter(invalid => invalid?.kokonaissumma?.split(' ')[1] !== 'EUR'
+                && (invalid.operation === 'BUY'
+                    || invalid.operation === 'SELL'))
+        setShowCurrencyFetchButton(enableCurrencyWarning.length > 0 && rowDataColumn.length > 0)
+    }, [rowDataColumn])
 
     useEffect(() => {
         console.log("rowdataa", rowDataColumn)
