@@ -9,6 +9,41 @@ import { nanoid } from 'nanoid/async'
 import { loadParser } from './helpers';
 
 
+const getDataDegiro = async (input: string) => {
+    const orig = await parseDegiroCSV(input)
+    const column = getDegiroAsColumns(orig)
+    return {
+        orig: orig,
+        rows: column
+    }
+}
+
+const getDataNordnet = async (input: string) => {
+    const orig = await parseNordnetCSV(input)
+    const column = getNordnetAsColumns(orig)
+    return {
+        orig: orig,
+        rows: column
+    }
+}
+const getDataCoinbase = async (input: string) => {
+    const orig = await parseCoinbaseCSV(input)
+    const column = getCoinbaseAsColumns(orig)
+    return {
+        orig: orig,
+        rows: column
+    }
+}
+
+const getDataCoinbasePro = async (input: string) => {
+    const orig = await parseCoinbaseProCSV(input)
+    const column = getCoinbaseProAsColumns(orig)
+    return {
+        orig: orig,
+        rows: column
+    }
+}
+
 const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
     let prevField = ""
     const parse = await loadParser()
@@ -45,14 +80,16 @@ const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
 const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
     const ret = records.map(record => {
         return {
+            id: record.id,
             paivays: new Date(record.datetime).toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.security,
             isin: record.ISIN,
             arvo: `${record.value} ${record.valueCurrency}`,
             maara: record.quantity,
-            kulut: record.transactionCosts,
+            kulut: record.transactionCosts.toString(),
             kurssi: `${record.rate} ${record.rateCurrency}`,
             kokonaissumma: `${record.totalAmount} ${record.totalAmountCurrency}`,
+            operation: record.quantity > 0 ? "BUY" : "SELL",
         } as ColumnDataSecurity
     })
     return ret
@@ -73,7 +110,7 @@ const prepareDegiroForFIFO = (rawData: DegiroHeaders[]): Operation[] => {
 }
 
 
-const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
+const parseNordnetCSV = async (input: string): Promise<NordnetHeaders[]> => {
     const parse = await loadParser()
     const tmp = parse(input, {
         delimiter: ["\t"],
@@ -119,14 +156,16 @@ const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
 const getNordnetAsColumns = (records: NordnetHeaders[]): ColumnDataSecurity[] => {
     const ret = records.map(record => {
         return {
+            id: record.id,
             paivays: new Date(record.Kauppapaiva).toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.Arvopaperi,
             isin: record.ISIN,
             arvo: `${record.Summa} ${record.Valuutta}`,
             maara: record.Maara,
-            kulut: record.Kokonaiskulut,
+            kulut: record.Kokonaiskulut.toString(),
             kurssi: `${record.Kurssi} ${record.Valuutta}`,
             kokonaissumma: `${record.Summa - record.Kokonaiskulut} ${record.Valuutta}`,
+            operation: record.Tapahtumatyyppi,
         } as ColumnDataSecurity
     })
     return ret
@@ -209,7 +248,6 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
                 TransactionType: "BUY",
             })
         }
-
     })
 
     const dataFifo: Operation[] = rawData.concat(prepareRawFifo)
@@ -232,18 +270,17 @@ const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
 const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] => {
     const ret = records.map(record => {
         const value = `${record.Subtotal ?
-            Number(record.Subtotal).toFixed(2) :
-            (record.QuantityTransacted * record.SpotPriceatTransaction).toFixed(2)
-            } ${record.SpotPriceCurrency}`
+            Number(record.Subtotal) : (record.QuantityTransacted * record.SpotPriceatTransaction)} ${record.SpotPriceCurrency}`
         return {
+            id: record.id,
             paivays: new Date(record.Timestamp).toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.Asset,
             arvo: value,
             maara: record.QuantityTransacted,
-            kulut: `${Number(record.Fees ?? 0).toFixed(2)} ${record.SpotPriceCurrency}`,
+            kulut: `${Number(record.Fees) ? Number(record.Fees) : 0} ${record.SpotPriceCurrency}`,
             kurssi: `${record.SpotPriceatTransaction} ${record.SpotPriceCurrency}`,
-            kokonaissumma: `${Number(record.Total ? record.Total : 0).toFixed(2)} ${record.SpotPriceCurrency}`,
-            operaatio: record.TransactionType,
+            kokonaissumma: `${Number(record.Total ? record.Total : 0)} ${record.SpotPriceCurrency}`,
+            operation: record.TransactionType,
         } as ColumnDataCrypto
     })
     return ret
@@ -283,14 +320,15 @@ const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]>
 const getCoinbaseProAsColumns = (records: CoinbaseProHeaders[]): ColumnDataCrypto[] => {
     const ret = records.map(record => {
         return {
+            id: record.id,
             paivays: record.createdat.toLocaleString('en-GB', { timeZone: 'UTC' }),
             tuote: record.product,
             arvo: `${record.size * record.price} ${record.pricefeetotalunit}`,
             maara: record.size,
-            kulut: `${Number(record.fee ?? 0).toFixed(2)} ${record.pricefeetotalunit}`,
+            kulut: `${record.fee ?? record.fee} ${record.pricefeetotalunit}`,
             kurssi: `${record.price} ${record.pricefeetotalunit}`,
-            kokonaissumma: `${Number(record.total ?? 0).toFixed(2)} ${record.pricefeetotalunit}`,
-            operaatio: record.side,
+            kokonaissumma: `${record.total} ${record.pricefeetotalunit}`,
+            operation: record.side,
         } as ColumnDataCrypto
     })
     return ret
@@ -315,7 +353,7 @@ const prepareCoinbaseProForFIFO = (rawData: CoinbaseProHeaders[]): Operation[] =
 export {
     parseCoinbaseCSV,
     parseDegiroCSV,
-    parseNordNetCSV,
+    parseNordnetCSV,
     getDegiroAsColumns,
     getCoinbaseAsColumns,
     prepareCoinbaseForFIFO,
@@ -324,5 +362,9 @@ export {
     prepareCoinbaseProForFIFO,
     getNordnetAsColumns,
     prepareNordnetForFIFO,
-    prepareDegiroForFIFO
+    prepareDegiroForFIFO,
+    getDataDegiro,
+    getDataNordnet,
+    getDataCoinbase,
+    getDataCoinbasePro,
 }

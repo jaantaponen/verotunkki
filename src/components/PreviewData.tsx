@@ -1,14 +1,14 @@
-import { ChangeEvent, Fragment, useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import _ from 'lodash';
 import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { Alert, Box, Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
+import { Alert, Box, Button, createTheme, Stack, ThemeProvider } from '@mui/material';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
-import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseProCSV, parseCoinbaseCSV, parseNordNetCSV, prepareCoinbaseForFIFO, getCoinbaseAsColumns, getCoinbaseProAsColumns, prepareCoinbaseProForFIFO, getNordnetAsColumns, prepareDegiroForFIFO, prepareNordnetForFIFO } from '../utils/parsers/loadTransactions'
+import { getCoinbaseAsColumns, getCoinbaseProAsColumns, getDataCoinbase, getDataCoinbasePro, getDataDegiro, getDataNordnet, getDegiroAsColumns, getNordnetAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordnetCSV, prepareCoinbaseForFIFO, prepareCoinbaseProForFIFO, prepareDegiroForFIFO, prepareNordnetForFIFO } from '../utils/parsers/loadTransactions'
 import { CoinbaseHeaders, CoinbaseProHeaders, DegiroHeaders, NordnetHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
 import { ResultCard } from './ResultCard'
@@ -21,14 +21,13 @@ import { Operation, Transaction } from '../utils/fifo/types'
 import { chooseCSVParser } from '../utils/parsers/helpers'
 import axios from 'axios';
 import moment from 'moment';
-
 import { PreviewTable } from './PreviewTable'
 
 
 const parsersCrypto = [parseCoinbaseCSV, parseCoinbaseProCSV]
-const parsersSecurity = [parseDegiroCSV, parseNordNetCSV]
+const parsersSecurity = [parseDegiroCSV, parseNordnetCSV]
 
-interface rawDatas {
+export interface rawDatas {
     Coinbase: CoinbaseHeaders[]
     CoinbasePro: CoinbaseProHeaders[]
     Degiro: DegiroHeaders[]
@@ -51,8 +50,10 @@ const PreviewData = ({ mode }: Props) => {
     const [zoneHeight, setZoneHeight] = useState(400);
     const [files, setFiles] = useState<FileObject[]>([]);
     const [showTable, setShowTable] = useState(false)
+
     const [rows, setRows] = useState<ColumnDataCrypto[] | ColumnDataSecurity[]>([]);
     const [rawData, setRawData] = useState<rawDatas>({} as rawDatas);
+    const rawDatatSetCallback = (newRawData: rawDatas) => setRawData(newRawData)
     const [results, setResults] = useState<ColumnDataTransaction[]>([]);
     const [parseError, setParseError] = useState("")
     const [errorFifo, setErrorFifo] = useState("")
@@ -68,7 +69,6 @@ const PreviewData = ({ mode }: Props) => {
     const clearRows = () => {
         setFiles([])
         setRows([])
-        setRawData({} as rawDatas)
         setShowTable(false)
         setZoneHeight(400)
         setResults([])
@@ -90,14 +90,14 @@ const PreviewData = ({ mode }: Props) => {
                 fifoData.push(...prepareNordnetForFIFO(rawData.Nordnet as NordnetHeaders[]))
             }
             const finalFifo = calculateFIFOTransactions(fifoData)
-            setResults(_.sortBy(finalFifo, (o) => o.selldate).map(x => ({
+            setResults(finalFifo.map((x, idx)=> ({
                 ...x,
                 buydate: new Date(x.buydate).toLocaleString('en-GB', { timeZone: 'UTC' }),
                 selldate: new Date(x.selldate).toLocaleString('en-GB', { timeZone: 'UTC' }),
-                transferFee: `${Number(x.transferFee).toFixed(4)} EUR`,
-                profitOrLoss: `${x.profitOrLoss.toFixed(3)} EUR`,
+                transferFee: `${Number(x.transferFee)} EUR`,
+                profitOrLoss: `${Number(x.profitOrLoss)} EUR`,
+                id: idx
             })))
-
 
             setCalculatedResults({
                 capitalGains: _.sumBy(finalFifo, (o) => o.profitOrLoss > 0 ? o.profitOrLoss : 0),
@@ -105,7 +105,6 @@ const PreviewData = ({ mode }: Props) => {
                 transactionTotal: _.sumBy(finalFifo, (o) => Math.abs(o.transferFee) + Math.abs(o.acquisitionFee)),
                 netProfit: _.sumBy(finalFifo, (o) => o.profitOrLoss - (Math.abs(o.transferFee) + Math.abs(o.acquisitionFee)))
             })
-
 
         } catch (e: any) {
             setErrorFifo(e.message)
@@ -129,11 +128,7 @@ const PreviewData = ({ mode }: Props) => {
                 columnData.push(getNordnetAsColumns(newRawData.Nordnet as NordnetHeaders[]) as ColumnDataSecurity[])
             }
         })
-        setRows(_.flatten(columnData).map((x: any, idx) => ({
-            ...x,
-            id: idx,
-            "lorss" : "bruh"
-        })) as ColumnDataCrypto[] | ColumnDataSecurity[])
+        setRows((_.flatten(columnData)) as ColumnDataCrypto[] | ColumnDataSecurity[])
         setZoneHeight(200)
         setShowTable(true)
     }
@@ -169,7 +164,6 @@ const PreviewData = ({ mode }: Props) => {
     useEffect(() => {
         (async () => {
             if (files.length > 0) {
-                console.log("files Debug", files)
                 const data = await chooseCSVParser(files, mode === "CRYPTO" ? parsersCrypto : parsersSecurity)
                 const dataSource = data[0]?.Source
                 if (dataSource === 'Error') {
@@ -196,7 +190,7 @@ const PreviewData = ({ mode }: Props) => {
     }, [files])
 
     useEffect(() => {
-        console.log("rows update", rows)
+        //console.log("rows update", rows)
     }, [rows])
 
 
@@ -205,9 +199,6 @@ const PreviewData = ({ mode }: Props) => {
             setShowCurrencyFetchButton(true)
         }
     }, [parseError])
-
-
-
 
     return (
         <ThemeProvider theme={theme}>
@@ -287,7 +278,7 @@ const PreviewData = ({ mode }: Props) => {
                     </Stack>}
 
                     {(showTable && results.length === 0) && <div style={{ width: '100%' }}>
-                        <PreviewTable rows={rows} mode={mode} />
+                        <PreviewTable rows={rows} mode={mode} rawData={rawData} rawDatatSetCallback={rawDatatSetCallback} />
                     </div>}
                     {results.length > 0 && <ResultTable rows={results} />}
                 </Stack>

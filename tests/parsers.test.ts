@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 const relativePath = path.relative(process.cwd(), './tests/files');
-import { getCoinbaseAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordNetCSV, prepareCoinbaseForFIFO, prepareDegiroForFIFO } from '../src/utils/parsers/loadTransactions'
+import { getCoinbaseAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordnetCSV, prepareCoinbaseForFIFO, prepareDegiroForFIFO } from '../src/utils/parsers/loadTransactions'
 import _ from 'lodash'
 import { calculateFIFOTransactions } from '../src/utils/fifo';
 
@@ -65,12 +65,13 @@ describe('Coinbase', () => {
             {
                 paivays: '10/05/2021, 05:14:00',
                 tuote: 'ETH',
+                id: undefined,
                 arvo: 'NaN undefined',
                 maara: '0.0008909',
-                kulut: '0.00 undefined',
+                kulut: '0 undefined',
                 kurssi: 'undefined undefined',
-                kokonaissumma: '0.00 undefined',
-                operaatio: 'BUY'
+                kokonaissumma: '0 undefined',
+                operation: 'BUY'
             }
         ])
     })
@@ -232,17 +233,17 @@ describe('Nordnet', () => {
     });
     it('parses the received CSV file into json', async () => {
         const inputNordnet = fs.readFileSync(`${relativePath}/transactionsNordnet.csv`, 'utf16le').trim()
-        const res = JSON.stringify(await parseNordNetCSV(inputNordnet))
+        const res = JSON.stringify(await parseNordnetCSV(inputNordnet))
         expect(JSON.parse(res)).toEqual(
             (JSON.parse(fs.readFileSync(`${relativePath}/transactionsNordnet.json`, 'utf-8')))
         )
     })
     it('throws an error when invalid data is parsed', async () => {
         const badInputNordnet = fs.readFileSync(`${relativePath}/transactionsDegiro.csv`, 'utf-8')
-        await expect(parseNordNetCSV(badInputNordnet)).rejects.toThrowError(Error);
-        await expect(parseNordNetCSV("test123")).rejects.toThrowError(TypeError);
-        await expect(parseNordNetCSV(undefined)).rejects.toThrowError("All headers not found in the provided Nordnet file.");
-        await expect(parseNordNetCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
+        await expect(parseNordnetCSV(badInputNordnet)).rejects.toThrowError(Error);
+        await expect(parseNordnetCSV("test123")).rejects.toThrowError(TypeError);
+        await expect(parseNordnetCSV(undefined)).rejects.toThrowError("All headers not found in the provided Nordnet file.");
+        await expect(parseNordnetCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
     })
 });
 

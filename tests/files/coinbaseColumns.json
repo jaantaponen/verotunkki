@@ -1,75 +1,83 @@
 [
     {
+        "id": "1234",
         "paivays": "10/05/2021, 05:14:59",
         "tuote": "ETH",
         "arvo": "3.01 EUR",
         "maara": "0.0008909",
         "kulut": "0.99 EUR",
         "kurssi": "3378.61 EUR",
-        "kokonaissumma": "4.00 EUR",
-        "operaatio": "BUY"
+        "kokonaissumma": "4 EUR",
+        "operation": "BUY"
     },
     {
+        "id": "1234",
         "paivays": "22/05/2021, 12:13:53",
         "tuote": "ETH",
-        "arvo": "106.03 EUR",
+        "arvo": "106.0267195346 EUR",
         "maara": "0.05598209",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "1893.94 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "28/05/2021, 06:36:17",
         "tuote": "ETH",
-        "arvo": "301.21 EUR",
+        "arvo": "301.206546303 EUR",
         "maara": "0.14882114",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "2023.95 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "10/06/2021, 05:35:45",
         "tuote": "ETH",
-        "arvo": "209.92 EUR",
+        "arvo": "209.9208665794 EUR",
         "maara": "0.10075589",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "2083.46 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "01/07/2021, 05:55:08",
         "tuote": "ETH",
-        "arvo": "179.35 EUR",
+        "arvo": "179.3512068496 EUR",
         "maara": "0.10072289",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "1780.64 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "20/07/2021, 05:28:04",
         "tuote": "ETH",
-        "arvo": "149.47 EUR",
+        "arvo": "149.469239088 EUR",
         "maara": "0.1000584",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "1493.82 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "09/08/2021, 10:16:27",
         "tuote": "ETH",
-        "arvo": "266.48 EUR",
+        "arvo": "266.4769392447 EUR",
         "maara": "0.10044249",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "2653.03 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "21/08/2021, 11:15:48",
         "tuote": "ETH",
         "arvo": "1691.77 EUR",
@@ -77,86 +85,94 @@
         "kulut": "25.21 EUR",
         "kurssi": "2784.01 EUR",
         "kokonaissumma": "1666.56 EUR",
-        "operaatio": "SELL"
+        "operation": "SELL"
     },
     {
+        "id": "1234",
         "paivays": "01/09/2021, 06:35:58",
         "tuote": "ETH",
-        "arvo": "304.29 EUR",
+        "arvo": "304.29130540830005 EUR",
         "maara": "0.10137603",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "3001.61 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "27/09/2021, 07:43:37",
         "tuote": "ETH",
-        "arvo": "265.83 EUR",
+        "arvo": "265.8320437332 EUR",
         "maara": "0.10004932",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "2657.01 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "10/10/2021, 05:58:30",
         "tuote": "ETH",
-        "arvo": "166.42 EUR",
+        "arvo": "166.4167453806 EUR",
         "maara": "0.05364942",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "3101.93 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "17/10/2021, 05:24:49",
         "tuote": "ETH",
-        "arvo": "92.05 EUR",
+        "arvo": "92.0510037568 EUR",
         "maara": "0.02744776",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "3353.68 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "24/10/2021, 07:44:43",
         "tuote": "ETH",
-        "arvo": "111.03 EUR",
+        "arvo": "111.02605780949999 EUR",
         "maara": "0.03158681",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "3514.95 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "07/11/2021, 05:25:33",
         "tuote": "ETH",
-        "arvo": "288.82 EUR",
+        "arvo": "288.8155045428 EUR",
         "maara": "0.07334196",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "3937.93 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "18/11/2021, 10:47:30",
         "tuote": "ETH",
-        "arvo": "184.58 EUR",
+        "arvo": "184.58100244279998 EUR",
         "maara": "0.04986964",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "3701.27 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     },
     {
+        "id": "1234",
         "paivays": "02/12/2021, 20:05:22",
         "tuote": "ETH",
-        "arvo": "242.16 EUR",
+        "arvo": "242.15738412250002 EUR",
         "maara": "0.06034699",
-        "kulut": "0.00 EUR",
+        "kulut": "0 EUR",
         "kurssi": "4012.75 EUR",
-        "kokonaissumma": "0.00 EUR",
-        "operaatio": "RECEIVE"
+        "kokonaissumma": "0 EUR",
+        "operation": "RECEIVE"
     }
 ]
