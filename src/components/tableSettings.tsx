@@ -1,18 +1,4 @@
-export interface ColumnSecurity {
-    id: 'paivays' | 'tuote' | 'isin' | 'maara' | 'arvo' | 'kulut' | 'kokonaissumma' | 'kurssi';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-}
-
-export interface ColumnCrypto {
-    id: 'paivays' | 'tuote' | 'arvo' | 'maara' | 'arvo' | 'kulut' | 'kokonaissumma' | 'kurssi' | 'operaatio';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-}
+import { GridColTypeDef, GridColumns } from '@mui/x-data-grid';
 
 export interface ColumnTransaction {
     id: 'ticker' | 'buydate' | 'selldate' | 'amountsold' | 'transferPrice' | 'acquisitionPrice' | 'acquisitionFee' | 'transferFee' | 'profitOrLoss';
@@ -23,7 +9,7 @@ export interface ColumnTransaction {
 }
 
 
-const columnsTransaction: readonly ColumnTransaction[] = [
+/* const columnsTransaction: readonly ColumnTransaction[] = [
     { id: 'ticker', label: 'Tuote', minWidth: 120 },
     { id: 'buydate', label: 'Hankintapäivä', minWidth: 150 },
     { id: 'selldate', label: 'Luovutuspäivä', minWidth: 150 },
@@ -42,55 +28,82 @@ const columnsTransaction: readonly ColumnTransaction[] = [
         id: 'profitOrLoss', label: 'Voitto/Tappio', minWidth: 170,
         format: (value: number) => value.toFixed(3)
     },
+]; */
+
+
+const currencyFormatter = (value: any) => new Intl.NumberFormat('fi-FI', {
+    style: 'currency',
+    currency: value,
+});
+
+const currencyFormat: GridColTypeDef = {
+    type: 'string',
+    width: 130,
+    valueFormatter: ({ value }) => {
+        const str = String(value) ? String(value) : "0 EUR"
+        const arr = str.split(' ').length === 2 ? str.split(' ') : "0 EUR"
+        return currencyFormatter(arr[1]).format(Number(arr[0]))
+    },
+    cellClassName: 'font-tabular-nums',
+};
+
+const columnsSecurity: GridColumns = [
+    { field: 'paivays', headerName: 'Paivays', type: 'date', editable: true, minWidth: 180, },
+    { field: 'operation', headerName: 'Operaatio', type: 'string', editable: true, minWidth: 120 },
+    { field: 'isin', headerName: 'ISIN', type: 'string', editable: true, minWidth: 120 },
+    { field: 'arvo', headerName: 'Arvo', type: 'string', editable: true, minWidth: 120 },
+    { field: 'maara', headerName: 'Määrä', type: 'number', editable: true, minWidth: 120 },
+    { field: 'kurssi', headerName: 'Kurssi', type: 'string', editable: true, minWidth: 120 },
+    { field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110 },
+    { field: 'kokonaissumma', headerName: 'Kokonaissumma', type: 'string', editable: true, minWidth: 170 },
 ];
 
 
-const columnsSecurity: readonly ColumnSecurity[] = [
-    { id: 'paivays', label: 'Paivays', minWidth: 150 },
-    { id: 'tuote', label: 'Tuote', minWidth: 200 },
-    { id: 'isin', label: 'ISIN', minWidth: 170 },
-    {
-        id: 'maara', label: 'Maara', minWidth: 100,
-        format: (value: number) => value.toFixed(2)
-    },
-    { id: 'kurssi', label: 'Kurssi', minWidth: 120 },
-    { id: 'arvo', label: 'Arvo', minWidth: 100 },
-    { id: 'kulut', label: 'Kulut', minWidth: 100 },
-    { id: 'kokonaissumma', label: 'Kokonaissumma', minWidth: 170 },
+
+
+const columnsCrypto: GridColumns = [
+    { field: 'paivays', headerName: 'Paivays', type: 'date', editable: true, minWidth: 180, },
+    { field: 'operation', headerName: 'Operaatio', type: 'string', editable: true, minWidth: 120 },
+    { field: 'tuote', headerName: 'Tuote', type: 'string', editable: true, minWidth: 120 },
+    { field: 'arvo', headerName: 'Arvo', type: 'string', editable: true, minWidth: 120 },
+    { field: 'maara', headerName: 'Määrä', type: 'string', editable: true, minWidth: 120 },
+    { field: 'kurssi', headerName: 'Kurssi', type: 'string', editable: true, minWidth: 120 },
+    { field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110 },
+    { field: 'kokonaissumma', headerName: 'Kokonaissumma', type: 'string', editable: true, minWidth: 170 },
+    //{ field: 'kokonaissumma', headerName: 'Kokonaissumma', ...currencyFormat, editable: true, minWidth: 170 },
 ];
 
-const columnsCrypto: readonly ColumnCrypto[] = [
-    { id: 'paivays', label: 'Paivays', minWidth: 150 },
-    { id: 'operaatio', label: 'Operaatio', minWidth: 100 },
-    { id: 'tuote', label: 'Tuote', minWidth: 100 },
-    { id: 'arvo', label: 'Arvo', minWidth: 100 },
-    {
-        id: 'maara', label: 'Määrä', minWidth: 100,
-        format: (value: number) => value.toFixed(2)
-    },
-    { id: 'kurssi', label: 'Kurssi', minWidth: 120 },
-    {
-        id: 'kulut', label: 'Kulut', minWidth: 110,
-        format: (value: number) => value.toFixed(4)
-    },
-    { id: 'kokonaissumma', label: 'Kokonaissumma', minWidth: 170 },
+
+const columnsTransaction: GridColumns = [
+    { field: 'ticker', headerName: 'Tuote', type: 'string', editable: false, minWidth: 50, },
+    { field: 'buydate', headerName: 'Hankintapäivä', type: 'date', editable: false, minWidth: 160 },
+    { field: 'selldate', headerName: 'Luovutuspäivä', type: 'date', editable: false, minWidth: 160 },
+    { field: 'amountsold', headerName: 'Myyty kpl', type: 'number', editable: false, minWidth: 50 },
+    { field: 'transferPrice', headerName: 'Luovutushinta', type: 'string', editable: false, minWidth: 120 },
+    { field: 'acquisitionPrice', headerName: 'Hankintahinta', type: 'string', editable: false, minWidth: 120 },
+    { field: 'acquisitionFee', headerName: 'Hankintakulut', type: 'string', editable: false, minWidth: 120 },
+    { field: 'transferFee', headerName: 'Luovutuskulut', type: 'string', editable: false, minWidth: 120 },
+    { field: 'profitOrLoss', headerName: 'Voitto/Tappio', type: 'string', editable: false, minWidth: 170 },
 ];
 
 
 export interface ColumnDataSecurity {
-    paivays: string;
+    readonly id: string;
+    paivays: Date;
     tuote: string;
     isin: string;
     arvo: string;
     maara: number;
-    kulut: number;
+    kulut: string;
     kurssi: string;
     kokonaissumma: string;
+    operation: string;
 }
 
 
 export interface ColumnDataCrypto {
-    paivays: string;
+    readonly id: string;
+    paivays: Date;
     operation: string;
     tuote: string;
     arvo: string;
@@ -98,14 +111,14 @@ export interface ColumnDataCrypto {
     kulut: string;
     kurssi: string;
     kokonaissumma: string;
-    operaatio: string;
 }
 
 
 export interface ColumnDataTransaction {
+    readonly id: number;
     ticker: string
-    buydate: string
-    selldate: string
+    buydate: Date
+    selldate: Date
     amountsold: number
     transferPrice: number
     acquisitionPrice: number

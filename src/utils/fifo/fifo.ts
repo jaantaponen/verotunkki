@@ -154,6 +154,9 @@ export const calculateFIFOTransactions = (operationHistory: Operation[]): Transa
     }
     return dividedFees
   });
+  if (a.length === 0) {
+    throw new Error("No SELL transactions found. Have you sold any asset?")
+  }
   return a
 }
 
