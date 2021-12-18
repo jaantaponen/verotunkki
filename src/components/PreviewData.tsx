@@ -12,7 +12,7 @@ import { parseDegiroCSV, getDegiroAsColumns, parseCoinbaseProCSV, parseCoinbaseC
 import { CoinbaseHeaders, CoinbaseProHeaders, DegiroHeaders, NordnetHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
 import { ResultCard } from './ResultCard'
-import { ColumnDataCrypto, ColumnDataSecurity, ColumnDataTransaction, columnsCrypto } from './tableSettings';
+import { ColumnDataCrypto, ColumnDataSecurity, ColumnDataTransaction, columnsCrypto, columnsSecurity } from './tableSettings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -21,6 +21,9 @@ import { Operation, Transaction } from '../utils/fifo/types'
 import { chooseCSVParser } from '../utils/parsers/helpers'
 import axios from 'axios';
 import moment from 'moment';
+
+import { PreviewTable } from './PreviewTable'
+
 
 const parsersCrypto = [parseCoinbaseCSV, parseCoinbaseProCSV]
 const parsersSecurity = [parseDegiroCSV, parseNordNetCSV]
@@ -126,7 +129,11 @@ const PreviewData = ({ mode }: Props) => {
                 columnData.push(getNordnetAsColumns(newRawData.Nordnet as NordnetHeaders[]) as ColumnDataSecurity[])
             }
         })
-        setRows(_.flatten(columnData) as ColumnDataCrypto[] | ColumnDataSecurity[])
+        setRows(_.flatten(columnData).map((x: any, idx) => ({
+            ...x,
+            id: idx,
+            "lorss" : "bruh"
+        })) as ColumnDataCrypto[] | ColumnDataSecurity[])
         setZoneHeight(200)
         setShowTable(true)
     }
@@ -189,8 +196,8 @@ const PreviewData = ({ mode }: Props) => {
     }, [files])
 
     useEffect(() => {
-        //console.log("rows parsed into rawdata", rawData)
-    }, [rawData])
+        console.log("rows update", rows)
+    }, [rows])
 
 
     useEffect(() => {
@@ -198,6 +205,8 @@ const PreviewData = ({ mode }: Props) => {
             setShowCurrencyFetchButton(true)
         }
     }, [parseError])
+
+
 
 
     return (
@@ -276,12 +285,15 @@ const PreviewData = ({ mode }: Props) => {
                             Laske
                         </Button>
                     </Stack>}
-                    {(showTable && results.length === 0) && <ResultTable mode={mode} rows={rows} />}
-                    {results.length > 0 && <ResultTable mode="RESULT" rows={results} />}
+
+                    {(showTable && results.length === 0) && <div style={{ width: '100%' }}>
+                        <PreviewTable rows={rows} mode={mode} />
+                    </div>}
+                    {results.length > 0 && <ResultTable rows={results} />}
                 </Stack>
-                <Copyright />
+                {<Copyright />}
             </Container>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }
 

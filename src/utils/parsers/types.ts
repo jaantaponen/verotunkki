@@ -1,4 +1,5 @@
 export interface DegiroHeaders {
+  readonly id: string;
   time: string;
   security: string;
   ISIN: string;
@@ -23,6 +24,7 @@ export interface DegiroHeaders {
 }
 
 export interface CoinbaseHeaders {
+  readonly id: string;
   Timestamp: Date;
   TransactionType: "BUY" | "SELL" | "RECEIVE" | "CONVERT" | "COINBASE EARN";
   Asset: string;
@@ -38,6 +40,7 @@ export interface CoinbaseHeaders {
 }
 
 export interface NordnetHeaders {
+  readonly id: string;
   Id: string;
   Kirjauspaiva: Date;
   Kauppapaiva: Date;
@@ -70,6 +73,7 @@ export interface NordnetHeaders {
 }
 
 export interface CoinbaseProHeaders {
+  readonly id: string;
   portfolio: string;
   tradeid: string;
   product: string;

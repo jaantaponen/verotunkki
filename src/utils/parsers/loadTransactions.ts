@@ -5,6 +5,7 @@ import { Operation } from '../fifo/types'
 import { DegiroHeaders, CoinbaseHeaders, CoinbaseProHeaders, CoinBaseProHeaderValues, CoinBaseHeaderValues, DegiroHeaderValues, NordnetHeaderValues, NordnetHeaders } from './types'
 import { ColumnDataCrypto, ColumnDataSecurity } from '../../components/tableSettings'
 import _ from 'lodash';
+import { nanoid } from 'nanoid/async'
 import { loadParser } from './helpers';
 
 
@@ -25,10 +26,7 @@ const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
     });
 
     const results = []
-    for await (const record of tmp) {
-        results.push(record)
-    }
-
+    for await (const record of tmp) results.push(record)
     const records: DegiroHeaders[] = results.map((transaction: any) => {
         transaction['datetime'] = moment(`${transaction.date}-${transaction.time}`, "DD-MM-YYYY-HH-mm").toISOString()
         return transaction
@@ -38,9 +36,9 @@ const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
         throw TypeError('All headers not found in the provided Degiro file.')
     }
 
-    return records.map(x => ({
-        ...x, "Source": "Degiro"
-    }))
+    return (await Promise.all(records.map(async x => ({
+        ...x, Source: "Degiro", id: (await nanoid(10))
+    })))) as DegiroHeaders[]
 
 }
 
@@ -113,9 +111,9 @@ const parseNordNetCSV = async (input: string): Promise<NordnetHeaders[]> => {
         throw TypeError('All headers not found in the provided Nordnet file.')
     }
 
-    return results.map(x => ({
-        ...x, "Source": "Nordnet"
-    })) as NordnetHeaders[]
+    return (await Promise.all(results.map(async x => ({
+        ...x, Source: "Nordnet", id: (await nanoid(10))
+    })))) as NordnetHeaders[]
 }
 
 const getNordnetAsColumns = (records: NordnetHeaders[]): ColumnDataSecurity[] => {
@@ -169,13 +167,13 @@ const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
         from_line: startAt > 0 ? startAt + 1 : 1,
         trim: true,
     })
-    if ((results ?? []).every((x: any) => _.difference(CoinBaseHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
+    if (results.every((x: any) => _.difference(CoinBaseHeaderValues, _.sortBy(Object.keys(x))).length !== 0)) {
         throw TypeError('All headers not found in the provided Coinbase file.')
     }
 
-    return results.map((x: any) => ({
-        ...x, "Source": "Coinbase"
-    })) as CoinbaseHeaders[];
+    return (await Promise.all(results.map(async (x: any) => ({
+        ...x, Source: "Coinbase", id: (await nanoid(10))
+    })))) as CoinbaseHeaders[]
 }
 
 const prepareCoinbaseForFIFO = (rawData: CoinbaseHeaders[]): Operation[] => {
@@ -274,13 +272,12 @@ const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]>
         throw TypeError('All headers not found in the provided Coinbase Pro file.')
     }
 
-
-    return results.map((x: any) => ({
-        ...x, 
-        Source: "CoinbasePro",
+    return (await Promise.all(results.map(async (x: any) => ({
+        ...x, Source: "CoinbasePro",
         product: x.product.split('-')[0],
-        Error: (x.pricefeetotalunit !== "EUR" ? "Invalid currency detected" : undefined)
-    })) as CoinbaseProHeaders[]
+        Error: (x.pricefeetotalunit !== "EUR" ? "Invalid currency detected" : undefined),
+        id: (await nanoid(10))
+    })))) as CoinbaseProHeaders[]
 }
 
 const getCoinbaseProAsColumns = (records: CoinbaseProHeaders[]): ColumnDataCrypto[] => {

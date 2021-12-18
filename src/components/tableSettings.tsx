@@ -1,18 +1,4 @@
-export interface ColumnSecurity {
-    id: 'paivays' | 'tuote' | 'isin' | 'maara' | 'arvo' | 'kulut' | 'kokonaissumma' | 'kurssi';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-}
-
-export interface ColumnCrypto {
-    id: 'paivays' | 'tuote' | 'arvo' | 'maara' | 'arvo' | 'kulut' | 'kokonaissumma' | 'kurssi' | 'operaatio';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-}
+import { GridColumns } from '@mui/x-data-grid';
 
 export interface ColumnTransaction {
     id: 'ticker' | 'buydate' | 'selldate' | 'amountsold' | 'transferPrice' | 'acquisitionPrice' | 'acquisitionFee' | 'transferFee' | 'profitOrLoss';
@@ -45,39 +31,34 @@ const columnsTransaction: readonly ColumnTransaction[] = [
 ];
 
 
-const columnsSecurity: readonly ColumnSecurity[] = [
-    { id: 'paivays', label: 'Paivays', minWidth: 150 },
-    { id: 'tuote', label: 'Tuote', minWidth: 200 },
-    { id: 'isin', label: 'ISIN', minWidth: 170 },
-    {
-        id: 'maara', label: 'Maara', minWidth: 100,
-        format: (value: number) => value.toFixed(2)
-    },
-    { id: 'kurssi', label: 'Kurssi', minWidth: 120 },
-    { id: 'arvo', label: 'Arvo', minWidth: 100 },
-    { id: 'kulut', label: 'Kulut', minWidth: 100 },
-    { id: 'kokonaissumma', label: 'Kokonaissumma', minWidth: 170 },
+const columnsSecurity: GridColumns = [
+    { field: 'paivays', headerName: 'Paivays', type: 'date', editable: true, width: 180, },
+    { field: 'operaatio', headerName: 'Operaatio', type: 'string', editable: true, minWidth: 120 },
+    { field: 'isin', headerName: 'ISIN', type: 'string', editable: true, minWidth: 120 },
+    { field: 'arvo', headerName: 'Arvo', type: 'string', editable: true, minWidth: 120 },
+    { field: 'maara', headerName: 'Määrä', type: 'number', editable: true, minWidth: 120 },
+    { field: 'kurssi', headerName: 'Kurssi', type: 'string', editable: true, minWidth: 120 },
+    { field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110 },
+    { field: 'kokonaissumma', headerName: 'Kokonaissumma', type: 'string', editable: true, minWidth: 170 },
 ];
 
-const columnsCrypto: readonly ColumnCrypto[] = [
-    { id: 'paivays', label: 'Paivays', minWidth: 150 },
-    { id: 'operaatio', label: 'Operaatio', minWidth: 100 },
-    { id: 'tuote', label: 'Tuote', minWidth: 100 },
-    { id: 'arvo', label: 'Arvo', minWidth: 100 },
-    {
-        id: 'maara', label: 'Määrä', minWidth: 100,
-        format: (value: number) => value.toFixed(2)
-    },
-    { id: 'kurssi', label: 'Kurssi', minWidth: 120 },
-    {
-        id: 'kulut', label: 'Kulut', minWidth: 110,
-        format: (value: number) => value.toFixed(4)
-    },
-    { id: 'kokonaissumma', label: 'Kokonaissumma', minWidth: 170 },
+
+
+
+const columnsCrypto: GridColumns = [
+    { field: 'paivays', headerName: 'Paivays', type: 'date', editable: true, width: 180, },
+    { field: 'operaatio', headerName: 'Operaatio', type: 'string', editable: true, minWidth: 120 },
+    { field: 'tuote', headerName: 'Tuote', type: 'string', editable: true, minWidth: 120 },
+    { field: 'arvo', headerName: 'Arvo', type: 'string', editable: true, minWidth: 120 },
+    { field: 'maara', headerName: 'Määrä', type: 'number', editable: true, minWidth: 120 },
+    { field: 'kurssi', headerName: 'Kurssi', type: 'string', editable: true, minWidth: 120 },
+    { field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110 },
+    { field: 'kokonaissumma', headerName: 'Kokonaissumma', type: 'string', editable: true, minWidth: 170 },
 ];
 
 
 export interface ColumnDataSecurity {
+    readonly id: string;
     paivays: string;
     tuote: string;
     isin: string;
@@ -90,6 +71,7 @@ export interface ColumnDataSecurity {
 
 
 export interface ColumnDataCrypto {
+    readonly id: string;
     paivays: string;
     operation: string;
     tuote: string;

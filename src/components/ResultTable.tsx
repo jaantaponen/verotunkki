@@ -1,26 +1,18 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-import { ColumnCrypto, ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, ColumnSecurity, columnsSecurity, columnsTransaction, ColumnTransaction, ColumnDataTransaction } from './tableSettings'
+import {  ColumnDataCrypto, ColumnDataSecurity, columnsCrypto, columnsTransaction, ColumnTransaction, ColumnDataTransaction } from './tableSettings'
 interface Props {
-    rows: ColumnDataSecurity[] | ColumnDataCrypto[] | ColumnDataTransaction[],
-    mode: "CRYPTO" | "SECURITY" | 'RESULT',
+    rows: ColumnDataTransaction[],
 }
 
 
-const ResultTable = ({ rows, mode }: Props) => {
+const ResultTable = ({ rows }: Props) => {
 
     // Table specific states
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    let columns: readonly ColumnSecurity[] | readonly ColumnCrypto[] | readonly ColumnTransaction[] = []
-    if (mode === "SECURITY") {
-        columns = columnsSecurity
-    } else if (mode === "CRYPTO") {
-        columns = columnsCrypto
-    } else if (mode === "RESULT") {
-        columns = columnsTransaction
-    }
+    const columns: readonly ColumnTransaction[] = columnsTransaction
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -31,9 +23,9 @@ const ResultTable = ({ rows, mode }: Props) => {
     };
 
 
-    useEffect(() => {
+/*     useEffect(() => {
         window.scrollTo(0, 250)
-    }, [])
+    }, []) */
 
     return (<><Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 1400 }}>
