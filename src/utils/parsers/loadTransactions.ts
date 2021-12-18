@@ -44,6 +44,13 @@ const getDataCoinbasePro = async (input: string) => {
     }
 }
 
+
+/**
+ * 
+ * ************DEGIRO FUNCTIONS********************
+ *
+ */
+
 const parseDegiroCSV = async (input: string): Promise<DegiroHeaders[]> => {
     let prevField = ""
     const parse = await loadParser()
@@ -109,6 +116,12 @@ const prepareDegiroForFIFO = (rawData: DegiroHeaders[]): Operation[] => {
         })
 }
 
+
+/**
+ * 
+ * ************NORDNET FUNCTIONS********************
+ *
+ */
 
 const parseNordnetCSV = async (input: string): Promise<NordnetHeaders[]> => {
     const parse = await loadParser()
@@ -187,6 +200,13 @@ const prepareNordnetForFIFO = (rawData: NordnetHeaders[]): Operation[] => {
         })
 }
 
+
+
+/**
+ * 
+ * ************COINBASE FUNCTIONS********************
+ *
+ */
 
 const parseCoinbaseCSV = async (input: string): Promise<CoinbaseHeaders[]> => {
     const startAt = _.findIndex(input?.split('\n'), (o) => o?.startsWith('Timestamp,Transaction'))
@@ -285,6 +305,12 @@ const getCoinbaseAsColumns = (records: CoinbaseHeaders[]): ColumnDataCrypto[] =>
     })
     return ret
 }
+
+/**
+ * 
+ * ************COINBASE PRO FUNCTIONS********************
+ *
+ */
 
 const parseCoinbaseProCSV = async (input: string): Promise<CoinbaseProHeaders[]> => {
     const parse = await loadParser()

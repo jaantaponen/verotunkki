@@ -14,7 +14,6 @@ interface Props {
 const PreviewTable = ({ rows, mode, rawData, rawDatatSetCallback }: Props) => {
     const [cellCommit, setCellCommit] = useState({} as any);
 
-
     useEffect(() => {
         const rawCopy: any = {...rawData}
         Object.keys(rawCopy).forEach((key: any)=> {
@@ -22,7 +21,6 @@ const PreviewTable = ({ rows, mode, rawData, rawDatatSetCallback }: Props) => {
             console.log(a)
         })
 
-        
     }, [cellCommit])
 
     return (

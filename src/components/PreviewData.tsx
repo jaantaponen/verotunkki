@@ -41,7 +41,6 @@ interface calculatedResultsType {
     netProfit: number
 }
 
-
 interface Props {
     mode: "CRYPTO" | "SECURITY"
 }
@@ -90,7 +89,7 @@ const PreviewData = ({ mode }: Props) => {
                 fifoData.push(...prepareNordnetForFIFO(rawData.Nordnet as NordnetHeaders[]))
             }
             const finalFifo = calculateFIFOTransactions(fifoData)
-            setResults(finalFifo.map((x, idx)=> ({
+            setResults(finalFifo.map((x, idx) => ({
                 ...x,
                 buydate: new Date(x.buydate).toLocaleString('en-GB', { timeZone: 'UTC' }),
                 selldate: new Date(x.selldate).toLocaleString('en-GB', { timeZone: 'UTC' }),
@@ -112,20 +111,22 @@ const PreviewData = ({ mode }: Props) => {
     }
 
     const createColumnsFromRaw = (newRawData: rawDatas) => {
-        const columnData: any = []
-        Object.keys(newRawData).forEach((header) => {
+
+        const columnData = Object.keys(newRawData).map((header) => {
             if (header === 'Coinbase') {
-                columnData.push(getCoinbaseAsColumns(newRawData.Coinbase as CoinbaseHeaders[]) as ColumnDataCrypto[])
+                return getCoinbaseAsColumns(newRawData.Coinbase as CoinbaseHeaders[]) as ColumnDataCrypto[]
             } else if (header === 'CoinbasePro') {
                 const currencyError = newRawData.CoinbasePro.find(x => x?.Error === "Invalid currency detected")
                 if (currencyError)
                     setParseError(`${currencyError.Error} In trancactions made in ${currencyError
                         .createdat.toLocaleString('en-GB', { timeZone: 'UTC' })}.`)
-                columnData.push(getCoinbaseProAsColumns(newRawData.CoinbasePro as CoinbaseProHeaders[]) as ColumnDataCrypto[])
+                return getCoinbaseProAsColumns(newRawData.CoinbasePro as CoinbaseProHeaders[]) as ColumnDataCrypto[]
             } else if (header === 'Degiro') {
-                columnData.push(getDegiroAsColumns(newRawData.Degiro as DegiroHeaders[]) as ColumnDataSecurity[])
+                return getDegiroAsColumns(newRawData.Degiro as DegiroHeaders[]) as ColumnDataSecurity[]
             } else if (header === 'Nordnet') {
-                columnData.push(getNordnetAsColumns(newRawData.Nordnet as NordnetHeaders[]) as ColumnDataSecurity[])
+                return getNordnetAsColumns(newRawData.Nordnet as NordnetHeaders[]) as ColumnDataSecurity[]
+            } else {
+                return []
             }
         })
         setRows((_.flatten(columnData)) as ColumnDataCrypto[] | ColumnDataSecurity[])
