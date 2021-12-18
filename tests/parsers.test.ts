@@ -63,7 +63,7 @@ describe('Coinbase', () => {
             "Source": "Coinbase"
         } as any,])).toEqual([
             {
-                paivays: '10/05/2021, 05:14:00',
+                paivays: new Date('2021-05-10T05:14:00.000Z'),
                 tuote: 'ETH',
                 id: undefined,
                 arvo: 'NaN undefined',
@@ -213,8 +213,8 @@ describe('Degiro', () => {
                 transferPrice: '194.5000',
                 profitOrLoss: -313.5,
                 acquisitionPrice: '90.0000',
-                acquisitionFee: -0.51,
-                transferFee: -0.51
+                acquisitionFee: 0.51,
+                transferFee: 0.51
             }
         ])
     })
