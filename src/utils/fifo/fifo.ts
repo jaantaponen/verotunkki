@@ -141,6 +141,7 @@ export function calculateFIFOCapitalGains(
  *
  */
 export const calculateFIFOTransactions = (operationHistory: Operation[]): Transaction[] => {
+  console.log(JSON.stringify(operationHistory.filter(x => x.symbol ==='USDT')))
   const a = calculateFIFOCapitalGains(operationHistory).flatMap((gainByDate) => {
     const totalAmount = _.sumBy(gainByDate.transactions, (o) => o.amountsold)
     const dividedFees = gainByDate.transactions.map(x => ({

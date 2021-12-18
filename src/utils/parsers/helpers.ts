@@ -20,15 +20,18 @@ const decodeUTF16LE = (binaryStr: string) => {
  */
 const chooseCSVParser = async (filesCopy: FileObject[], parsers: any[]) => {
     const errors: Error[] = []
-    for (let i = 0; i < parsers.length; i++) {
-        try {
-            const inputFile = filesCopy[0].data ? filesCopy[0].data.toString().split(',')[1] : ""
-            const fileContentBuffer = parsers[i].name === 'parseNordNetCSV' ? decodeUTF16LE(atob(inputFile)) : b64_to_utf8(inputFile)
-            const fileContent = fileContentBuffer.toString()
-            const parsedData = await parsers[i](fileContent)
-            return parsedData
-        } catch (e: any) {
-            errors.push(e)
+    for (let j = 0; j < filesCopy.length; j++) {
+        for (let i = 0; i < parsers.length; i++) {
+            try {
+                const file = filesCopy[j].data?.toString().split(',')[1]
+                const inputFile = file ? file : ""
+                const fileContentBuffer = parsers[i].name === 'parseNordNetCSV' ? decodeUTF16LE(atob(inputFile)) : b64_to_utf8(inputFile)
+                const fileContent = fileContentBuffer.toString()
+                const parsedData = await parsers[i](fileContent)
+                return parsedData
+            } catch (e: any) {
+                errors.push(e)
+            }
         }
     }
     return [{ Source: "Error", Error: (errors.find(e => (e instanceof TypeError)) ?? errors[0]) }]
