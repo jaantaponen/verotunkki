@@ -84,8 +84,8 @@ const PreviewData = ({ mode }: Props) => {
                 customOp.operation === 'COINBASE EARN' ||
                 customOp.operation === 'RECEIVE') &&
                 originalData['Coinbase'].map(x => x.id).includes(customOp.id)) as ColumnDataCrypto[]
-            
-            
+
+
             const coinbaseTMP: CoinbaseHeaders[] = []
             coinBaseIssueRows.forEach(issueRow => {
                 const matchinOrigData = originalData['Coinbase']?.find(x => x.id === issueRow.id)
@@ -134,7 +134,7 @@ const PreviewData = ({ mode }: Props) => {
                 const obj = correctedCoinbaseData.find(newObj => newObj.id === item.id)
                 return obj ? obj : item
             }) as ColumnDataSecurity[] | ColumnDataCrypto[]
-            
+
             /**
              * In this function we need to get the 1values with the string.split function.
              * Since some columns are formattes as value & currency (Ex. 10 EUR).
@@ -151,7 +151,7 @@ const PreviewData = ({ mode }: Props) => {
                         transactionFee: Math.abs(Number(transaction.kulut.split(' ')[0])),
                     }
                 })
-                console.log(fifoData)
+            console.log(fifoData)
             const finalFifo = calculateFIFOTransactions(fifoData)
             setResults(finalFifo.map((x, idx) => ({
                 ...x,
@@ -176,31 +176,44 @@ const PreviewData = ({ mode }: Props) => {
 
     const currencyClick = () => {
         (async () => {
-            const fixedCurrencies = await Promise.all(rawDataAsColumns
-                .filter(invalid => invalid?.kokonaissumma?.split(' ')[1] !== 'EUR'
-                    && (invalid.operation === 'BUY'
-                        || invalid.operation === 'SELL'))
-                .map(async x => {
-                    const requestDate = moment(x.paivays).format('YYYY-MM-DD');
-                    //TODO replace with better than
-                    const unitAsEur = (await (await axios.get(`https://api.coinbase.com/v2/prices/${x.tuote}-EUR/spot?date=${requestDate}`)).data.data)?.amount
-                    const percentageOfFee = Number(x.kulut.split(' ')[0]) / Number(x.kokonaissumma.split(' ')[0])
-                    const totalInEur = unitAsEur * x.maara
+            const additionlOperationTobeAdded = [] as any[]
+            const arrReplacedObj = await Promise.all(rawDataAsColumns.map(async item => {
+                const fixedCurrencies = [] as any[]
+                if ((item.operation === 'BUY' || item.operation === 'SELL') && item.kokonaissumma.split(' ')[1] !== "EUR") {
+                    const requestDate = moment(item.paivays).format('YYYY-MM-DD');
+                    const unitAsEur = (await (await axios.get(`https://api.coinbase.com/v2/prices/${item.tuote}-EUR/spot?date=${requestDate}`)).data.data)?.amount
+                    const percentageOfFee = Number(item.kulut.split(' ')[0]) / Number(item.kokonaissumma.split(' ')[0])
+                    const totalInEur = unitAsEur * item.maara
                     const totalFee = totalInEur * percentageOfFee
-                    return {
-                        ...x,
+
+                    // Handle sell
+                    fixedCurrencies.push({
+                        ...item,
                         kurssi: `${unitAsEur} EUR`,
                         kulut: `${totalFee} EUR`,
                         kokonaissumma: `${totalInEur - totalFee} EUR`,
-                    } as ColumnDataSecurity | ColumnDataCrypto
-                }))
-            const arrReplacedObj = rawDataAsColumns.map(item => {
+                    })
+                    /**
+                     * Need to handle Coinbase Pro incorrect currencies as SELL, BUY instead of just sell
+                     * SInce most of the entries are just from converting Currency x via uniswap (for example UNI to BTC )
+                     */
+                    if (originalData['CoinbasePro']?.find(y => y.id === item.id)) {
+                        additionlOperationTobeAdded.push({
+                            ...item,
+                            operation: "BUY",
+                            id: nanoid(10),
+                            tuote: `${item.arvo.split(' ')[1]}`,
+                            kurssi: `${unitAsEur} EUR`,
+                            kulut: `${totalFee} EUR`,
+                            kokonaissumma: `${totalInEur - totalFee} EUR`,
+                        })
+                    }
+                }
                 const obj = fixedCurrencies.find(newObj => newObj.id === item.id)
                 return obj ? obj : item
-            }) as ColumnDataSecurity[] | ColumnDataCrypto[]
-
-            setRawDataAsColumns([...arrReplacedObj])
-            setRowDataColumn([...arrReplacedObj])
+            }))
+            setRawDataAsColumns([...arrReplacedObj.concat(additionlOperationTobeAdded)])
+            setRowDataColumn([...arrReplacedObj.concat(additionlOperationTobeAdded)])
             setShowCurrencyFetchButton(false)
             setParseError("")
         })()
@@ -218,7 +231,7 @@ const PreviewData = ({ mode }: Props) => {
                         setParseError(`${msg} Are you tryin to parse in the wrong site?`)
                     } else if (msg === "malformed URI sequence") {
                         setParseError("Unable to parse file, is it encoded in a weird format?")
-                    }else {
+                    } else {
                         setParseError(msg)
                     }
                 } else {
@@ -239,8 +252,9 @@ const PreviewData = ({ mode }: Props) => {
             }
         })()
     }, [files])
-    
+
     useEffect(() => {
+        console.log("rowdataa", rowDataColumn)
         const enableCurrencyWarning = rowDataColumn
             .filter(invalid => invalid?.kokonaissumma?.split(' ')[1] !== 'EUR'
                 && (invalid.operation === 'BUY'
