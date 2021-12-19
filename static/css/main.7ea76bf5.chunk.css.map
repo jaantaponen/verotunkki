@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/components/printTableStyles.css"],"names":[],"mappings":"AAAA,kBACI,sBAAuB,CACvB,qBACJ,CAEA,aACI,MACI,cACJ,CACJ","file":"main.7ea76bf5.chunk.css","sourcesContent":[".printTableStyles {\n    height: 120vh!important;\n    width: 120vw !important;\n}\n\n@media print {\n    @page {\n        size: landscape\n    }\n}\n\n"]}
