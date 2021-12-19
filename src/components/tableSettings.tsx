@@ -8,7 +8,7 @@ export interface ColumnTransaction {
     format?: (value: number) => string;
 }
 
-const currencyFormatter = (value: any) => new Intl.NumberFormat('en-GB', {
+export const currencyFormatter = (value: any) => new Intl.NumberFormat('en-GB', {
     style: 'currency',
     currency: value,
 });
