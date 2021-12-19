@@ -1,6 +1,11 @@
 import _ from "lodash";
+import { nanoid } from "nanoid";
 import { FileObject } from "react-mui-dropzone";
-import { resultFromParse } from "../../components/PreviewData";
+import { rawDatas, resultFromParse } from "../../components/PreviewData";
+import { ColumnDataCrypto, ColumnDataSecurity } from "../../components/tableSettings";
+import { Operation } from "../fifo";
+import { getCoinbaseAsColumns } from "./loadTransactions";
+import { CoinbaseHeaders } from "./types";
 
 /**
  * Workaround for browsers.
@@ -52,5 +57,68 @@ const loadParser: any = async () => (process.env.NODE_ENV === 'test' ?
 )
 
 
+const parseColumnDataToFIFO = (rawDataAsColumns: ColumnDataSecurity[] | ColumnDataCrypto[], originalData: rawDatas): Operation[] => {
+    const coinBaseIssueRows = rawDataAsColumns.filter(customOp => (customOp.operation === 'CONVERT' ||
+        customOp.operation === 'COINBASE EARN' ||
+        customOp.operation === 'RECEIVE') &&
+        originalData['Coinbase'].map(x => x.id).includes(customOp.id)) as ColumnDataCrypto[]
 
-export { chooseCSVParser, loadParser }
+    const coinbaseTMP: CoinbaseHeaders[] = []
+    coinBaseIssueRows.forEach(issueRow => {
+        const matchinOrigData = originalData['Coinbase']?.find(x => x.id === issueRow.id)
+        if (matchinOrigData?.TransactionType === 'CONVERT') {
+            const info = matchinOrigData.Notes.split(' ')
+            //const soldAmount = info[1]
+            //const soldCurrency = info[2]
+            const boughAmount = Number(info[4])
+            const boughtCurrency = info[5]
+            coinbaseTMP.push({
+                ...matchinOrigData,
+                TransactionType: "SELL",
+                id: nanoid(10),
+                Fees: 0,
+                Total: matchinOrigData.Total - matchinOrigData.Fees
+            })
+            coinbaseTMP.push({
+                ...matchinOrigData,
+                TransactionType: "BUY",
+                id: nanoid(10),
+                Asset: boughtCurrency,
+                QuantityTransacted: boughAmount,
+                SpotPriceatTransaction: matchinOrigData.Subtotal / boughAmount
+            })
+        } else if (matchinOrigData?.TransactionType === 'COINBASE EARN') {
+            coinbaseTMP.push({
+                ...matchinOrigData,
+                TransactionType: "BUY",
+            })
+        } else if (matchinOrigData?.TransactionType === 'RECEIVE') {
+            coinbaseTMP.push({
+                ...matchinOrigData,
+                TransactionType: "BUY",
+            })
+        }
+    })
+
+    const correctedCoinbaseData = getCoinbaseAsColumns(coinbaseTMP)
+    // We do not need filter by unique since other operations than BUY and SELL are filtered below.
+    const combined = rawDataAsColumns.concat(correctedCoinbaseData ? correctedCoinbaseData as any : [])
+
+    const fifoData = combined
+        .filter(type => type.operation === 'BUY' || type.operation === 'SELL')
+        .map(transaction => {
+            return {
+                symbol: transaction.tuote,
+                date: transaction.paivays,
+                price: Math.abs(Number(transaction.kurssi.split(' ')[0])),
+                amount: Math.abs((transaction.maara)),
+                type: transaction.operation as "BUY" | "SELL",
+                transactionFee: Math.abs(Number(transaction.kulut.split(' ')[0])),
+            }
+        })
+    return fifoData as Operation[]
+}
+
+
+
+export { chooseCSVParser, loadParser, parseColumnDataToFIFO }

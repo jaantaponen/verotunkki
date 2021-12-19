@@ -1,9 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 const relativePath = path.relative(process.cwd(), './tests/files');
-import { getCoinbaseAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordnetCSV, prepareCoinbaseForFIFO, prepareDegiroForFIFO } from '../src/utils/parsers/loadTransactions'
+import { getCoinbaseAsColumns, getDataCoinbase, getDataCoinbasePro, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordnetCSV, prepareCoinbaseForFIFO, prepareDegiroForFIFO } from '../src/utils/parsers/loadTransactions'
 import _ from 'lodash'
 import { calculateFIFOTransactions } from '../src/utils/fifo';
+import { rawDatas, resultFromParse } from '../src/components/PreviewData';
+import { ColumnDataCrypto, ColumnDataSecurity } from '../src/components/tableSettings';
+import { parseColumnDataToFIFO } from '../src/utils/parsers/helpers';
 
 /* jest.mock('nanoid/async', () => Promise.resolve("aaa"));
  */
@@ -63,99 +66,15 @@ describe('Coinbase', () => {
             "Source": "Coinbase"
         } as any,])).toEqual([
             {
-                paivays: new Date('2021-05-10T05:14:00.000Z'),
+                paivays: "2021-05-10T05:14:00.000Z",
                 tuote: 'ETH',
                 id: undefined,
                 arvo: 'NaN undefined',
-                maara: '0.0008909',
+                maara: 0.0008909,
                 kulut: '0 undefined',
                 kurssi: 'undefined undefined',
                 kokonaissumma: '0 undefined',
                 operation: 'BUY'
-            }
-        ])
-    })
-    it('processes rawdata and executes FIFO', async () => {
-        const inputCoinbase = fs.readFileSync(`${relativePath}/coinbase.csv`, 'utf-8')
-        const res = await parseCoinbaseCSV(inputCoinbase)
-        const unprocessedFIFO = JSON.stringify(prepareCoinbaseForFIFO(res))
-        expect(calculateFIFOTransactions(JSON.parse(unprocessedFIFO))).toEqual([
-            {
-                ticker: 'ETH',
-                buydate: '2021-05-10T05:14:59.000Z',
-                selldate: '2021-08-21T11:15:48.000Z',
-                amountsold: 0.0008909,
-                transferPrice: 2784.01,
-                profitOrLoss: -0.5297291399999999,
-                acquisitionPrice: 3378.61,
-                acquisitionFee: 0.99,
-                transferFee: 0.0369599429825673
-            },
-            {
-                ticker: 'ETH',
-                buydate: '2021-05-22T12:13:53.000Z',
-                selldate: '2021-08-21T11:15:48.000Z',
-                amountsold: 0.05598209,
-                transferPrice: 2784.01,
-                profitOrLoss: 49.827978846300006,
-                acquisitionPrice: 1893.94,
-                acquisitionFee: 0,
-                transferFee: 2.3224771067964425
-            },
-            {
-                ticker: 'ETH',
-                buydate: '2021-05-28T06:36:17.000Z',
-                selldate: '2021-08-21T11:15:48.000Z',
-                amountsold: 0.14882114,
-                transferPrice: 2784.01,
-                profitOrLoss: 113.11299566840002,
-                acquisitionPrice: 2023.95,
-                acquisitionFee: 0,
-                transferFee: 6.174004769335127
-            },
-            {
-                ticker: 'ETH',
-                buydate: '2021-06-10T05:35:45.000Z',
-                selldate: '2021-08-21T11:15:48.000Z',
-                amountsold: 0.10075589,
-                transferPrice: 2784.01,
-                profitOrLoss: 70.58453873950002,
-                acquisitionPrice: 2083.46,
-                acquisitionFee: 0,
-                transferFee: 4.179966269567654
-            },
-            {
-                ticker: 'ETH',
-                buydate: '2021-07-01T05:55:08.000Z',
-                selldate: '2021-08-21T11:15:48.000Z',
-                amountsold: 0.10072289,
-                transferPrice: 2784.01,
-                profitOrLoss: 101.06232613930001,
-                acquisitionPrice: 1780.64,
-                acquisitionFee: 0,
-                transferFee: 4.178597229138396
-            },
-            {
-                ticker: 'ETH',
-                buydate: '2021-07-20T05:28:04.000Z',
-                selldate: '2021-08-21T11:15:48.000Z',
-                amountsold: 0.1000584,
-                transferPrice: 2784.01,
-                profitOrLoss: 129.09434709600004,
-                acquisitionPrice: 1493.82,
-                acquisitionFee: 0,
-                transferFee: 4.1510301480827385
-            },
-            {
-                ticker: 'ETH',
-                buydate: '2021-08-09T10:16:27.000Z',
-                selldate: '2021-08-21T11:15:48.000Z',
-                amountsold: 0.10044249,
-                transferPrice: 2784.01,
-                profitOrLoss: 13.1559573402,
-                acquisitionPrice: 2653.03,
-                acquisitionFee: 0,
-                transferFee: 4.166964534097077
             }
         ])
     })
@@ -246,6 +165,35 @@ describe('Nordnet', () => {
         await expect(parseNordnetCSV({ "foo": "bar" } as any)).rejects.toThrowError(Error);
     })
 });
+
+
+describe('FromCSV To FIFO result', () => {
+    it('parses the CSVs to preFIFO succesfully', async () => {
+        const inputCoinbase = fs.readFileSync(`${relativePath}/SortIssuedCoinbase.csv`, 'utf-8')
+        const inputCoinbasePro = fs.readFileSync(`${relativePath}/SortIssuedCoinbasePro.csv`, 'utf-8')
+        const coinbaseAsColumn = await getDataCoinbase(inputCoinbase) as resultFromParse
+        const coinbaseProAsColumns = await getDataCoinbasePro(inputCoinbasePro) as resultFromParse
+
+        const data = [coinbaseAsColumn, coinbaseProAsColumns]
+
+        const newRows = data.filter(result => result.rows)
+        const combinedRowData = [...newRows.map(x => x.rows).concat([] as any)].flatMap(x => x) as ColumnDataSecurity[] | ColumnDataCrypto[]
+        const newRawData = Object.assign({}, ...data.map(result => result.orig)) as rawDatas
+
+
+        const tmp = JSON.stringify(combinedRowData)
+        const tmp2 = JSON.stringify(newRawData)
+
+        expect(JSON.parse(tmp)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/sortIssueRow.json`, 'utf-8')))
+        )
+
+        expect(JSON.parse(tmp2)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/sortIssueRaw.json`, 'utf-8')))
+        )
+    })
+});
+
 
 
 export { }

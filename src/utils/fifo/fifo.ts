@@ -94,13 +94,12 @@ export interface CapitalResults {
 export function calculateFIFOCapitalGains(
   operationHistory: Operation[]
 ): CapitalResults[] {
-  const history = operationHistory.map((obj) => ({ ...obj }));
-  const sales = history.filter(({ type }) => type === 'SELL');
-
+  const sortedOperationHistory = _.sortBy(operationHistory, o => new Date(o.date))
+  const sales = sortedOperationHistory.filter(({ type }) => type === 'SELL');
   return sales.reduce<CapitalResults[]>(
     (capitalGainPerSellDate, sale) => [
       ...capitalGainPerSellDate,
-      calculateCapitalGainsForSale(history, sale),
+      calculateCapitalGainsForSale(sortedOperationHistory, sale),
     ],
     []
   );
@@ -150,7 +149,7 @@ export const calculateFIFOTransactions = (operationHistory: Operation[]): Transa
     const transferFeeForSell = gainByDate.transactions[0] ? gainByDate.transactions[0].transferFee : 0
     const transferFeeSummedFromSELLOperation = _.sumBy(dividedFees, (o) => o.transferFee)
     if (transferFeeForSell !== transferFeeSummedFromSELLOperation) {
-      console.error(`Amount of fees for do not match for ${gainByDate.transactions[0]?.ticker}: ${transferFeeForSell} and ${transferFeeSummedFromSELLOperation}`)
+      console.warn(`Amount of fees for do not match for ${gainByDate.transactions[0]?.ticker}: ${transferFeeForSell} and ${transferFeeSummedFromSELLOperation}`)
     }
     return dividedFees
   });
@@ -167,8 +166,7 @@ const calculateCapitalGainsForSale = (
 ): CapitalResults => {
   let capitalGainPerSellDate = 0;
   const transactions: Transaction[] = [];
-
-  const relatedBuyTransactions = _.orderBy(operationHistory, (o: Operation) => [o.date, o.type], ['asc', 'desc']).filter(
+  const relatedBuyTransactions = _.orderBy(operationHistory, (o: Operation) => [new Date(o.date), o.type], ['asc', 'desc']).filter(
     ({ type, symbol, date }) =>
       type === 'BUY' && symbol === sale.symbol && date <= sale.date
   );
