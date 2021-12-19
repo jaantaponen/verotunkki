@@ -1,5 +1,6 @@
 
 import { Alert, Box, Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
+import { currencyFormatter } from './tableSettings';
 
 interface Props {
     header: string,
@@ -28,6 +29,15 @@ const ResultCard = ({ header, content, footer, footerSecondary, contentColor }: 
             }
         }
     });
+
+    const formatCurrency = (value: string) => {
+        try {
+            return currencyFormatter("EUR").format(Number(value))
+        } catch {
+            return value
+        }
+    }
+
     return (
         <ThemeProvider theme={theme}><Box
             sx={{
@@ -40,7 +50,7 @@ const ResultCard = ({ header, content, footer, footerSecondary, contentColor }: 
         >
             <Box sx={{ color: 'text.secondary' }}>{header}</Box>
             <Box sx={{ color: 'text.primary', fontSize: 30, fontWeight: 'medium' }}>
-                {content}
+                {formatCurrency(content)}
             </Box>
             <Box
                 sx={{

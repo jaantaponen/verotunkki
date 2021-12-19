@@ -19,7 +19,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { calculateFIFOTransactions } from '../utils/fifo'
 import { chooseCSVParser } from '../utils/parsers/helpers'
 import axios from 'axios';
-import moment from 'moment';
+import moment, { invalid } from 'moment';
 import { PreviewTable } from './PreviewTable'
 import { nanoid } from 'nanoid'
 
@@ -41,8 +41,10 @@ interface calculatedResultsType {
 }
 
 export interface resultFromParse {
-    orig: rawDatas
-    rows: ColumnDataSecurity[] | ColumnDataCrypto[]
+    orig?: rawDatas
+    rows?: ColumnDataSecurity[] | ColumnDataCrypto[]
+    Error?: Error
+    fileName?: string
 }
 
 interface Props {
@@ -149,7 +151,6 @@ const PreviewData = ({ mode }: Props) => {
                         transactionFee: Math.abs(Number(transaction.kulut.split(' ')[0])),
                     }
                 })
-            console.log(fifoData)
             const finalFifo = calculateFIFOTransactions(fifoData)
             setResults(finalFifo.map((x, idx) => ({
                 ...x,
@@ -221,38 +222,43 @@ const PreviewData = ({ mode }: Props) => {
     useEffect(() => {
         (async () => {
             if (files.length > 0) {
-                const data = (await chooseCSVParser(files, mode === "CRYPTO" ? parsersCrypto : parsersSecurity)) as resultFromParse
-
-                if ((data as any)[0]?.Error) {
-                    const msg = (data as any)[0].Error.message
-                    if (msg.toString().includes('All headers not found')) {
-                        setParseError(`${msg} Are you tryin to parse in the wrong site?`)
+                const data = (await chooseCSVParser(files, mode === "CRYPTO" ? parsersCrypto : parsersSecurity)) as resultFromParse[]
+                const successFul = _.uniqBy(data.filter(x => !x.Error), y => y.fileName)
+                const errors = _.uniqBy(data.filter(x => x.Error), y => y.fileName)
+                if (errors.length > 0 && successFul.length !== errors.length) {
+                    const error = errors.find(err => !successFul.map(x => x.fileName).includes(err.fileName))
+                    console.log("found error", error)
+                    const msg = error?.Error ? error.Error.message : ""
+                    if (msg.toString().includes('All headers not found in the provided')) {
+                        console.error("Debug Parser error: ", msg)
+                        setParseError(`Error loading headers in ${error?.fileName} Are you tryin to parse in the wrong site?`)
                     } else if (msg === "malformed URI sequence") {
-                        setParseError("Unable to parse file, is it encoded in a weird format?")
+                        console.error("Debug Parser error: ", msg)
+                        setParseError(`Encoding error while trying to parse file ${error?.fileName} are you in the correct place?`)
+                    } else if (msg.startsWith("Invalid")) {
+                        setParseError(`Parser error while trying to parse file ${error?.fileName} are you in the correct place?`)
+                        console.error("Debug Parser error: ", msg)
                     } else {
+                        console.error(`Debug error in file ${error?.fileName}: ${msg}`)
                         setParseError(msg)
                     }
-                } else {
-                    const original = data.orig as rawDatas
-                    const rawKeys = (Object.keys(original) as Array<keyof typeof original>)
-                    const key = rawKeys[0]
-                    const dataSource = original[key]
-                    setRowDataColumn([...rowDataColumn.concat(data.rows as any)])
-                    setRawDataAsColumns([...rowDataColumn.concat(data.rows as any)])
-                    setOriginalData({
-                        ...originalData,
-                        [key]: dataSource
-                    })
-                    setShowTable(true)
                 }
 
+                if (successFul.length > 0) {
+                    const newRows = data.filter(result => result.rows)
+                    setRowDataColumn([...rowDataColumn.concat(...newRows.map(x => x.rows) as any)])
+                    // Set row data so if user has edited a field and uploads a new file it's handled correctly
+                    setRawDataAsColumns([...rowDataColumn.concat(...newRows.map(x => x.rows) as any)])
+                    const newRawData = Object.assign(originalData, ...data.map(result => result.orig))
+                    setOriginalData(newRawData)
+                    setShowTable(true)
+                }
                 setFiles([])
             }
         })()
     }, [files])
 
     useEffect(() => {
-        console.log("rowdataa", rowDataColumn)
         const enableCurrencyWarning = rowDataColumn
             .find(invalid => invalid?.kokonaissumma?.split(' ')[1] !== 'EUR'
                 && (invalid.operation === 'BUY'
@@ -340,7 +346,7 @@ const PreviewData = ({ mode }: Props) => {
                     </Typography>
                     {errorFifo && <Alert severity="error">{errorFifo}</Alert>}
                     {showCurrencyFetchButton &&
-                        <Stack direction="row" alignItems="flex-end" justifyContent="center" spacing={2}  sx={{ pb: 1 }}>
+                        <Stack direction="row" alignItems="flex-end" justifyContent="center" spacing={2} sx={{ pb: 1 }}>
                             <Stack direction="column" alignItems="center" justifyContent="center" spacing={2}>
                                 <Alert severity="warning" >
                                     You have made transactions that have not been traded in EUR. Do you want to use an <strong>external API</strong> to fetch the currency info?
@@ -349,10 +355,10 @@ const PreviewData = ({ mode }: Props) => {
                                     Note that if the error originated from Coinbase Pro, the currency transfer needs to be converted in to one buy and sell operation.
                                 </Alert>
                             </Stack>
-                            <div style={{paddingBottom: "4px"}}>
+                            <div style={{ paddingBottom: "4px" }}>
 
-                            
-                            <Button variant="contained" sx={{ minWidth: "140px", minHeight: "42px" }} onClick={currencyClick} endIcon={<DownloadIcon />} >I accept</Button>
+
+                                <Button variant="contained" sx={{ minWidth: "140px", minHeight: "42px" }} onClick={currencyClick} endIcon={<DownloadIcon />} >I accept</Button>
                             </div>
                         </Stack>}
 

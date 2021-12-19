@@ -1,4 +1,6 @@
+import _ from "lodash";
 import { FileObject } from "react-mui-dropzone";
+import { resultFromParse } from "../../components/PreviewData";
 
 /**
  * Workaround for browsers.
@@ -18,20 +20,23 @@ const decodeUTF16LE = (binaryStr: string) => {
  * @param filesCopy 
  * @returns headers
  */
-const chooseCSVParser = async (filesCopy: FileObject[], parsers: any[]) => {
-    const errors: Error[] = []
-    for (let i = 0; i < parsers.length; i++) {
-        try {
-            const inputFile = filesCopy[0].data ? filesCopy[0].data.toString().split(',')[1] : ""
-            const fileContentBuffer = parsers[i].name === 'getDataNordnet' ? decodeUTF16LE(atob(inputFile)) : b64_to_utf8(inputFile)
-            const fileContent = fileContentBuffer.toString()
-            const parsedData = await parsers[i](fileContent)
-            return parsedData
-        } catch (e: any) {
-            errors.push(e)
-        }
-    }
-    return [{ Source: "Error", Error: (errors.find(e => (e instanceof TypeError)) ?? errors[0]) }]
+const chooseCSVParser = async (filesCopy: FileObject[], parsers: any[]): Promise<resultFromParse[]> => {
+    const a = await Promise.all(filesCopy.map(async file => {
+        return await Promise.all(parsers.map(async parser => {
+            const fileName = file.file.name
+            try {
+                const inputFile = file.data ? file.data.toString().split(',')[1] : ""
+                const fileContentBuffer = parser.name === 'getDataNordnet' ? decodeUTF16LE(atob(inputFile)) : b64_to_utf8(inputFile)
+                const fileContent = fileContentBuffer.toString()
+                const parsedData = await parser(fileContent)
+                parsedData.fileName = fileName
+                return parsedData
+            } catch (e: any) {
+                return { Error: e, fileName: fileName }
+            }
+        }))
+    })) as resultFromParse[]
+    return a.flatMap(x => x)
 }
 
 /**

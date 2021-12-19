@@ -14,7 +14,7 @@ const Dropzone = ({ zoneHeight, handleFiles }: Props) => {
     
 
     const handleAlert = (message: any, variant: any) => {
-        console.log(`${variant}: ${message}`)
+        //console.log(`${variant}: ${message}`)
     }
     /***
      * 
@@ -39,7 +39,6 @@ const Dropzone = ({ zoneHeight, handleFiles }: Props) => {
             <DropzoneAreaBase
                 acceptedFiles={['text/x-csv', 'text/plain', 'application/vnd.ms-excel', 'application/x-csv', 'application/csv', 'text/csv', 'text/comma-separated-values', 'text/x-comma-separated-values', 'text/tab-separated-values']}
                 onAdd={handleFiles}
-                onDelete={(fileObj) => console.log('Removed File:', fileObj)}
                 onAlert={handleAlert}
                 Icon={UploadFileIcon as any}
                 dropzoneText={zoneHeight > 200 ? "Pudota CSV-tiedostoja tähän" : "Pudota lisää CSV-tiedostoja tähän"}
