@@ -1,0 +1,11 @@
+.printTableStyles {
+    height: 120vh!important;
+    width: 120vw !important;
+}
+
+@media print {
+    @page {
+        size: landscape
+    }
+}
+

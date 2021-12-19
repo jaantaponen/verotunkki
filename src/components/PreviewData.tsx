@@ -1,14 +1,14 @@
-import { SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import _ from 'lodash';
 import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { Alert, Box, Button, createTheme, Stack, ThemeProvider } from '@mui/material';
+import { Alert, Button, createTheme, Stack, ThemeProvider } from '@mui/material';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
-import { getCoinbaseAsColumns, getCoinbaseProAsColumns, getDataCoinbase, getDataCoinbasePro, getDataDegiro, getDataNordnet, getDegiroAsColumns, getNordnetAsColumns, parseCoinbaseCSV, parseCoinbaseProCSV, parseDegiroCSV, parseNordnetCSV, prepareCoinbaseForFIFO, prepareCoinbaseProForFIFO, prepareDegiroForFIFO, prepareNordnetForFIFO } from '../utils/parsers/loadTransactions'
+import { getCoinbaseAsColumns, getDataCoinbase, getDataCoinbasePro, getDataDegiro, getDataNordnet } from '../utils/parsers/loadTransactions'
 import { CoinbaseHeaders, CoinbaseProHeaders, DegiroHeaders, NordnetHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
 import { ResultCard } from './ResultCard'
@@ -17,7 +17,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import DownloadIcon from '@mui/icons-material/Download';
 import { calculateFIFOTransactions } from '../utils/fifo'
-import { Operation, Transaction } from '../utils/fifo/types'
 import { chooseCSVParser } from '../utils/parsers/helpers'
 import axios from 'axios';
 import moment from 'moment';
@@ -203,7 +202,7 @@ const PreviewData = ({ mode }: Props) => {
                             id: nanoid(10),
                             tuote: `${item.arvo.split(' ')[1]}`,
                             kurssi: `${unitAsEur} EUR`,
-                            kulut: `${totalFee} EUR`,
+                            kulut: `${0} EUR`, // Only set fees for the other divided transaction
                             kokonaissumma: `${totalInEur - totalFee} EUR`,
                         })
                     }
@@ -255,19 +254,10 @@ const PreviewData = ({ mode }: Props) => {
     useEffect(() => {
         console.log("rowdataa", rowDataColumn)
         const enableCurrencyWarning = rowDataColumn
-            .filter(invalid => invalid?.kokonaissumma?.split(' ')[1] !== 'EUR'
+            .find(invalid => invalid?.kokonaissumma?.split(' ')[1] !== 'EUR'
                 && (invalid.operation === 'BUY'
                     || invalid.operation === 'SELL'))
-        setShowCurrencyFetchButton(enableCurrencyWarning.length > 0 && rowDataColumn.length > 0)
-    }, [rowDataColumn])
-
-    useEffect(() => {
-        console.log("rowdataa", rowDataColumn)
-        const enableCurrencyWarning = rowDataColumn
-            .filter(invalid => invalid?.kokonaissumma?.split(' ')[1] !== 'EUR'
-                && (invalid.operation === 'BUY'
-                    || invalid.operation === 'SELL'))
-        setShowCurrencyFetchButton(enableCurrencyWarning.length > 0 && rowDataColumn.length > 0)
+        setShowCurrencyFetchButton(!!enableCurrencyWarning && rowDataColumn.length > 0)
     }, [rowDataColumn])
 
     useEffect(() => {
@@ -349,12 +339,22 @@ const PreviewData = ({ mode }: Props) => {
                         {mode === 'CRYPTO' ? "Tuetut lähteet: Coinbase, Coinbase Pro" : "Tuetut lähteet: Nordnet, Degiro"}
                     </Typography>
                     {errorFifo && <Alert severity="error">{errorFifo}</Alert>}
-                    {showCurrencyFetchButton && <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-                        <Alert severity="warning" >
-                            You have made transactions that have not been traded in EUR. Do you want to use an external API to fetch the currency info? EXPERIMENTAL!
-                        </Alert>
-                        <Button variant="contained" onClick={currencyClick} endIcon={<DownloadIcon />} >Fetch</Button>
-                    </Stack>}
+                    {showCurrencyFetchButton &&
+                        <Stack direction="row" alignItems="flex-end" justifyContent="center" spacing={2}  sx={{ pb: 1 }}>
+                            <Stack direction="column" alignItems="center" justifyContent="center" spacing={2}>
+                                <Alert severity="warning" >
+                                    You have made transactions that have not been traded in EUR. Do you want to use an <strong>external API</strong> to fetch the currency info?
+                                </Alert>
+                                <Alert severity="info" >
+                                    Note that if the error originated from Coinbase Pro, the currency transfer needs to be converted in to one buy and sell operation.
+                                </Alert>
+                            </Stack>
+                            <div style={{paddingBottom: "4px"}}>
+
+                            
+                            <Button variant="contained" sx={{ minWidth: "140px", minHeight: "42px" }} onClick={currencyClick} endIcon={<DownloadIcon />} >I accept</Button>
+                            </div>
+                        </Stack>}
 
                     {showTable && !showCurrencyFetchButton && <Stack direction="row" spacing={2}>
                         <Button variant="outlined" onClick={clearRows} startIcon={<DeleteIcon />}>
@@ -368,7 +368,7 @@ const PreviewData = ({ mode }: Props) => {
                     {(showTable && results.length === 0) && <div style={{ width: '100%' }}>
                         <PreviewTable rows={rowDataColumn} mode={mode} rawDataAsColumns={rawDataAsColumns} rawDatatSetCallback={rawDataSetCallback} />
                     </div>}
-                    {results.length > 0 && <ResultTable rows={results} />}
+                    {results.length > 0 && <ResultTable rows={results} mode={mode} />}
                 </Stack>
                 {<Copyright />}
             </Container>

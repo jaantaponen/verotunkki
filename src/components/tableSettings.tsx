@@ -8,82 +8,177 @@ export interface ColumnTransaction {
     format?: (value: number) => string;
 }
 
-
-/* const columnsTransaction: readonly ColumnTransaction[] = [
-    { id: 'ticker', label: 'Tuote', minWidth: 120 },
-    { id: 'buydate', label: 'Hankintapäivä', minWidth: 150 },
-    { id: 'selldate', label: 'Luovutuspäivä', minWidth: 150 },
-    {
-        id: 'amountsold', label: 'Myyty kpl', minWidth: 100,
-        format: (value: number) => value.toFixed(8)
-    },
-    { id: 'transferPrice', label: 'Luovutushinta', minWidth: 120 },
-    {
-        id: 'acquisitionPrice', label: 'Hankintahinta', minWidth: 100,
-        format: (value: number) => value.toFixed(2)
-    },
-    { id: 'acquisitionFee', label: 'Hankintakulut', minWidth: 100 },
-    { id: 'transferFee', label: 'Luovutuskulut', minWidth: 80 },
-    {
-        id: 'profitOrLoss', label: 'Voitto/Tappio', minWidth: 170,
-        format: (value: number) => value.toFixed(3)
-    },
-]; */
-
-
-const currencyFormatter = (value: any) => new Intl.NumberFormat('fi-FI', {
+const currencyFormatter = (value: any) => new Intl.NumberFormat('en-GB', {
     style: 'currency',
     currency: value,
 });
 
+const validateOperation = (operation: any) => {
+    return operation === "BUY" || operation === "SELL"
+}
+
+const validateCurrency = (currencyInput: any) => {
+    const string = String(currencyInput) ?? ""
+    return string.split(' ').length === 2
+}
+
 const currencyFormat: GridColTypeDef = {
     type: 'string',
-    width: 130,
     valueFormatter: ({ value }) => {
         const str = String(value) ? String(value) : "0 EUR"
         const arr = str.split(' ').length === 2 ? str.split(' ') : "0 EUR"
-        return currencyFormatter(arr[1]).format(Number(arr[0]))
+        try {
+            return currencyFormatter(arr[1]).format(Number(arr[0]))
+        } catch (e) {
+            return str
+        }
+
+    },
+    cellClassName: 'font-tabular-nums',
+};
+
+const currencyFormatResults: GridColTypeDef = {
+    type: 'number',
+    valueFormatter: ({ value }) => {
+        const str = String(value) ? String(value) : "0 EUR"
+        const arr = str.split(' ').length === 2 ? str.split(' ') : "0 EUR"
+        try {
+            return currencyFormatter(arr[1]).format(Number(arr[0]))
+        } catch (e) {
+            return new Intl.NumberFormat('en-GB', {
+                style: 'currency',
+                currency: "EUR",
+            }).format(Number(str))
+        }
+
+    },
+    cellClassName: 'font-tabular-nums',
+};
+
+const timeFormat: GridColTypeDef = {
+    type: 'dateTime',
+    valueFormatter: ({ value }) => {
+        const date = new Date(value as any);
+        const options: any = {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        };
+
+        return date.toLocaleString("en-GB", options);
     },
     cellClassName: 'font-tabular-nums',
 };
 
 const columnsSecurity: GridColumns = [
-    { field: 'paivays', headerName: 'Paivays', type: 'date', editable: true, minWidth: 180, },
-    { field: 'operation', headerName: 'Operaatio', type: 'string', editable: true, minWidth: 120 },
-    { field: 'isin', headerName: 'ISIN', type: 'string', editable: true, minWidth: 120 },
-    { field: 'arvo', headerName: 'Arvo', type: 'string', editable: true, minWidth: 120 },
-    { field: 'maara', headerName: 'Määrä', type: 'number', editable: true, minWidth: 120 },
-    { field: 'kurssi', headerName: 'Kurssi', type: 'string', editable: true, minWidth: 120 },
-    { field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110 },
-    { field: 'kokonaissumma', headerName: 'Kokonaissumma', type: 'string', editable: true, minWidth: 170 },
+    { field: 'paivays', headerName: 'Paivays', ...timeFormat, editable: true, minWidth: 180, },
+    {
+        field: 'operation', headerName: 'Operaatio', type: 'string', editable: true, minWidth: 40,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateOperation(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
+    { field: 'tuote', headerName: 'Tuote', type: 'string', editable: true, minWidth: 240 },
+    {
+        field: 'arvo', headerName: 'Arvo', editable: true, minWidth: 120,
+        ...currencyFormat,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateCurrency(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
+    { field: 'maara', headerName: 'Määrä (kpl)', type: 'number', editable: true, minWidth: 50 },
+    {
+        field: 'kurssi', headerName: 'Kurssi', editable: true, minWidth: 120,
+        ...currencyFormat,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateCurrency(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
+    {
+        field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110,
+        ...currencyFormat,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateCurrency(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
+    {
+        field: 'kokonaissumma', headerName: 'Kokonaissumma', editable: true, minWidth: 170,
+        ...currencyFormat,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateCurrency(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
 ];
 
 
 
 
 const columnsCrypto: GridColumns = [
-    { field: 'paivays', headerName: 'Paivays', type: 'date', editable: true, minWidth: 180, },
-    { field: 'operation', headerName: 'Operaatio', type: 'string', editable: true, minWidth: 120 },
+    { field: 'paivays', headerName: 'Paivays', ...timeFormat, editable: true, minWidth: 180, },
+    {
+        field: 'operation', headerName: 'Operaatio', type: 'string', editable: true, minWidth: 140,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateOperation(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
     { field: 'tuote', headerName: 'Tuote', type: 'string', editable: true, minWidth: 120 },
-    { field: 'arvo', headerName: 'Arvo', type: 'string', editable: true, minWidth: 120 },
-    { field: 'maara', headerName: 'Määrä', type: 'string', editable: true, minWidth: 120 },
-    { field: 'kurssi', headerName: 'Kurssi', type: 'string', editable: true, minWidth: 120 },
-    { field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110 },
-    { field: 'kokonaissumma', headerName: 'Kokonaissumma', type: 'string', editable: true, minWidth: 170 },
-    //{ field: 'kokonaissumma', headerName: 'Kokonaissumma', ...currencyFormat, editable: true, minWidth: 170 },
+    {
+        field: 'arvo', headerName: 'Arvo', editable: true, minWidth: 120,
+        ...currencyFormat,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateCurrency(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
+    { field: 'maara', headerName: 'Määrä (kpl)', type: 'number', editable: true, minWidth: 120 },
+    {
+        field: 'kurssi', headerName: 'Kurssi', editable: true, minWidth: 120,
+        ...currencyFormat,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateCurrency(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
+    {
+        field: 'kulut', headerName: 'Kulut', type: 'number', editable: true, minWidth: 110,
+        ...currencyFormat,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateCurrency(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
+    {
+        field: 'kokonaissumma', headerName: 'Kokonaissumma', editable: true, minWidth: 170,
+        ...currencyFormat,
+        preProcessEditCellProps: (params) => {
+            const isValid = validateCurrency(params.props.value);
+            return { ...params.props, error: !isValid };
+        },
+    },
 ];
 
 
-const columnsTransaction: GridColumns = [
-    { field: 'ticker', headerName: 'Tuote', type: 'string', editable: false, minWidth: 50, },
-    { field: 'buydate', headerName: 'Hankintapäivä', type: 'date', editable: false, minWidth: 160 },
-    { field: 'selldate', headerName: 'Luovutuspäivä', type: 'date', editable: false, minWidth: 160 },
+const columnsTransaction = (mode: 'CRYPTO' | 'SECURITY'): GridColumns => [
+    { field: 'ticker', headerName: 'Tuote', type: 'string', editable: false, minWidth: mode === 'CRYPTO' ? 50: 250 },
+    { field: 'buydate', headerName: 'Hankintapäivä', type: 'date', editable: false, minWidth: 120 },
+    { field: 'selldate', headerName: 'Luovutuspäivä', type: 'date', editable: false, minWidth: 120 },
     { field: 'amountsold', headerName: 'Myyty kpl', type: 'number', editable: false, minWidth: 50 },
-    { field: 'transferPrice', headerName: 'Luovutushinta', type: 'string', editable: false, minWidth: 120 },
-    { field: 'acquisitionPrice', headerName: 'Hankintahinta', type: 'string', editable: false, minWidth: 120 },
-    { field: 'acquisitionFee', headerName: 'Hankintakulut', type: 'string', editable: false, minWidth: 120 },
-    { field: 'transferFee', headerName: 'Luovutuskulut', type: 'string', editable: false, minWidth: 120 },
-    { field: 'profitOrLoss', headerName: 'Voitto/Tappio', type: 'string', editable: false, minWidth: 170 },
+    {
+        field: 'transferPrice', headerName: 'Luovutushinta', editable: false, minWidth: 120, ...currencyFormatResults,
+    },
+    { field: 'acquisitionPrice', headerName: 'Hankintahinta', ...currencyFormatResults, editable: false, minWidth: 120 },
+    { field: 'acquisitionFee', headerName: 'Hankintakulut', ...currencyFormatResults, editable: false, minWidth: 120 },
+    { field: 'transferFee', headerName: 'Luovutuskulut', ...currencyFormatResults, editable: false, minWidth: 120 },
+    { field: 'profitOrLoss', headerName: 'Voitto/Tappio', ...currencyFormatResults, editable: false, minWidth: 120 },
 ];
 
 
