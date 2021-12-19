@@ -10,7 +10,7 @@ const Copyright = () => {
             alignItems="center"
             spacing={1}
             width={"sm"}
-            sx={{ pt: 1 }}
+            sx={{ pt: 1, pb: 4 }}
         >
             <Typography variant="body2" sx={{ pt: 4 }} color="text.secondary" align="center" >
                 Tarkista tiedot aina itse virheiden varalta.
