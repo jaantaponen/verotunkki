@@ -10,18 +10,22 @@ const Copyright = () => {
             alignItems="center"
             spacing={1}
             width={"sm"}
-            sx={{ pt: 2 }}
+            sx={{ pt: 1 }}
         >
-            <Typography alignSelf="center" align="center" component="p" sx={{ pt: 4 }}>
+            <Typography variant="body2" sx={{ pt: 4 }} color="text.secondary" align="center" >
                 Tarkista tiedot aina itse virheiden varalta.
             </Typography>
-            <Typography alignSelf="center" align="center" component="p" sx={{ pt: 0 }}>
+            <Typography variant="body2" sx={{ pt: 0 }} color="text.secondary" align="center" >
                 Olet itse vastuussa omista veroistasi.
             </Typography>
-            <Typography alignSelf="center" align="center" component="p" sx={{ pt: 0 }}>
+            <Typography variant="body2" sx={{ pt: 0 }} color="text.secondary" align="center" >
                 Sivustolle lähettämiäsi tiedostoja käsitellään vain paikallisesti selaimessasi.
             </Typography>
-            <Typography variant="body2" sx={{ pt: 2 }} color="text.secondary" align="center" >
+            <Typography variant="body2" sx={{ pt: 4 }} color="text.secondary" align="center" >
+                Huomasitko virheen tai sivusti ei toimi mielestäsi oikein? Ilmoita ongelmastasi&nbsp;
+                <Link href="https://github.com/jaantaponen/verotunkki/issues/new">täällä</Link>
+            </Typography>
+            <Typography variant="body2" sx={{ pt: 0 }} color="text.secondary" align="center" >
                 {'Copyright © '}
                 <Link color="inherit" href="https://verotunkki.fi/">
                     Verotunkki

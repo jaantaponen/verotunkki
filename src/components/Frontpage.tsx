@@ -24,69 +24,80 @@ const FrontPageContent = () => {
         <ThemeProvider theme={theme}>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
             <CssBaseline />
-            <Container component="main" maxWidth="sm" sx={{ pt: 8, pb: 4 }}>
+            <Container component="main" maxWidth="sm" sx={{ height: '100vh', pt: 8, pb: 4 }}>
                 <Stack
                     direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={6}
-                    width="sm"
-
+                    justifyContent="space-between"
+                    alignItems="space-between"
+                    sx={{ height: '100%', pt: 0, pb: 2 }}
                 >
-                    <Typography
-                        component="h1"
-                        variant="h3"
-                        align="center"
-                        color="text.primary"
-                        gutterBottom
-                        sx={{ fontWeight: 'bold', pt: 8 }}
+                    <Stack
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        spacing={6}
+                        width="sm"
                     >
-                        VEROTUNKKI
-                    </Typography>
-                    <Typography alignSelf="center" align="center" variant="h6" sx={{ pt: 3 }} component="p">
-                        Verotunkki laskee puolestasi luovutusvoitot ja -tappiot, ja ulostaa verottajayhteensopivan
-                        rapsan. Hyvä elämä vittu
-                    </Typography>
-                    <Typography alignSelf="center" variant="h6" component="p" sx={{ pt: 2 }}>
-                        Valitse verotettavan tulon tyyppi:
-                    </Typography>
-                    <Card sx={{ width: 450 }} onClick={() => {
-                        navigate("/crypto");
-                    }}>
-                        <CardActionArea>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Virtuaalivaluutat
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Perus hyvä Ethereum.
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Tuetut lähteet: <b>Coinbase, Coinbase Pro</b>
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                    <Card sx={{ width: 450 }} onClick={() => {
-                        navigate("/securities");
-                    }}>
-                        <CardActionArea>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Arvopaperit
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Osakkeet ETF:t, rahastot ja muut arvopaperit.
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Tuetut lähteet: <b>Degiro, Nordnet</b>
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
+                        <Typography
+                            component="h1"
+                            variant="h3"
+                            align="center"
+                            color="text.primary"
+                            gutterBottom
+                            sx={{ fontWeight: 'bold', pt: 8 }}
+                        >
+                            VEROTUNKKI
+                        </Typography>
+                        <Typography alignSelf="center" align="center" variant="h6" sx={{ pt: 3 }} component="p">
+                            Verotunkki laskee puolestasi luovutusvoitot ja -tappiot, ja ulostaa verottajayhteensopivan
+                            reportin.
+                        </Typography>
+                        <Typography alignSelf="center" variant="h6" component="p" sx={{ pt: 2 }}>
+                            Valitse verotettavan tulon tyyppi:
+                        </Typography>
+                        <Card sx={{ width: 450 }} onClick={() => {
+                            navigate("/crypto");
+                        }}>
+                            <CardActionArea>
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Virtuaalivaluutat
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Perus hyvä Ethereum.
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Tuetut lähteet: <b>Coinbase, Coinbase Pro</b>
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                        <Card sx={{ width: 450 }} onClick={() => {
+                            navigate("/securities");
+                        }}>
+                            <CardActionArea>
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Arvopaperit
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Osakkeet ETF:t, rahastot ja muut arvopaperit.
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Tuetut lähteet: <b>Degiro, Nordnet</b>
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Stack>
+
+
+                    <Copyright />
                 </Stack>
-                <Copyright />
+
+
             </Container>
+
         </ThemeProvider>
     );
 }
