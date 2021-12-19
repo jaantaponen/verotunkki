@@ -17,7 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import DownloadIcon from '@mui/icons-material/Download';
 import { calculateFIFOTransactions } from '../utils/fifo'
-import { chooseCSVParser } from '../utils/parsers/helpers'
+import { chooseCSVParser, parseColumnDataToFIFO } from '../utils/parsers/helpers'
 import axios from 'axios';
 import moment, { invalid } from 'moment';
 import { PreviewTable } from './PreviewTable'
@@ -81,76 +81,9 @@ const PreviewData = ({ mode }: Props) => {
 
     const calculateFIFO = () => {
         try {
-            const coinBaseIssueRows = rawDataAsColumns.filter(customOp => (customOp.operation === 'CONVERT' ||
-                customOp.operation === 'COINBASE EARN' ||
-                customOp.operation === 'RECEIVE') &&
-                originalData['Coinbase'].map(x => x.id).includes(customOp.id)) as ColumnDataCrypto[]
-
-
-            const coinbaseTMP: CoinbaseHeaders[] = []
-            coinBaseIssueRows.forEach(issueRow => {
-                const matchinOrigData = originalData['Coinbase']?.find(x => x.id === issueRow.id)
-                if (matchinOrigData?.TransactionType === 'CONVERT') {
-                    const info = matchinOrigData.Notes.split(' ')
-                    //const soldAmount = info[1]
-                    //const soldCurrency = info[2]
-                    const boughAmount = Number(info[4])
-                    const boughtCurrency = info[5]
-                    coinbaseTMP.push({
-                        ...matchinOrigData,
-                        TransactionType: "SELL",
-                        id: nanoid(10),
-                        Fees: 0,
-                        Total: matchinOrigData.Total - matchinOrigData.Fees
-                    })
-                    coinbaseTMP.push({
-                        ...matchinOrigData,
-                        TransactionType: "BUY",
-                        id: nanoid(10),
-                        Asset: boughtCurrency,
-                        QuantityTransacted: boughAmount,
-                        SpotPriceatTransaction: matchinOrigData.Subtotal / boughAmount
-                    })
-                } else if (matchinOrigData?.TransactionType === 'COINBASE EARN') {
-                    coinbaseTMP.push({
-                        ...matchinOrigData,
-                        id: nanoid(10),
-                        TransactionType: "BUY",
-                    })
-                } else if (matchinOrigData?.TransactionType === 'RECEIVE') {
-                    coinbaseTMP.push({
-                        ...matchinOrigData,
-                        id: nanoid(10),
-                        TransactionType: "BUY",
-                    })
-                }
-            })
-
-            const correctedCoinbaseData = getCoinbaseAsColumns(coinbaseTMP)
-            // We do not need filter by unique since other operations than BUY and SELL are filtered below.
-            const combined = rawDataAsColumns.concat(correctedCoinbaseData ? correctedCoinbaseData as any : [])
-
-            // Replace IDs
-            const arrReplacedObj = combined.map(item => {
-                const obj = correctedCoinbaseData.find(newObj => newObj.id === item.id)
-                return obj ? obj : item
-            }) as ColumnDataSecurity[] | ColumnDataCrypto[]
-            /**
-             * In this function we need to get the 1values with the string.split function.
-             * Since some columns are formattes as value & currency (Ex. 10 EUR).
-             */
-            const fifoData = arrReplacedObj
-                .filter(type => type.operation === 'BUY' || type.operation === 'SELL')
-                .map(transaction => {
-                    return {
-                        symbol: transaction.tuote,
-                        date: new Date(transaction.paivays),
-                        price: Math.abs(Number(transaction.kurssi.split(' ')[0])),
-                        amount: Math.abs((transaction.maara)),
-                        type: transaction.operation as "BUY" | "SELL",
-                        transactionFee: Math.abs(Number(transaction.kulut.split(' ')[0])),
-                    }
-                })
+            console.log("raw", rowDataColumn)
+            console.log("raw2", originalData)
+            const fifoData = parseColumnDataToFIFO(rowDataColumn, originalData)
             const finalFifo = calculateFIFOTransactions(fifoData)
             setResults(finalFifo.map((x, idx) => ({
                 ...x,
@@ -250,6 +183,7 @@ const PreviewData = ({ mode }: Props) => {
                     // Set row data so if user has edited a field and uploads a new file it's handled correctly
                     setRawDataAsColumns([...rowDataColumn.concat(...newRows.map(x => x.rows) as any)])
                     const newRawData = Object.assign(originalData, ...data.map(result => result.orig))
+                    console.log("nauraa",newRawData)
                     setOriginalData(newRawData)
                     setShowTable(true)
                 }
