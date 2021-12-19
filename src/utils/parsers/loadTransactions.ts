@@ -93,7 +93,7 @@ const getDegiroAsColumns = (records: DegiroHeaders[]): ColumnDataSecurity[] => {
             isin: record.ISIN,
             arvo: `${record.value} ${record.valueCurrency}`,
             maara: record.quantity,
-            kulut: record.transactionCosts.toString(),
+            kulut: `${record.transactionCosts} ${record.transactionCostsCurrency}`,
             kurssi: `${record.rate} ${record.rateCurrency}`,
             kokonaissumma: `${record.totalAmount} ${record.totalAmountCurrency}`,
             operation: record.quantity > 0 ? "BUY" : "SELL",
