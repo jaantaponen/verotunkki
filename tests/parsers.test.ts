@@ -119,6 +119,15 @@ describe('Degiro', () => {
         )
     })
 
+    it('parses the aleternative header file into json', async () => {
+        const inputDegiro = fs.readFileSync(`${relativePath}/degiroWithWeirdHeaders.csv`, 'utf-8')
+        const res = JSON.stringify(await parseDegiroCSV(inputDegiro))
+        expect(JSON.parse(res)).toEqual(
+            (JSON.parse(fs.readFileSync(`${relativePath}/degiroWithWeirdHeaders.json`, 'utf-8')))
+        )
+    })
+
+
     it('correctly calculates fifo without seconds info', async () => {
         const inputDegiro = fs.readFileSync(`${relativePath}/transactionWithoutSecondsDegiro.csv`, 'utf-8')
         const res = (await parseDegiroCSV(inputDegiro))
