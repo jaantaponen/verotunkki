@@ -14,6 +14,8 @@ const degiroFiToEn = {
     "Value-valuutta": "valueCurrency",
     "Vaihtokurssi": "exchangeRate",
     "Transaction costs": "transactionCosts",
+    "Transaction and/or third": "transactionCosts",
+    "Transaction and/or third-valuutta": "transactionCostsCurrency",
     "Transaction costs-valuutta": "transactionCostsCurrency",
     "Kokonaissumma": "totalAmount",
     "Kokonaissumma-valuutta": "totalAmountCurrency",
