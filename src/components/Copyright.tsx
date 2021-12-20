@@ -22,7 +22,7 @@ const Copyright = () => {
                 Sivustolle lähettämiäsi tiedostoja käsitellään vain paikallisesti selaimessasi.
             </Typography>
             <Typography variant="body2" sx={{ pt: 4 }} color="text.secondary" align="center" >
-                Huomasitko virheen tai sivusti ei toimi mielestäsi oikein? Ilmoita ongelmastasi&nbsp;
+                Huomasitko virheen tai sivusto ei toimi mielestäsi oikein? Ilmoita ongelmastasi&nbsp;
                 <Link href="https://github.com/jaantaponen/verotunkki/issues/new">täällä</Link>
             </Typography>
             <Typography variant="body2" sx={{ pt: 0 }} color="text.secondary" align="center" >
