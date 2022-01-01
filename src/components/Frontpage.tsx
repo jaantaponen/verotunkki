@@ -49,7 +49,7 @@ const FrontPageContent = () => {
                             VEROTUNKKI
                         </Typography>
                         <Typography alignSelf="center" align="center" variant="h6" sx={{ pt: 3 }} component="p">
-                            Verotunkki laskee puolestasi luovutusvoitot ja -tappiot, ja tulostaa verottajayhteensopivan
+                            Verotunkki laskee puolestasi luovutusvoitot ja -tappiot sekä tulostaa verottajayhteensopivan
                             raportin.
                         </Typography>
                         <Typography alignSelf="center" variant="h6" component="p" sx={{ pt: 2 }}>
