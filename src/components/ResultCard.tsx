@@ -1,17 +1,19 @@
 
 import { Alert, Box, Button, createTheme, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, ThemeProvider } from '@mui/material';
 import { currencyFormatter } from './tableSettings';
-
+import Tooltip from '@mui/material/Tooltip';
 interface Props {
     header: string,
     content: string,
     contentColor: string,
     footer: string,
     footerSecondary: string,
+    infoHover: string,
+    infoDirection?: "top" | "right" | "bottom" | "left" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-end" | "right-start" | "top-end" | "top-start" | undefined
 }
 
 
-const ResultCard = ({ header, content, footer, footerSecondary, contentColor }: Props) => {
+const ResultCard = ({ header, content, footer, footerSecondary, contentColor, infoHover,infoDirection }: Props) => {
     const theme = createTheme({
         typography: {
             fontSize: 14,
@@ -39,33 +41,36 @@ const ResultCard = ({ header, content, footer, footerSecondary, contentColor }: 
     }
 
     return (
-        <ThemeProvider theme={theme}><Box
-            sx={{
-                bgcolor: 'background.paper',
-                boxShadow: 1,
-                borderRadius: 1,
-                p: 2,
-                minWidth: 350,
-            }}
-        >
-            <Box sx={{ color: 'text.secondary' }}>{header}</Box>
-            <Box sx={{ color: 'text.primary', fontSize: 30, fontWeight: 'medium' }}>
-                {formatCurrency(content)}
-            </Box>
-            <Box
-                sx={{
-                    color: contentColor,
-                    display: 'inline',
-                    fontWeight: 'medium',
-                    mx: 0.5,
-                }}
-            >
-                {footer}
-            </Box>
-            <Box sx={{ color: 'text.secondary', display: 'inline', fontSize: 12 }}>
-                {footerSecondary}
-            </Box>
-        </Box>
+        <ThemeProvider theme={theme}>
+            <Tooltip title={infoHover} placement={infoDirection}>
+                <Box
+                    sx={{
+                        bgcolor: 'background.paper',
+                        boxShadow: 1,
+                        borderRadius: 1,
+                        p: 2,
+                        minWidth: 350,
+                    }}
+                >
+                    <Box sx={{ color: 'text.secondary' }}>{header}</Box>
+                    <Box sx={{ color: 'text.primary', fontSize: 30, fontWeight: 'medium' }}>
+                        {formatCurrency(content)}
+                    </Box>
+                    <Box
+                        sx={{
+                            color: contentColor,
+                            display: 'inline',
+                            fontWeight: 'medium',
+                            mx: 0.5,
+                        }}
+                    >
+                        {footer}
+                    </Box>
+                    <Box sx={{ color: 'text.secondary', display: 'inline', fontSize: 12 }}>
+                        {footerSecondary}
+                    </Box>
+                </Box>
+            </Tooltip>
         </ThemeProvider>)
 }
 

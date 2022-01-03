@@ -88,15 +88,23 @@ const PreviewData = ({ mode }: Props) => {
                 buydate: new Date(x.buydate),
                 selldate: new Date(x.selldate),
                 transferFee: `${Number(x.transferFee)} EUR`,
-                profitOrLoss: `${Number(x.profitOrLoss)} EUR`,
+                profitOrLoss: `${Number(x.profitOrLoss - (Math.abs(x.acquisitionFee) + Math.abs(x.transferFee)))} EUR`,
                 id: idx
             })))
 
-            setCalculatedResults({
-                capitalGains: _.sumBy(finalFifo, (o) => o.profitOrLoss > 0 ? o.profitOrLoss : 0),
-                capitalLosses: _.sumBy(finalFifo, (o) => o.profitOrLoss < 0 ? o.profitOrLoss : 0),
-                acquisitionFees: _.sumBy(finalFifo, (o) => Math.abs(o.acquisitionFee)),
-                sellprices: _.sumBy(finalFifo, (o) => ((o.amountsold * o.transferPrice) - Math.abs(o.transferFee)))
+            setCalculatedResults(() => {
+                return {
+                    capitalGains: _.sumBy(finalFifo, (o) => {
+                        const minusFees = o.profitOrLoss - (Math.abs(o.acquisitionFee) + Math.abs(o.transferFee))
+                        return minusFees > 0 ? minusFees : 0
+                    }),
+                    capitalLosses: _.sumBy(finalFifo, (o) => {
+                        const minusFees = o.profitOrLoss - (Math.abs(o.acquisitionFee) + Math.abs(o.transferFee))
+                        return minusFees < 0 ? minusFees : 0
+                    }),
+                    acquisitionFees: _.sumBy(finalFifo, (o) => Math.abs(o.acquisitionFee)),
+                    sellprices: _.sumBy(finalFifo, (o) => ((o.amountsold * o.transferPrice) - Math.abs(o.transferFee)))
+                }
             })
 
         } catch (e: any) {
@@ -158,7 +166,6 @@ const PreviewData = ({ mode }: Props) => {
                 const errors = _.uniqBy(data.filter(x => x.Error), y => y.fileName)
                 if (errors.length > 0 && successFul.length !== errors.length) {
                     const error = errors.find(err => !successFul.map(x => x.fileName).includes(err.fileName))
-                    console.log("found error", error)
                     const msg = error?.Error ? error.Error.message : ""
                     if (msg.toString().includes('All headers not found in the provided')) {
                         console.error("Debug Parser error: ", msg)
@@ -181,7 +188,6 @@ const PreviewData = ({ mode }: Props) => {
                     // Set row data so if user has edited a field and uploads a new file it's handled correctly
                     setRawDataAsColumns([...rowDataColumn.concat(...newRows.map(x => x.rows) as any)])
                     const newRawData = Object.assign(originalData, ...data.map(result => result.orig))
-                    console.log("nauraa", newRawData)
                     setOriginalData(newRawData)
                     setShowTable(true)
                 }
@@ -251,12 +257,16 @@ const PreviewData = ({ mode }: Props) => {
                                     content={calculatedResults.capitalGains.toFixed(2)}
                                     footer="Voitot" footerSecondary="yhteensä"
                                     contentColor="success.light"
+                                    infoHover='Luovutusvoittoa syntyy tilanteessa, jossa luovutetun omaisuuden myyntihinta ylittää sen hankintamenon ja voiton hankkimisesta aiheutuneet menot.'
+                                    infoDirection='left'
                                 />
                                 <ResultCard header="Luovutustappio"
                                     content={calculatedResults.capitalLosses.toFixed(2)}
                                     footer="Häviöt"
                                     footerSecondary="yhteensä"
                                     contentColor="error.light"
+                                    infoHover='Luovutustappiota puolestaan syntyy tilanteessa, jossa luovutetun omaisuuden myyntihinta alittaa sen hankintamenon ja voiton hankkimisesta aiheutuneet menot.'
+                                    infoDirection='right'
                                 />
                             </Stack>
                             <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
@@ -264,12 +274,16 @@ const PreviewData = ({ mode }: Props) => {
                                     content={calculatedResults.acquisitionFees.toFixed(2)}
                                     footer="Kulut" footerSecondary="Hankintakulut yhteensä"
                                     contentColor="error.light"
+                                    infoHover='Arvopaperien hankintakulut eli niiden hankintahinnat ja muut hankinnasta aiheutuneet kulut yhteensä.'
+                                    infoDirection='left'
                                 />
                                 <ResultCard header="Myyntihinnat yhteensä"
                                     content={calculatedResults.sellprices.toFixed(2)}
                                     footer=""
                                     footerSecondary="Myyntihinnat - myynnistä aiheutuneet kulut"
                                     contentColor={calculatedResults.sellprices > 0 ? 'success.light' : 'error.light'}
+                                    infoHover='Kaikkien vuoden aikana myymiesi arvopaperien myyntihinnat yhteensä eli myyntihintojen ja myynnistä aiheutuneiden kulujen erotus. Myynnistä aiheutuneita kuluja ovat esimerkiksi välityspalkkiot.'
+                                    infoDirection='right'
                                 />
                             </Stack>
                         </Stack>}
