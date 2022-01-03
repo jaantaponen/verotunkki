@@ -36,8 +36,8 @@ export interface rawDatas {
 interface calculatedResultsType {
     capitalGains: number,
     capitalLosses: number,
-    transactionTotal: number,
-    netProfit: number
+    acquisitionFees: number,
+    sellprices: number
 }
 
 export interface resultFromParse {
@@ -81,8 +81,6 @@ const PreviewData = ({ mode }: Props) => {
 
     const calculateFIFO = () => {
         try {
-            console.log("raw", rowDataColumn)
-            console.log("raw2", originalData)
             const fifoData = parseColumnDataToFIFO(rowDataColumn, originalData)
             const finalFifo = calculateFIFOTransactions(fifoData)
             setResults(finalFifo.map((x, idx) => ({
@@ -97,8 +95,8 @@ const PreviewData = ({ mode }: Props) => {
             setCalculatedResults({
                 capitalGains: _.sumBy(finalFifo, (o) => o.profitOrLoss > 0 ? o.profitOrLoss : 0),
                 capitalLosses: _.sumBy(finalFifo, (o) => o.profitOrLoss < 0 ? o.profitOrLoss : 0),
-                transactionTotal: _.sumBy(finalFifo, (o) => Math.abs(o.transferFee) + Math.abs(o.acquisitionFee)),
-                netProfit: _.sumBy(finalFifo, (o) => o.profitOrLoss - (Math.abs(o.transferFee) + Math.abs(o.acquisitionFee)))
+                acquisitionFees: _.sumBy(finalFifo, (o) => Math.abs(o.acquisitionFee)),
+                sellprices: _.sumBy(finalFifo, (o) => ((o.amountsold * o.transferPrice) - Math.abs(o.transferFee)))
             })
 
         } catch (e: any) {
@@ -183,7 +181,7 @@ const PreviewData = ({ mode }: Props) => {
                     // Set row data so if user has edited a field and uploads a new file it's handled correctly
                     setRawDataAsColumns([...rowDataColumn.concat(...newRows.map(x => x.rows) as any)])
                     const newRawData = Object.assign(originalData, ...data.map(result => result.orig))
-                    console.log("nauraa",newRawData)
+                    console.log("nauraa", newRawData)
                     setOriginalData(newRawData)
                     setShowTable(true)
                 }
@@ -249,29 +247,29 @@ const PreviewData = ({ mode }: Props) => {
                     {results.length > 0 &&
                         <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ pb: 4 }}>
                             <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-                                <ResultCard header="Gross Capital Gain"
+                                <ResultCard header="Luovutusvoitto"
                                     content={calculatedResults.capitalGains.toFixed(2)}
-                                    footer="Gains" footerSecondary="before losses and fees"
+                                    footer="Voitot" footerSecondary="yhteensä"
                                     contentColor="success.light"
                                 />
-                                <ResultCard header="Gross Capital Loss"
+                                <ResultCard header="Luovutustappio"
                                     content={calculatedResults.capitalLosses.toFixed(2)}
-                                    footer="Losses"
-                                    footerSecondary="before gains and fees"
+                                    footer="Häviöt"
+                                    footerSecondary="yhteensä"
                                     contentColor="error.light"
                                 />
                             </Stack>
                             <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-                                <ResultCard header="Transaction Fees"
-                                    content={calculatedResults.transactionTotal.toFixed(2)}
-                                    footer="Fees" footerSecondary="acquisition and transfer Fees"
+                                <ResultCard header="Hankintakulut"
+                                    content={calculatedResults.acquisitionFees.toFixed(2)}
+                                    footer="Kulut" footerSecondary="Hankintakulut yhteensä"
                                     contentColor="error.light"
                                 />
-                                <ResultCard header="Net Capital Gain"
-                                    content={calculatedResults.netProfit.toFixed(2)}
-                                    footer="Total"
-                                    footerSecondary="Gains with fees and losses"
-                                    contentColor={calculatedResults.netProfit > 0 ? 'success.light' : 'error.light'}
+                                <ResultCard header="Myyntihinnat yhteensä"
+                                    content={calculatedResults.sellprices.toFixed(2)}
+                                    footer=""
+                                    footerSecondary="Myyntihinnat - myynnistä aiheutuneet kulut"
+                                    contentColor={calculatedResults.sellprices > 0 ? 'success.light' : 'error.light'}
                                 />
                             </Stack>
                         </Stack>}
