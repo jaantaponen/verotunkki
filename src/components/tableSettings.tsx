@@ -8,7 +8,7 @@ export interface ColumnTransaction {
     format?: (value: number) => string;
 }
 
-export const currencyFormatter = (value: any) => new Intl.NumberFormat('en-GB', {
+export const currencyFormatter = (value: any) => new Intl.NumberFormat('fi-FI', {
     style: 'currency',
     currency: value,
 });
@@ -45,7 +45,7 @@ const currencyFormatResults: GridColTypeDef = {
         try {
             return currencyFormatter(arr[1]).format(Number(arr[0]))
         } catch (e) {
-            return new Intl.NumberFormat('en-GB', {
+            return new Intl.NumberFormat('fi-FI', {
                 style: 'currency',
                 currency: "EUR",
             }).format(Number(str))
