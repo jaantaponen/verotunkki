@@ -102,7 +102,7 @@ const PreviewData = ({ mode }: Props) => {
                         const minusFees = o.profitOrLoss - (Math.abs(o.acquisitionFee) + Math.abs(o.transferFee))
                         return minusFees < 0 ? minusFees : 0
                     }),
-                    acquisitionFees: _.sumBy(finalFifo, (o) => Math.abs(o.acquisitionFee)),
+                    acquisitionFees: _.sumBy(finalFifo, (o) => ((o.amountsold * o.acquisitionPrice) + Math.abs(o.acquisitionFee))),
                     sellprices: _.sumBy(finalFifo, (o) => ((o.amountsold * o.transferPrice) - Math.abs(o.transferFee)))
                 }
             })
@@ -270,9 +270,9 @@ const PreviewData = ({ mode }: Props) => {
                                 />
                             </Stack>
                             <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-                                <ResultCard header="Hankintakulut"
+                                <ResultCard header="Hankintakulut yhteensä"
                                     content={calculatedResults.acquisitionFees.toFixed(2)}
-                                    footer="Kulut" footerSecondary="Hankintakulut yhteensä"
+                                    footer="Kulut" footerSecondary="Hankintahinnat+hankintakulut"
                                     contentColor="error.light"
                                     infoHover='Arvopaperien hankintakulut eli niiden hankintahinnat ja muut hankinnasta aiheutuneet kulut yhteensä.'
                                     infoDirection='left'
@@ -280,7 +280,7 @@ const PreviewData = ({ mode }: Props) => {
                                 <ResultCard header="Myyntihinnat yhteensä"
                                     content={calculatedResults.sellprices.toFixed(2)}
                                     footer=""
-                                    footerSecondary="Myyntihinnat - myynnistä aiheutuneet kulut"
+                                    footerSecondary="Myyntihinnat-myynnistä aiheutuneet kulut"
                                     contentColor={calculatedResults.sellprices > 0 ? 'success.light' : 'error.light'}
                                     infoHover='Kaikkien vuoden aikana myymiesi arvopaperien myyntihinnat yhteensä eli myyntihintojen ja myynnistä aiheutuneiden kulujen erotus. Myynnistä aiheutuneita kuluja ovat esimerkiksi välityspalkkiot.'
                                     infoDirection='right'
