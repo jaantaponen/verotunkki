@@ -272,7 +272,7 @@ const PreviewData = ({ mode }: Props) => {
                             <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
                                 <ResultCard header="Hankintakulut yhteensä"
                                     content={calculatedResults.acquisitionFees.toFixed(2)}
-                                    footer="Kulut" footerSecondary="Hankintahinnat+hankintakulut"
+                                    footer="Kulut" footerSecondary="Hankintahinnat + hankinnasta aiheutuneet kulut"
                                     contentColor="error.light"
                                     infoHover='Arvopaperien hankintakulut eli niiden hankintahinnat ja muut hankinnasta aiheutuneet kulut yhteensä.'
                                     infoDirection='left'
@@ -280,7 +280,7 @@ const PreviewData = ({ mode }: Props) => {
                                 <ResultCard header="Myyntihinnat yhteensä"
                                     content={calculatedResults.sellprices.toFixed(2)}
                                     footer=""
-                                    footerSecondary="Myyntihinnat-myynnistä aiheutuneet kulut"
+                                    footerSecondary="Myyntihinnat - myynnistä aiheutuneet kulut"
                                     contentColor={calculatedResults.sellprices > 0 ? 'success.light' : 'error.light'}
                                     infoHover='Kaikkien vuoden aikana myymiesi arvopaperien myyntihinnat yhteensä eli myyntihintojen ja myynnistä aiheutuneiden kulujen erotus. Myynnistä aiheutuneita kuluja ovat esimerkiksi välityspalkkiot.'
                                     infoDirection='right'
