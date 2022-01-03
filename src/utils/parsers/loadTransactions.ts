@@ -176,7 +176,7 @@ const getNordnetAsColumns = (records: NordnetHeaders[]): ColumnDataSecurity[] =>
             arvo: `${record.Summa} ${record.Valuutta}`,
             maara: record.Maara,
             kulut: record.Kokonaiskulut.toString(),
-            kurssi: `${record.Kurssi} ${record.Valuutta}`,
+            kurssi: `${record.Summa / record.Maara} ${record.Valuutta}`,
             kokonaissumma: `${record.Summa - record.Kokonaiskulut} ${record.Valuutta}`,
             operation: record.Tapahtumatyyppi,
         } as ColumnDataSecurity

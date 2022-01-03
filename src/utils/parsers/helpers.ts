@@ -103,7 +103,10 @@ const parseColumnDataToFIFO = (rawDataAsColumns: ColumnDataSecurity[] | ColumnDa
     const correctedCoinbaseData = getCoinbaseAsColumns(coinbaseTMP)
     // We do not need filter by unique since other operations than BUY and SELL are filtered below.
     const combined = rawDataAsColumns.concat(correctedCoinbaseData ? correctedCoinbaseData as any : [])
-
+/*     const combinedNordnet = combined.map(x => ({
+        ...x,
+        operation: x.operation === 'OSTO' ? 'BUY': 'SELL'
+    })) */
     const fifoData = combined
         .filter(type => type.operation === 'BUY' || type.operation === 'SELL')
         .map(transaction => {

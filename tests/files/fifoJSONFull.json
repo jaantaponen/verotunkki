@@ -62,7 +62,7 @@
         "transferPrice": 2329.36,
         "profitOrLoss": 0.24879358077871283,
         "acquisitionPrice": 2129.3683754451595,
-        "acquisitionFee": 0.28,
+        "acquisitionFee": 0.030674669851032278,
         "transferFee": 0
     },
     {
@@ -469,7 +469,7 @@
         "transferPrice": 2982,
         "profitOrLoss": 8.621350566421286,
         "acquisitionPrice": 2129.3683754451595,
-        "acquisitionFee": 0.28,
+        "acquisitionFee": 0.24932533014896774,
         "transferFee": 0.1507618686
     },
     {
@@ -667,7 +667,7 @@
         "transferPrice": 3135.14,
         "profitOrLoss": -0.03413003160000001,
         "acquisitionPrice": 3170,
-        "acquisitionFee": 0.49135,
+        "acquisitionFee": 0.015518100999999949,
         "transferFee": 0.015347450841999951
     },
     {
@@ -678,7 +678,7 @@
         "transferPrice": 2998,
         "profitOrLoss": -5.16360168,
         "acquisitionPrice": 3170,
-        "acquisitionFee": 0.49135,
+        "acquisitionFee": 0.47583189900000006,
         "transferFee": 0.4500139834735363
     },
     {
@@ -722,7 +722,7 @@
         "transferPrice": 2910,
         "profitOrLoss": 0.3886199999999944,
         "acquisitionPrice": 2894.76,
-        "acquisitionFee": 0.778865138766,
+        "acquisitionFee": 0.2450755046241402,
         "transferFee": 0.371025
     },
     {
@@ -733,7 +733,7 @@
         "transferPrice": 2983,
         "profitOrLoss": 1.263494441599997,
         "acquisitionPrice": 2894.76,
-        "acquisitionFee": 0.778865138766,
+        "acquisitionFee": 0.13761556622087542,
         "transferFee": 0.2135654986
     },
     {
@@ -744,7 +744,7 @@
         "transferPrice": 3024.95,
         "profitOrLoss": 0.7769036173999976,
         "acquisitionPrice": 2894.76,
-        "acquisitionFee": 0.778865138766,
+        "acquisitionFee": 0.05735208905193614,
         "transferFee": 0.090256340635
     },
     {
@@ -755,7 +755,7 @@
         "transferPrice": 3083.06,
         "profitOrLoss": 1.5112524909999974,
         "acquisitionPrice": 2894.76,
-        "acquisitionFee": 0.778865138766,
+        "acquisitionFee": 0.07713410324499158,
         "transferFee": 0.12371965228099999
     },
     {
@@ -766,7 +766,7 @@
         "transferPrice": 3083.06,
         "profitOrLoss": 0.14079242000000014,
         "acquisitionPrice": 2894.86,
-        "acquisitionFee": 0.394113622293,
+        "acquisitionFee": 0.0036381329062229557,
         "transferFee": 0.011532185930000025
     },
     {
@@ -810,7 +810,7 @@
         "transferPrice": 3015.12,
         "profitOrLoss": 3.1845341065999935,
         "acquisitionPrice": 2894.86,
-        "acquisitionFee": 0.394113622293,
+        "acquisitionFee": 0.12877857370842832,
         "transferFee": 0.39920806899600003
     },
     {
@@ -887,7 +887,7 @@
         "transferPrice": 3015.12,
         "profitOrLoss": 0.0842046008000002,
         "acquisitionPrice": 2892.43,
-        "acquisitionFee": 0.065000133175,
+        "acquisitionFee": 0.00992566278800002,
         "transferFee": 0.01034668579200002
     },
     {
@@ -898,7 +898,7 @@
         "transferPrice": 2350,
         "profitOrLoss": -2.0656710773999984,
         "acquisitionPrice": 2892.43,
-        "acquisitionFee": 0.065000133175,
+        "acquisitionFee": 0.05507447038699998,
         "transferFee": 0.04474611499999999
     },
     {
@@ -909,7 +909,7 @@
         "transferPrice": 2350,
         "profitOrLoss": -0.4091700000000001,
         "acquisitionPrice": 2759.17,
-        "acquisitionFee": 0.01379585,
+        "acquisitionFee": 0.0005182670847610314,
         "transferFee": 0.011750000000000002
     },
     {
@@ -920,7 +920,7 @@
         "transferPrice": 2350,
         "profitOrLoss": -10.484909699400006,
         "acquisitionPrice": 2759.26,
-        "acquisitionFee": 0.353450030997,
+        "acquisitionFee": 0.34017201498685845,
         "transferFee": 0.3010254825
     },
     {
@@ -1206,7 +1206,7 @@
         "transferPrice": 2380.1,
         "profitOrLoss": -1.451082053399998,
         "acquisitionPrice": 2961.71,
-        "acquisitionFee": 0.065000057028,
+        "acquisitionFee": 0.03694644373699994,
         "transferFee": 0.029691033469999947
     },
     {
@@ -1217,7 +1217,7 @@
         "transferPrice": 2380.1,
         "profitOrLoss": -1.1018136162000027,
         "acquisitionPrice": 2961.71,
-        "acquisitionFee": 0.065000057028,
+        "acquisitionFee": 0.028053613291000062,
         "transferFee": 0.022544545210000048
     },
     {
@@ -1250,7 +1250,7 @@
         "transferPrice": 2380.1,
         "profitOrLoss": 0.12869266499999968,
         "acquisitionPrice": 2300,
-        "acquisitionFee": 0.577499985,
+        "acquisitionFee": 0.029221100096032036,
         "transferFee": 0.019119938324999974
     },
     {
@@ -1283,7 +1283,7 @@
         "transferPrice": 1.8573,
         "profitOrLoss": -0.9010214367000047,
         "acquisitionPrice": 1.8804,
-        "acquisitionFee": 0.49745982,
+        "acquisitionFee": 0.36672742631400007,
         "transferFee": 0.3622223191305
     },
     {
@@ -1294,7 +1294,7 @@
         "transferPrice": 2413.49,
         "profitOrLoss": 3.291306466499994,
         "acquisitionPrice": 2300,
-        "acquisitionFee": 0.577499985,
+        "acquisitionFee": 0.5274557250925914,
         "transferFee": 0.3499663073325
     },
     {
@@ -1305,7 +1305,7 @@
         "transferPrice": 2413.19,
         "profitOrLoss": 0.12959123100000006,
         "acquisitionPrice": 2300,
-        "acquisitionFee": 0.577499985,
+        "acquisitionFee": 0.02082297793542285,
         "transferFee": 0.013814306155
     },
     {
@@ -1316,7 +1316,7 @@
         "transferPrice": 1.977,
         "profitOrLoss": 1.3431981737999998,
         "acquisitionPrice": 1.8804,
-        "acquisitionFee": 0.49745982,
+        "acquisitionFee": 0.13073239368599998,
         "transferFee": 0.13744838455499994
     },
     {
@@ -1349,7 +1349,7 @@
         "transferPrice": 1.977,
         "profitOrLoss": 2.4993509662000006,
         "acquisitionPrice": 1.8604,
-        "acquisitionFee": 0.36780108,
+        "acquisitionFee": 0.199390760614,
         "transferFee": 0.21188751544499995
     },
     {
@@ -1371,7 +1371,7 @@
         "transferPrice": 1.8882,
         "profitOrLoss": 0.5033118554000008,
         "acquisitionPrice": 1.8604,
-        "acquisitionFee": 0.36780108,
+        "acquisitionFee": 0.168410319386,
         "transferFee": 0.170926878663
     },
     {
@@ -1415,7 +1415,7 @@
         "transferPrice": 1.8882,
         "profitOrLoss": 0.7362151200000046,
         "acquisitionPrice": 1.8615,
-        "acquisitionFee": 0.26302995,
+        "acquisitionFee": 0.256641282,
         "transferFee": 0.2603223576
     },
     {
@@ -1426,7 +1426,7 @@
         "transferPrice": 1.9133,
         "profitOrLoss": 0.03555552000000018,
         "acquisitionPrice": 1.8615,
-        "acquisitionFee": 0.26302995,
+        "acquisitionFee": 0.006388668000000024,
         "transferFee": 0.006566445600000025
     },
     {
@@ -1459,7 +1459,7 @@
         "transferPrice": 1.9133,
         "profitOrLoss": 5.920352025899998,
         "acquisitionPrice": 1.7534,
-        "acquisitionFee": 0.36014836,
+        "acquisitionFee": 0.32460116454700005,
         "transferFee": 0.3542029246765
     },
     {
@@ -1470,7 +1470,7 @@
         "transferPrice": 1.9852,
         "profitOrLoss": 0.9398699561999986,
         "acquisitionPrice": 1.7534,
-        "acquisitionFee": 0.36014836,
+        "acquisitionFee": 0.03554719545299995,
         "transferFee": 0.04024654523399994
     },
     {
@@ -1514,7 +1514,7 @@
         "transferPrice": 0.636,
         "profitOrLoss": -3.052999999999998,
         "acquisitionPrice": 0.707,
-        "acquisitionFee": 0.16243325,
+        "acquisitionFee": 0.152005,
         "transferFee": 0.13674
     },
     {
@@ -1591,7 +1591,7 @@
         "transferPrice": 0.679,
         "profitOrLoss": -0.08259999999999983,
         "acquisitionPrice": 0.707,
-        "acquisitionFee": 0.16243325,
+        "acquisitionFee": 0.010428250000000009,
         "transferFee": 0.01001525000000001
     },
     {
@@ -1624,7 +1624,7 @@
         "transferPrice": 1.8221,
         "profitOrLoss": -0.006447999999999863,
         "acquisitionPrice": 1.9833,
-        "acquisitionFee": 0.397949145,
+        "acquisitionFee": 0.00039665999999999156,
         "transferFee": 0.00036441999999999226
     },
     {
@@ -1646,7 +1646,7 @@
         "transferPrice": 3555.45,
         "profitOrLoss": 0.000012554499999925439,
         "acquisitionPrice": 2300,
-        "acquisitionFee": 0.577499985,
+        "acquisitionFee": 1.818759536666887e-7,
         "transferFee": 1.7777249999894425e-7
     },
     {
@@ -1679,7 +1679,7 @@
         "transferPrice": 161.3,
         "profitOrLoss": -0.691739999999994,
         "acquisitionPrice": 164.045,
-        "acquisitionFee": 0.360899,
+        "acquisitionFee": 0.2066967,
         "transferFee": 0.20323800000000003
     },
     {
@@ -1701,7 +1701,7 @@
         "transferPrice": 1.7262,
         "profitOrLoss": -0.30268199999999973,
         "acquisitionPrice": 1.7445,
-        "acquisitionFee": 0.34523655,
+        "acquisitionFee": 0.14427014999999999,
         "transferFee": 0.14275674
     },
     {
@@ -1712,7 +1712,7 @@
         "transferPrice": 0.8649,
         "profitOrLoss": -0.023832000000001786,
         "acquisitionPrice": 0.8655,
-        "acquisitionFee": 0.00754716,
+        "acquisitionFee": 0.0036039095359461405,
         "transferFee": 0.0034353828
     },
     {
@@ -1723,7 +1723,7 @@
         "transferPrice": 174.537,
         "profitOrLoss": 1.9724960000000036,
         "acquisitionPrice": 164.045,
-        "acquisitionFee": 0.360899,
+        "acquisitionFee": 0.15420230000000001,
         "transferFee": 0.16406478
     },
     {
@@ -1734,7 +1734,7 @@
         "transferPrice": 174.537,
         "profitOrLoss": 0.12372000000000014,
         "acquisitionPrice": 164.227,
-        "acquisitionFee": 0.24469823,
+        "acquisitionFee": 0.009853620000000009,
         "transferFee": 0.01047222000000001
     },
     {
@@ -1745,7 +1745,7 @@
         "transferPrice": 1.6706,
         "profitOrLoss": -1.477999999999997,
         "acquisitionPrice": 1.7445,
-        "acquisitionFee": 0.34523655,
+        "acquisitionFee": 0.17445,
         "transferFee": 0.16706
     },
     {
@@ -1756,7 +1756,7 @@
         "transferPrice": 1.6728,
         "profitOrLoss": -0.21796799999999955,
         "acquisitionPrice": 1.7445,
-        "acquisitionFee": 0.34523655,
+        "acquisitionFee": 0.026516399999999992,
         "transferFee": 0.02542655999999999
     },
     {
@@ -1767,7 +1767,7 @@
         "transferPrice": 1.6728,
         "profitOrLoss": -9.200115,
         "acquisitionPrice": 1.9833,
-        "acquisitionFee": 0.397949145,
+        "acquisitionFee": 0.293825895,
         "transferFee": 0.24782532000000002
     },
     {
@@ -1778,7 +1778,7 @@
         "transferPrice": 0.8626,
         "profitOrLoss": -0.09242300000000044,
         "acquisitionPrice": 0.8655,
-        "acquisitionFee": 0.00754716,
+        "acquisitionFee": 0.0028916565183938446,
         "transferFee": 0.0027491062
     },
     {
@@ -1789,7 +1789,7 @@
         "transferPrice": 0.8626,
         "profitOrLoss": -0.03361100000000016,
         "acquisitionPrice": 0.8655,
-        "acquisitionFee": 0.00754716,
+        "acquisitionFee": 0.0010515939456600142,
         "transferFee": 0.0009997534
     },
     {
@@ -1833,7 +1833,7 @@
         "transferPrice": 1.71,
         "profitOrLoss": 0.0019436839999999959,
         "acquisitionPrice": 1.673,
-        "acquisitionFee": 0.0841519,
+        "acquisitionFee": 0.00043943017999999997,
         "transferFee": 0
     },
     {
@@ -1844,7 +1844,7 @@
         "transferPrice": 1.7157,
         "profitOrLoss": 0.42731888359999964,
         "acquisitionPrice": 1.673,
-        "acquisitionFee": 0.0841519,
+        "acquisitionFee": 0.08371246982000001,
         "transferFee": 0.08584906423800001
     },
     {
@@ -1855,7 +1855,7 @@
         "transferPrice": 1.7157,
         "profitOrLoss": -0.014057563199999831,
         "acquisitionPrice": 1.9833,
-        "acquisitionFee": 0.397949145,
+        "acquisitionFee": 0.0005209335779999936,
         "transferFee": 0.0004506457619999945
     },
     {
@@ -1877,7 +1877,7 @@
         "transferPrice": 187.157,
         "profitOrLoss": 6.5579800000000015,
         "acquisitionPrice": 164.227,
-        "acquisitionFee": 0.24469823,
+        "acquisitionFee": 0.23484460999999998,
         "transferFee": 0.26763451
     },
     {
@@ -1921,7 +1921,7 @@
         "transferPrice": 0.10816,
         "profitOrLoss": 0.9525000000000019,
         "acquisitionPrice": 0.10435,
-        "acquisitionFee": 0.16122075,
+        "acquisitionFee": 0.1304375,
         "transferFee": 0.1352
     },
     {
@@ -1943,7 +1943,7 @@
         "transferPrice": 0.10813,
         "profitOrLoss": 0.22302000000000033,
         "acquisitionPrice": 0.10435,
-        "acquisitionFee": 0.16122075,
+        "acquisitionFee": 0.03078325,
         "transferFee": 0.03189835
     },
     {
@@ -1954,7 +1954,7 @@
         "transferPrice": 0.10813,
         "profitOrLoss": -0.9381000000000004,
         "acquisitionPrice": 0.11403,
-        "acquisitionFee": 0.14766885,
+        "acquisitionFee": 0.09065385,
         "transferFee": 0.08596335
     },
     {
@@ -1965,7 +1965,7 @@
         "transferPrice": 0.1629,
         "profitOrLoss": -2.5575000000000014,
         "acquisitionPrice": 0.197,
-        "acquisitionFee": 0.123125,
+        "acquisitionFee": 0.073875,
         "transferFee": 0.0610875
     },
     {
@@ -1976,7 +1976,7 @@
         "transferPrice": 0.11089,
         "profitOrLoss": -0.3140000000000004,
         "acquisitionPrice": 0.11403,
-        "acquisitionFee": 0.14766885,
+        "acquisitionFee": 0.057014999999999996,
         "transferFee": 0.055445
     },
     {
@@ -1987,7 +1987,7 @@
         "transferPrice": 0.1662,
         "profitOrLoss": -1.5400000000000011,
         "acquisitionPrice": 0.197,
-        "acquisitionFee": 0.123125,
+        "acquisitionFee": 0.04925,
         "transferFee": 0.04155
     },
     {
@@ -2031,7 +2031,7 @@
         "transferPrice": 2.82,
         "profitOrLoss": 44.289214006715994,
         "acquisitionPrice": 0.9543,
-        "acquisitionFee": 2.99,
+        "acquisitionFee": 1.012891724039187,
         "transferFee": 2.36595290204
     },
     {
@@ -2042,7 +2042,7 @@
         "transferPrice": 2.74,
         "profitOrLoss": 71.42800000000001,
         "acquisitionPrice": 0.9543,
-        "acquisitionFee": 2.99,
+        "acquisitionFee": 1.7067379784643277,
         "transferFee": 2.99
     },
     {
@@ -2053,7 +2053,7 @@
         "transferPrice": 2.28,
         "profitOrLoss": 8.400349858356002,
         "acquisitionPrice": 0.9543,
-        "acquisitionFee": 2.99,
+        "acquisitionFee": 0.27037029749648533,
         "transferFee": 0.4210278188711112
     },
     {
@@ -2130,7 +2130,7 @@
         "transferPrice": 2.28,
         "profitOrLoss": -4.489652975999997,
         "acquisitionPrice": 2.88,
-        "acquisitionFee": 2.99,
+        "acquisitionFee": 1.1224268028406987,
         "transferFee": 0.4971874962311107
     },
     {
@@ -2196,7 +2196,7 @@
         "transferPrice": 1.92,
         "profitOrLoss": -11.952324076800005,
         "acquisitionPrice": 2.88,
-        "acquisitionFee": 2.99,
+        "acquisitionFee": 1.8675731971593013,
         "transferFee": 0.49839395627701694
     },
     {
@@ -2229,7 +2229,7 @@
         "transferPrice": 1.6159,
         "profitOrLoss": 0.815999999999999,
         "acquisitionPrice": 1.5955,
-        "acquisitionFee": 1.06116705,
+        "acquisitionFee": 0.31909999999999994,
         "transferFee": 0.32318
     },
     {
@@ -2240,7 +2240,7 @@
         "transferPrice": 1.6488,
         "profitOrLoss": 2.6650000000000063,
         "acquisitionPrice": 1.5955,
-        "acquisitionFee": 1.06116705,
+        "acquisitionFee": 0.3988749999999999,
         "transferFee": 0.4122
     },
     {
@@ -2284,7 +2284,7 @@
         "transferPrice": 1.6102,
         "profitOrLoss": 0.6323940000000069,
         "acquisitionPrice": 1.5955,
-        "acquisitionFee": 1.06116705,
+        "acquisitionFee": 0.34319205,
         "transferFee": 0.3463540200000001
     },
     {
@@ -2295,7 +2295,7 @@
         "transferPrice": 1.6102,
         "profitOrLoss": -3.723537999999996,
         "acquisitionPrice": 1.9833,
-        "acquisitionFee": 0.397949145,
+        "acquisitionFee": 0.0989666699999999,
         "transferFee": 0.08034897999999992
     },
     {
@@ -2383,7 +2383,7 @@
         "transferPrice": 1.3722,
         "profitOrLoss": -0.2612256948000072,
         "acquisitionPrice": 1.9833,
-        "acquisitionFee": 0.397949145,
+        "acquisitionFee": 0.004238986422000116,
         "transferFee": 0.002932857948000081
     },
     {
@@ -2405,7 +2405,7 @@
         "transferPrice": 1.3722,
         "profitOrLoss": -9.774529795199989,
         "acquisitionPrice": 1.8658,
-        "acquisitionFee": 0.44303421,
+        "acquisitionFee": 0.18473782102799985,
         "transferFee": 0.1358651720519999
     },
     {
@@ -2416,7 +2416,7 @@
         "transferPrice": 1.405,
         "profitOrLoss": -12.758385254400004,
         "acquisitionPrice": 1.8658,
-        "acquisitionFee": 0.44303421,
+        "acquisitionFee": 0.25829638897200013,
         "transferFee": 0.1945044627000001
     },
     {

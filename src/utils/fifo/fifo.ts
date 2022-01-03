@@ -140,11 +140,11 @@ export function calculateFIFOCapitalGains(
  *
  */
 export const calculateFIFOTransactions = (operationHistory: Operation[]): Transaction[] => {
-  const a = calculateFIFOCapitalGains(operationHistory).flatMap((gainByDate) => {
-    const totalAmount = _.sumBy(gainByDate.transactions, (o) => o.amountsold)
+  const correctedTransferFees = calculateFIFOCapitalGains(operationHistory).flatMap((gainByDate) => {
+    const totalSoldAmount = _.sumBy(gainByDate.transactions, (o) => o.amountsold)
     const dividedFees = gainByDate.transactions.map(x => ({
       ...x,
-      transferFee: (x.amountsold / totalAmount) * x.transferFee
+      transferFee: (x.amountsold / totalSoldAmount) * x.transferFee,
     }))
     const transferFeeForSell = gainByDate.transactions[0] ? gainByDate.transactions[0].transferFee : 0
     const transferFeeSummedFromSELLOperation = _.sumBy(dividedFees, (o) => o.transferFee)
@@ -153,10 +153,17 @@ export const calculateFIFOTransactions = (operationHistory: Operation[]): Transa
     }
     return dividedFees
   });
-  if (a.length === 0) {
+  if (correctedTransferFees.length === 0) {
     throw new Error("No SELL transactions found. Have you sold any asset?")
   }
-  return a
+  const correctedAcquisitionFees = correctedTransferFees.map(x => {
+    const amoutntBought = _.sumBy(correctedTransferFees.filter(y => y.buydate === x.buydate), o => o.amountsold)
+    return {
+      ...x,
+      acquisitionFee: (x.amountsold / amoutntBought) * x.acquisitionFee,
+    }
+  })
+  return correctedAcquisitionFees
 }
 
 
