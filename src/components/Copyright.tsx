@@ -1,6 +1,6 @@
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { Stack} from '@mui/material';
+import { Stack } from '@mui/material';
 
 const Copyright = () => {
     return (
@@ -31,7 +31,11 @@ const Copyright = () => {
                     Verotunkki
                 </Link>{' '}
                 {new Date().getFullYear()}
-                {'.'}
+                {'. '}
+                <Link color="inherit" href="https://verotunkki.fi/">
+                    GitHub
+                </Link>{' '}
+
             </Typography>
         </Stack>
     );
