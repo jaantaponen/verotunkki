@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, forwardRef } from 'react'
 import _ from 'lodash';
 import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { Alert, Button, createTheme, Stack, ThemeProvider } from '@mui/material';
+import { Button, createTheme, Stack, ThemeProvider } from '@mui/material';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
@@ -22,7 +22,9 @@ import axios from 'axios';
 import moment, { invalid } from 'moment';
 import { PreviewTable } from './PreviewTable'
 import { nanoid } from 'nanoid'
-
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 const parsersCrypto = [getDataCoinbase, getDataCoinbasePro]
 const parsersSecurity = [getDataDegiro, getDataNordnet]
 
@@ -51,10 +53,19 @@ interface Props {
     mode: "CRYPTO" | "SECURITY"
 }
 
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 const PreviewData = ({ mode }: Props) => {
     const [zoneHeight, setZoneHeight] = useState(400);
     const [files, setFiles] = useState<FileObject[]>([]);
     const [showTable, setShowTable] = useState(false)
+    const [showThankYou, setShowThankYou] = useState(false)
 
     const [rowDataColumn, setRowDataColumn] = useState<ColumnDataSecurity[] | ColumnDataCrypto[]>([] as any[]);
     const [rawDataAsColumns, setRawDataAsColumns] = useState<ColumnDataSecurity[] | ColumnDataCrypto[]>([] as any[]);
@@ -68,6 +79,7 @@ const PreviewData = ({ mode }: Props) => {
     const [calculatedResults, setCalculatedResults] = useState({} as calculatedResultsType);
 
     const fileCallback = (file: FileObject[]) => setFiles([...files, ...file])
+
 
     const clearRows = () => {
         setFiles([])
@@ -205,8 +217,14 @@ const PreviewData = ({ mode }: Props) => {
     }, [rowDataColumn])
 
     useEffect(() => {
-        //console.log("oring update", originalData)
-    }, [originalData])
+        (async () => {
+            if (results.length > 0) {
+                const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+                await sleep(6000)
+                setShowThankYou(true)
+            }
+        })()
+    }, [results])
 
 
     useEffect(() => {
@@ -323,6 +341,12 @@ const PreviewData = ({ mode }: Props) => {
                     {results.length > 0 && <ResultTable rows={results} mode={mode} />}
                 </Stack>
                 {<Copyright />}
+                <Snackbar onClose={() => setShowThankYou(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }} open={showThankYou} >
+                    <Alert onClose={() => setShowThankYou(false)} severity="info" sx={{ width: '100%' }}>
+                        <AlertTitle>Jos työkalusta oli hyötyä niin arvostaisin tähteä &lt;3</AlertTitle>
+                        <a style={{ color: "FloralWhite", textDecoration: 'none' }} href='https://github.com/jaantaponen/verotunkki' target="_blank"><strong>Paina tätä päästäksesi GitHubiin.</strong> </a>
+                    </Alert>
+                </Snackbar>
             </Container>
         </ThemeProvider >
     );
