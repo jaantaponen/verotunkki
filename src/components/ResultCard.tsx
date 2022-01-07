@@ -13,7 +13,7 @@ interface Props {
 }
 
 
-const ResultCard = ({ header, content, footer, footerSecondary, contentColor, infoHover,infoDirection }: Props) => {
+const ResultCard = ({ header, content, footer, footerSecondary, contentColor, infoHover, infoDirection }: Props) => {
     const theme = createTheme({
         typography: {
             fontSize: 14,
@@ -56,7 +56,7 @@ const ResultCard = ({ header, content, footer, footerSecondary, contentColor, in
                     <Box sx={{ color: 'text.primary', fontSize: 30, fontWeight: 'medium' }}>
                         {formatCurrency(content)}
                     </Box>
-                    <Box
+                    {footer && <Box
                         sx={{
                             color: contentColor,
                             display: 'inline',
@@ -65,7 +65,7 @@ const ResultCard = ({ header, content, footer, footerSecondary, contentColor, in
                         }}
                     >
                         {footer}
-                    </Box>
+                    </Box>}
                     <Box sx={{ color: 'text.secondary', display: 'inline', fontSize: 12 }}>
                         {footerSecondary}
                     </Box>
