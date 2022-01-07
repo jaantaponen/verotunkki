@@ -290,7 +290,8 @@ const PreviewData = ({ mode }: Props) => {
                             <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
                                 <ResultCard header="Hankintakulut yhteensä"
                                     content={calculatedResults.acquisitionFees.toFixed(2)}
-                                    footer="Kulut" footerSecondary="Hankintahinnat + hankinnasta aiheutuneet kulut"
+                                    footer=""
+                                    footerSecondary="Hankintahinnat + hankinnasta aiheutuneet kulut"
                                     contentColor="error.light"
                                     infoHover='Arvopaperien hankintakulut eli niiden hankintahinnat ja muut hankinnasta aiheutuneet kulut yhteensä.'
                                     infoDirection='left'
