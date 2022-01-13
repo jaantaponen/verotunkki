@@ -32,7 +32,7 @@ const Copyright = () => {
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'. '}
-                <Link color="inherit" href="https://verotunkki.fi/">
+                <Link color="inherit" href="https://github.com/jaantaponen/verotunkki/">
                     GitHub
                 </Link>{' '}
 
