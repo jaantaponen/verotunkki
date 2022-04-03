@@ -272,7 +272,9 @@ const PreviewData = ({ mode }: Props) => {
 
                     <Typography alignSelf="flex-start" sx={{ pl: 4, pt: 0 }} component="p">
                         {mode === 'CRYPTO' ? "Tuetut lähteet: Coinbase, Coinbase Pro" : "Tuetut lähteet: Nordnet, Degiro"}
-                        <br />
+
+                    </Typography>
+                    <Typography alignSelf="flex-start" sx={{ pl: 4, mt: 0 }} component="p">
                         Tarvitsetko esimerkkejä? Niitä löytyy
                         <a style={{ color: 'black', textDecoration: 'none' }}
                             href='https://github.com/jaantaponen/verotunkki/blob/main/EXAMPLES.md'
