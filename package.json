@@ -32,8 +32,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build && echo 'verotunkki.fi' > ./build/CNAME && cp ./build/index.html ./build/404.html",
-    "test": "TZ=UTC+2 cross-env NODE_ENV=test jest --verbose --runInBand --silent",
-    "test:debug": "TZ=UTC+2 cross-env NODE_ENV=test jest --verbose --runInBand",
+    "test": "TZ=UTC+1 cross-env NODE_ENV=test jest --verbose --runInBand --silent",
+    "test:debug": "TZ=UTC+1 cross-env NODE_ENV=test jest --verbose --runInBand",
     "test:watch": "npm run test:debug -- --watch --runInBand",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
