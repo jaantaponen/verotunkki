@@ -7,8 +7,18 @@ This project initiated from the need to inform the Finnish Tax Administration (V
 
 Visit [verotunkki.fi](https://verotunkki.fi) to test it out!
 
+# Example files
 
-#### Instructions
+* [Coinbase](https://github.com/jaantaponen/verotunkki/blob/update-terms/tests/files/SortIssuedCoinbase.csv)
+* [CoinbasePro](https://github.com/jaantaponen/verotunkki/blob/update-terms/tests/files/SortIssuedCoinbasePro.csv)
+* [Degiro](https://github.com/jaantaponen/verotunkki/blob/update-terms/tests/files/transactionsDegiro.csv)
+
+### Need more examples?
+
+You can see if one of the test files suits your needs [here](https://github.com/jaantaponen/verotunkki/tree/update-terms/tests/files)
+
+
+## Development instructions
 
 Run the development server with 
 ```console
