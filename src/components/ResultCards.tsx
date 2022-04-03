@@ -24,12 +24,12 @@ const ResultCards = ({ results }: { results: calculatedResultsType }) => {
                 />
             </Stack>
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-                <ResultCard header="Hankintakulut yhteensä"
+                <ResultCard header="hankintahinnat yhteensä"
                     content={results.acquisitionFees.toFixed(2)}
                     footer=""
                     footerSecondary="Hankintahinnat + hankinnasta aiheutuneet kulut"
                     contentColor="error.light"
-                    infoHover='Arvopaperien hankintakulut eli niiden hankintahinnat ja muut hankinnasta aiheutuneet kulut yhteensä.'
+                    infoHover='Arvopaperien hankintahinnat eli niiden hankintahinnat ja muut hankinnasta aiheutuneet kulut yhteensä.'
                     infoDirection='left'
                 />
                 <ResultCard header="Myyntihinnat yhteensä"
