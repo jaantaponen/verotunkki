@@ -176,7 +176,7 @@ const columnsTransaction = (mode: 'CRYPTO' | 'SECURITY'): GridColumns => [
         field: 'transferPrice', headerName: 'Luovutushinta', editable: false, minWidth: 120, ...currencyFormatResults,
     },
     { field: 'acquisitionPrice', headerName: 'Hankintahinta', ...currencyFormatResults, editable: false, minWidth: 120 },
-    { field: 'acquisitionFee', headerName: 'Hankintakulut', ...currencyFormatResults, editable: false, minWidth: 120 },
+    { field: 'acquisitionFee', headerName: 'hankintahinnat', ...currencyFormatResults, editable: false, minWidth: 120 },
     { field: 'transferFee', headerName: 'Luovutuskulut', ...currencyFormatResults, editable: false, minWidth: 120 },
     { field: 'profitOrLoss', headerName: 'Voitto/Tappio', ...currencyFormatResults, editable: false, minWidth: 120 },
 ];
