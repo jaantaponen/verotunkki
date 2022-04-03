@@ -4,14 +4,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { Button, createTheme, Stack, ThemeProvider } from '@mui/material';
+import { Button, createTheme, FormControlLabel, Stack, Switch, ThemeProvider } from '@mui/material';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
 import { getCoinbaseAsColumns, getDataCoinbase, getDataCoinbasePro, getDataDegiro, getDataNordnet } from '../utils/parsers/loadTransactions'
 import { CoinbaseHeaders, CoinbaseProHeaders, DegiroHeaders, NordnetHeaders } from '../utils/parsers/types';
 import { ResultTable } from './ResultTable'
-import { ResultCard } from './ResultCard'
 import { ColumnDataCrypto, ColumnDataSecurity, ColumnDataTransaction, columnsCrypto, columnsSecurity } from './tableSettings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
@@ -25,6 +24,7 @@ import { nanoid } from 'nanoid'
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import ResultCards from './ResultCards';
 const parsersCrypto = [getDataCoinbase, getDataCoinbasePro]
 const parsersSecurity = [getDataDegiro, getDataNordnet]
 
@@ -35,7 +35,7 @@ export interface rawDatas {
     Nordnet: NordnetHeaders[]
 }
 
-interface calculatedResultsType {
+export interface calculatedResultsType {
     capitalGains: number,
     capitalLosses: number,
     acquisitionFees: number,
@@ -268,46 +268,19 @@ const PreviewData = ({ mode }: Props) => {
                     </Typography>
                     {parseError && <Alert severity="error">{parseError}</Alert>}
                     {results.length === 0 && <Dropzone zoneHeight={zoneHeight} handleFiles={fileCallback} />}
-                    {results.length > 0 &&
-                        <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ pb: 4 }}>
-                            <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-                                <ResultCard header="Luovutusvoitto"
-                                    content={calculatedResults.capitalGains.toFixed(2)}
-                                    footer="Voitot" footerSecondary="yhteensä"
-                                    contentColor="success.light"
-                                    infoHover='Luovutusvoittoa syntyy tilanteessa, jossa luovutetun omaisuuden myyntihinta ylittää sen hankintamenon ja voiton hankkimisesta aiheutuneet menot.'
-                                    infoDirection='left'
-                                />
-                                <ResultCard header="Luovutustappio"
-                                    content={calculatedResults.capitalLosses.toFixed(2)}
-                                    footer="Häviöt"
-                                    footerSecondary="yhteensä"
-                                    contentColor="error.light"
-                                    infoHover='Luovutustappiota puolestaan syntyy tilanteessa, jossa luovutetun omaisuuden myyntihinta alittaa sen hankintamenon ja voiton hankkimisesta aiheutuneet menot.'
-                                    infoDirection='right'
-                                />
-                            </Stack>
-                            <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-                                <ResultCard header="Hankintahinnat yhteensä"
-                                    content={calculatedResults.acquisitionFees.toFixed(2)}
-                                    footer=""
-                                    footerSecondary="Hankintahinnat + hankinnasta aiheutuneet kulut"
-                                    contentColor="error.light"
-                                    infoHover='Arvopaperien hankintahinnat eli niiden hankintahinnat ja muut hankinnasta aiheutuneet kulut yhteensä.'
-                                    infoDirection='left'
-                                />
-                                <ResultCard header="Myyntihinnat yhteensä"
-                                    content={calculatedResults.sellprices.toFixed(2)}
-                                    footer=""
-                                    footerSecondary="Myyntihinnat - myynnistä aiheutuneet kulut"
-                                    contentColor={calculatedResults.sellprices > 0 ? 'success.light' : 'error.light'}
-                                    infoHover='Kaikkien vuoden aikana myymiesi arvopaperien myyntihinnat yhteensä eli myyntihintojen ja myynnistä aiheutuneiden kulujen erotus. Myynnistä aiheutuneita kuluja ovat esimerkiksi välityspalkkiot.'
-                                    infoDirection='right'
-                                />
-                            </Stack>
-                        </Stack>}
-                    <Typography alignSelf="flex-start" sx={{ pl: 4 }} component="p">
+                    {results.length > 0 && <ResultCards results={calculatedResults} />}
+
+                    <Typography alignSelf="flex-start" sx={{ pl: 4, pt: 0 }} component="p">
                         {mode === 'CRYPTO' ? "Tuetut lähteet: Coinbase, Coinbase Pro" : "Tuetut lähteet: Nordnet, Degiro"}
+                        <br />
+                        Tarvitsetko esimerkkejä? Niitä löytyy
+                        <a style={{ color: 'black', textDecoration: 'none' }}
+                            href='https://github.com/jaantaponen/verotunkki/blob/main/EXAMPLES.md'
+                            target="_blank"><strong> täältä.</strong>
+                        </a>
+                    </Typography>
+                    <Typography sx={{ pb: 0, pl: 4, mt: 0 }} alignSelf="flex-start" component="p">
+
                     </Typography>
                     {errorFifo && <Alert severity="error">{errorFifo}</Alert>}
                     {showCurrencyFetchButton &&
@@ -321,8 +294,6 @@ const PreviewData = ({ mode }: Props) => {
                                 </Alert>
                             </Stack>
                             <div style={{ paddingBottom: "4px" }}>
-
-
                                 <Button variant="contained" sx={{ minWidth: "140px", minHeight: "42px" }} onClick={currencyClick} endIcon={<DownloadIcon />} >I accept</Button>
                             </div>
                         </Stack>}
