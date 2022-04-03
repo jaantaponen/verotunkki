@@ -9,13 +9,13 @@ Visit [verotunkki.fi](https://verotunkki.fi) to test it out!
 
 # Example files
 
-* [Coinbase](https://github.com/jaantaponen/verotunkki/blob/update-terms/tests/files/SortIssuedCoinbase.csv)
-* [CoinbasePro](https://github.com/jaantaponen/verotunkki/blob/update-terms/tests/files/SortIssuedCoinbasePro.csv)
-* [Degiro](https://github.com/jaantaponen/verotunkki/blob/update-terms/tests/files/transactionsDegiro.csv)
+* [Coinbase](https://github.com/jaantaponen/verotunkki/blob/main/tests/files/SortIssuedCoinbase.csv)
+* [CoinbasePro](https://github.com/jaantaponen/verotunkki/blob/main/tests/files/SortIssuedCoinbasePro.csv)
+* [Degiro](hhttps://github.com/jaantaponen/verotunkki/blob/main/tests/files/transactionsDegiro.csv)
 
 ### Need more examples?
 
-You can see if one of the test files suits your needs [here](https://github.com/jaantaponen/verotunkki/tree/update-terms/tests/files)
+You can see if one of the test files suits your needs [here](https://github.com/jaantaponen/verotunkki/tree/main/tests/files)
 
 
 ## Development instructions
