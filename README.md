@@ -11,7 +11,7 @@ Visit [verotunkki.fi](https://verotunkki.fi) to test it out!
 
 * [Coinbase](https://github.com/jaantaponen/verotunkki/blob/main/tests/files/SortIssuedCoinbase.csv)
 * [CoinbasePro](https://github.com/jaantaponen/verotunkki/blob/main/tests/files/SortIssuedCoinbasePro.csv)
-* [Degiro](hhttps://github.com/jaantaponen/verotunkki/blob/main/tests/files/transactionsDegiro.csv)
+* [Degiro](https://github.com/jaantaponen/verotunkki/blob/main/tests/files/transactionsDegiro.csv)
 
 ### Need more examples?
 
