@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false && react-scripts build && cp ./build/index.html ./build/404.html",
+    "build": "CI=false && react-scripts build && cp ./build/index.html ./build/404.html && cp ./public/google25a7a381a85234f3.html ./build/",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --silent",
     "test:debug": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "test:watch": "npm run test:debug -- --watch --runInBand",
