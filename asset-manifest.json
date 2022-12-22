@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.7ea76bf5.chunk.css",
-    "main.js": "/static/js/main.c3a164ac.chunk.js",
-    "main.js.map": "/static/js/main.c3a164ac.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.5c742139.js",
-    "runtime-main.js.map": "/static/js/runtime-main.5c742139.js.map",
-    "static/js/2.055939d1.chunk.js": "/static/js/2.055939d1.chunk.js",
-    "static/js/2.055939d1.chunk.js.map": "/static/js/2.055939d1.chunk.js.map",
-    "static/js/3.51c31a06.chunk.js": "/static/js/3.51c31a06.chunk.js",
-    "static/js/3.51c31a06.chunk.js.map": "/static/js/3.51c31a06.chunk.js.map",
-    "static/js/4.e3257752.chunk.js": "/static/js/4.e3257752.chunk.js",
-    "static/js/4.e3257752.chunk.js.map": "/static/js/4.e3257752.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/main.7ea76bf5.chunk.css.map": "/static/css/main.7ea76bf5.chunk.css.map",
-    "static/js/2.055939d1.chunk.js.LICENSE.txt": "/static/js/2.055939d1.chunk.js.LICENSE.txt",
-    "static/media/sync.cjs": "/static/media/sync.f24cae06.cjs"
+    "main.css": "/verotunkki/static/css/main.7ea76bf5.chunk.css",
+    "main.js": "/verotunkki/static/js/main.531ca95a.chunk.js",
+    "main.js.map": "/verotunkki/static/js/main.531ca95a.chunk.js.map",
+    "runtime-main.js": "/verotunkki/static/js/runtime-main.7bf5340a.js",
+    "runtime-main.js.map": "/verotunkki/static/js/runtime-main.7bf5340a.js.map",
+    "static/js/2.e3a5048a.chunk.js": "/verotunkki/static/js/2.e3a5048a.chunk.js",
+    "static/js/2.e3a5048a.chunk.js.map": "/verotunkki/static/js/2.e3a5048a.chunk.js.map",
+    "static/js/3.8589e99d.chunk.js": "/verotunkki/static/js/3.8589e99d.chunk.js",
+    "static/js/3.8589e99d.chunk.js.map": "/verotunkki/static/js/3.8589e99d.chunk.js.map",
+    "static/js/4.99ad960d.chunk.js": "/verotunkki/static/js/4.99ad960d.chunk.js",
+    "static/js/4.99ad960d.chunk.js.map": "/verotunkki/static/js/4.99ad960d.chunk.js.map",
+    "index.html": "/verotunkki/index.html",
+    "static/css/main.7ea76bf5.chunk.css.map": "/verotunkki/static/css/main.7ea76bf5.chunk.css.map",
+    "static/js/2.e3a5048a.chunk.js.LICENSE.txt": "/verotunkki/static/js/2.e3a5048a.chunk.js.LICENSE.txt",
+    "static/media/sync.cjs": "/verotunkki/static/media/sync.f24cae06.cjs"
   },
   "entrypoints": [
-    "static/js/runtime-main.5c742139.js",
-    "static/js/2.055939d1.chunk.js",
+    "static/js/runtime-main.7bf5340a.js",
+    "static/js/2.e3a5048a.chunk.js",
     "static/css/main.7ea76bf5.chunk.css",
-    "static/js/main.c3a164ac.chunk.js"
+    "static/js/main.531ca95a.chunk.js"
   ]
 }
