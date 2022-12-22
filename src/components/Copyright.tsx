@@ -27,7 +27,7 @@ const Copyright = () => {
             </Typography>
             <Typography variant="body2" sx={{ pt: 0 }} color="text.secondary" align="center" >
                 {'Copyright © '}
-                <Link color="inherit" href="https://verotunkki.fi/">
+                <Link color="inherit" href="https://jaantaponen.github.io/verotunkki/">
                     Verotunkki
                 </Link>{' '}
                 {new Date().getFullYear()}
