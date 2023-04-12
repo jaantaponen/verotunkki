@@ -1,3 +1,6 @@
+/*
+*  Extended from https://github.com/bernardobelchior/fifo-capital-gains-js/blob/master/src/capital-gains.ts
+*/
 import { Operation, Transaction } from './types';
 import _ from 'lodash';
 
