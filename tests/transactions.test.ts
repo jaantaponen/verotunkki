@@ -1,5 +1,5 @@
 import { Operation } from '../src/utils/fifo';
-import { calculateFIFOTransactions, calculateFIFOCapitalGains } from '../src/utils/fifo';
+import { calculateFIFOTransactions, calculateFIFOCapitalGains, filterTransactionsByYear, getSellYears } from '../src/utils/fifo';
 
 describe('calculateFIFO', () => {
   it('calculates FIFO transactions details with multiple tickers', () => {
@@ -444,4 +444,46 @@ describe('calculateFIFO', () => {
 
     expect(rounded).toEqual(a)
   })
+});
+
+const sampleTransactions = [
+  { selldate: new Date('2020-03-01'), ticker: 'GME', buydate: new Date('2019-01-01'), amountsold: 4, transferPrice: 50, acquisitionPrice: 150, acquisitionFee: 4.2, transferFee: 4.1, profitOrLoss: -315.6 },
+  { selldate: new Date('2020-04-01'), ticker: 'GME', buydate: new Date('2020-01-01'), amountsold: 3, transferPrice: 86, acquisitionPrice: 50, acquisitionFee: 3.2, transferFee: 7.1, profitOrLoss: 97.7 },
+  { selldate: new Date('2021-01-01'), ticker: 'BB', buydate: new Date('2020-02-01'), amountsold: 10, transferPrice: 150, acquisitionPrice: 50, acquisitionFee: 2.2, transferFee: 2.1, profitOrLoss: 995.7 },
+];
+
+describe('filterTransactionsByYear', () => {
+  it('returns all transactions when year is null', () => {
+    expect(filterTransactionsByYear(sampleTransactions, null)).toEqual(sampleTransactions);
+  });
+
+  it('filters to only the given year', () => {
+    const result = filterTransactionsByYear(sampleTransactions, 2020);
+    expect(result).toHaveLength(2);
+    expect(result.every(t => new Date(t.selldate).getFullYear() === 2020)).toBe(true);
+  });
+
+  it('returns an empty array when no transactions match the year', () => {
+    expect(filterTransactionsByYear(sampleTransactions, 2022)).toHaveLength(0);
+  });
+
+  it('returns a single transaction for a year with one match', () => {
+    const result = filterTransactionsByYear(sampleTransactions, 2021);
+    expect(result).toHaveLength(1);
+    expect(result[0].ticker).toBe('BB');
+  });
+});
+
+describe('getSellYears', () => {
+  it('returns unique years in ascending order', () => {
+    expect(getSellYears(sampleTransactions)).toEqual([2020, 2021]);
+  });
+
+  it('returns an empty array for empty input', () => {
+    expect(getSellYears([])).toEqual([]);
+  });
+
+  it('deduplicates years when multiple transactions share the same sell year', () => {
+    expect(getSellYears(sampleTransactions.filter(t => new Date(t.selldate).getFullYear() === 2020))).toEqual([2020]);
+  });
 });

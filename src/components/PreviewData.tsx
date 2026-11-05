@@ -4,7 +4,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { Button, createTheme, FormControlLabel, Stack, Switch, ThemeProvider } from '@mui/material';
+import { Button, createTheme, FormControlLabel, MenuItem, Select, Stack, Switch, ThemeProvider } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 import { Dropzone } from './Dropzone';
 import { FileObject } from 'react-mui-dropzone';
 import { Copyright } from './Copyright';
@@ -15,7 +17,7 @@ import { ColumnDataCrypto, ColumnDataSecurity, ColumnDataTransaction, columnsCry
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import DownloadIcon from '@mui/icons-material/Download';
-import { calculateFIFOTransactions } from '../utils/fifo'
+import { calculateFIFOTransactions, filterTransactionsByYear, getSellYears } from '../utils/fifo'
 import { chooseCSVParser, parseColumnDataToFIFO } from '../utils/parsers/helpers'
 import axios from 'axios';
 import moment, { invalid } from 'moment';
@@ -77,6 +79,22 @@ const PreviewData = ({ mode }: Props) => {
     const [errorFifo, setErrorFifo] = useState("")
     const [showCurrencyFetchButton, setShowCurrencyFetchButton] = useState(false)
     const [calculatedResults, setCalculatedResults] = useState({} as calculatedResultsType);
+    const [selectedYear, setSelectedYear] = useState<number | null>(null);
+
+    const availableYears = getSellYears(results);
+    const filteredResults = filterTransactionsByYear(results, selectedYear);
+    const filteredCalculatedResults: calculatedResultsType = {
+        capitalGains: _.sumBy(filteredResults, (o) => {
+            const minusFees = Number(o.profitOrLoss.split(' ')[0]) - 0; // profitOrLoss already has fees deducted
+            return minusFees > 0 ? minusFees : 0
+        }),
+        capitalLosses: _.sumBy(filteredResults, (o) => {
+            const minusFees = Number(o.profitOrLoss.split(' ')[0]);
+            return minusFees < 0 ? minusFees : 0
+        }),
+        acquisitionFees: _.sumBy(filteredResults, (o) => ((o.amountsold * o.acquisitionPrice) + Math.abs(o.acquisitionFee))),
+        sellprices: _.sumBy(filteredResults, (o) => ((o.amountsold * o.transferPrice) - Math.abs(Number(o.transferFee.split(' ')[0]))))
+    };
 
     const fileCallback = (file: FileObject[]) => setFiles([...files, ...file])
 
@@ -89,6 +107,7 @@ const PreviewData = ({ mode }: Props) => {
         setShowTable(false)
         setZoneHeight(400)
         setResults([])
+        setSelectedYear(null)
     }
 
     const calculateFIFO = () => {
@@ -268,7 +287,7 @@ const PreviewData = ({ mode }: Props) => {
                     </Typography>
                     {parseError && <Alert severity="error">{parseError}</Alert>}
                     {results.length === 0 && <Dropzone zoneHeight={zoneHeight} handleFiles={fileCallback} />}
-                    {results.length > 0 && <ResultCards results={calculatedResults} />}
+                    {results.length > 0 && <ResultCards results={filteredCalculatedResults} />}
 
                     <Typography alignSelf="flex-start" sx={{ pl: 4, pt: 0 }} component="p">
                         {mode === 'CRYPTO' ? "Tuetut lähteet: Coinbase, Coinbase Pro" : "Tuetut lähteet: Nordnet, Degiro"}
@@ -312,7 +331,23 @@ const PreviewData = ({ mode }: Props) => {
                     {(showTable && results.length === 0) && <div style={{ width: '100%' }}>
                         <PreviewTable rows={rowDataColumn} mode={mode} rawDataAsColumns={rawDataAsColumns} rawDatatSetCallback={rawDataSetCallback} />
                     </div>}
-                    {results.length > 0 && <ResultTable rows={results} mode={mode} />}
+                    {results.length > 0 && (
+                        <FormControl size="small" sx={{ minWidth: 180 }}>
+                            <InputLabel id="year-select-label">Verovuosi</InputLabel>
+                            <Select
+                                labelId="year-select-label"
+                                value={selectedYear ?? ''}
+                                label="Verovuosi"
+                                onChange={(e) => setSelectedYear(e.target.value === '' ? null : Number(e.target.value))}
+                            >
+                                <MenuItem value="">Kaikki vuodet</MenuItem>
+                                {availableYears.map(year => (
+                                    <MenuItem key={year} value={year}>{year}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    )}
+                    {results.length > 0 && <ResultTable rows={filteredResults} mode={mode} />}
                 </Stack>
                 {<Copyright />}
                 <Snackbar onClose={() => setShowThankYou(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }} open={showThankYou} >
