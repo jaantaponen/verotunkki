@@ -15,7 +15,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Setup timezone
       uses: jaantaponen/setup-timezone@master
@@ -23,9 +23,9 @@ jobs:
         timezone: Europe/Helsinki
     
     - name: Install Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
-        node-version: 16.x
+        node-version: 22.x
     
     - name: Install NPM packages
       run: npm ci
@@ -37,7 +37,7 @@ jobs:
       run: npm run build
 
     - name: Upload production-ready build files
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: production-files
         path: ./build
@@ -50,7 +50,7 @@ jobs:
     
     steps:
     - name: Download artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: production-files
         path: ./build

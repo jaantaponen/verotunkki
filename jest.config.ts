@@ -16,7 +16,9 @@ export default {
   // Automatically clear mock calls and instances between every test
   moduleNameMapper: {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-    "\\.(scss|sass|css)$": "identity-obj-proxy"
+    "\\.(scss|sass|css)$": "identity-obj-proxy",
+    "^csv-parse/sync$": "<rootDir>/node_modules/csv-parse/dist/cjs/sync.cjs",
+    "^csv-parse/browser/esm/sync$": "<rootDir>/node_modules/csv-parse/dist/cjs/sync.cjs"
   },
   clearMocks: true,
   testPathIgnorePatterns: ["./cypress/"],

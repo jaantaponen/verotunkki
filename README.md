@@ -30,6 +30,10 @@ To run the unit tests with Jest use
 npm run tests
 ``` 
 
+### Requirements
+
+Node.js 22 or later is required.
+
 ## FAQ
 **Q:** How does Verotunkki calculate the results?
 

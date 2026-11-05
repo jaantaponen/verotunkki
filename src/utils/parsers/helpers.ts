@@ -45,15 +45,14 @@ const chooseCSVParser = async (filesCopy: FileObject[], parsers: any[]): Promise
 }
 
 /**
- * Due to Jest (26.x.x) being the latest stable release, we have to default to commonjs module for tests.
- * The ESM module support through Babel was not sufficient and resulted in different behaviour. 
+ * csv-parse ships separate browser-safe and Node sync exports.
+ * Use the browser ESM build for webpack (no Node stream dependency)
+ * and the Node sync build for Jest tests.
  * @returns parse function
  */
 const loadParser: any = async () => (process.env.NODE_ENV === 'test' ?
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore  
-    (await import('csv/dist/cjs/sync.cjs')).parse :
-    (await import('csv/dist/esm/sync')).parse
+    (await import('csv-parse/sync')).parse :
+    (await import('csv-parse/browser/esm/sync')).parse
 )
 
 
